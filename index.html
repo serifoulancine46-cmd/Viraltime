@@ -294,6 +294,7 @@ function showDashboard(user) {
   authSection.classList.add('hidden');
   dashboard.classList.remove('hidden');
   userEmail.textContent = user.email || '';
+  loadTikTokProfile();
 }
 
 // AFFICHER LE FORMULAIRE
@@ -448,7 +449,34 @@ tiktokProfileForm.addEventListener('submit', async (event) => {
     saveButton.textContent = 'Enregistrer mon profil';
   }
 });
+// CHARGER LE PROFIL TIKTOK
 
+async function loadTikTokProfile() {
+
+  const { data: { user }, error: userError } =
+    await supabase.auth.getUser();
+
+  if (userError || !user) return;
+
+  const { data, error } = await supabase
+    .from('tiktok_profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Erreur de chargement :', error.message);
+    return;
+  }
+
+  if (!data) return;
+
+  document.getElementById('tiktokUsername').value = data.username || '';
+  document.getElementById('tiktokFollowers').value = data.follower_count ?? 0;
+  document.getElementById('tiktokPosts').value = data.post_count ?? 0;
+  document.getElementById('tiktokNiche').value = data.niche || '';
+  document.getElementById('tiktokCountry').value = data.audience_country || '';
+}
 // DECONNEXION
 
 logoutBtn.addEventListener('click', async () => {
