@@ -162,6 +162,54 @@ J'ai déjà un compte : me connecter
 <p>Bienvenue dans ton espace ViralTime.</p>
 
 <div class="card">
+  <h2>🎵 Mon profil TikTok</h2>
+  <p>Renseigne les informations de ton compte.</p>
+
+  <form id="tiktokProfileForm">
+    <input
+      id="tiktokUsername"
+      type="text"
+      placeholder="Nom d'utilisateur TikTok"
+      required
+    >
+
+    <input
+      id="tiktokFollowers"
+      type="number"
+      min="0"
+      placeholder="Nombre d'abonnés"
+      required
+    >
+
+    <input
+      id="tiktokPosts"
+      type="number"
+      min="0"
+      placeholder="Nombre de publications"
+      required
+    >
+
+    <input
+      id="tiktokNiche"
+      type="text"
+      placeholder="Thématique de ton compte"
+    >
+
+    <input
+      id="tiktokCountry"
+      type="text"
+      placeholder="Pays de ton audience"
+    >
+
+    <button type="submit">
+      Enregistrer mon profil
+    </button>
+  </form>
+
+  <div id="tiktokMessage" class="message hidden"></div>
+</div>
+
+<div class="card">
 <small>PROCHAINE FENÊTRE CONSEILLÉE · DÉMO</small>
 <div class="time">19h30</div>
 <p>Horaire fictif pour la démonstration.</p>
@@ -317,7 +365,7 @@ authForm.addEventListener('submit', async (event) => {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.href
+       emailRedirectTo: window.location.href
           }
         });
 
@@ -351,6 +399,54 @@ authForm.addEventListener('submit', async (event) => {
 
   }
 
+
+});
+const tiktokProfileForm = document.getElementById('tiktokProfileForm');
+
+tiktokProfileForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const tiktokMessage = document.getElementById('tiktokMessage');
+  const saveButton = tiktokProfileForm.querySelector('button[type="submit"]');
+
+  const { data: { user }, error: userError } =
+    await supabase.auth.getUser();
+
+  if (userError || !user) {
+    tiktokMessage.textContent = 'Connecte-toi pour enregistrer ton profil.';
+    tiktokMessage.classList.remove('hidden');
+    return;
+  }
+
+  saveButton.disabled = true;
+  saveButton.textContent = 'Enregistrement...';
+
+  try {
+    const profile = {
+      user_id: user.id,
+      username: document.getElementById('tiktokUsername').value.trim(),
+      follower_count: Number(document.getElementById('tiktokFollowers').value),
+      post_count: Number(document.getElementById('tiktokPosts').value),
+      niche: document.getElementById('tiktokNiche').value.trim(),
+      audience_country: document.getElementById('tiktokCountry').value.trim(),
+      updated_at: new Date().toISOString()
+    };
+
+    const { error } = await supabase
+      .from('tiktok_profiles')
+      .upsert(profile, { onConflict: 'user_id' });
+
+    if (error) throw error;
+
+    tiktokMessage.textContent = 'Ton profil TikTok a été enregistré avec succès !';
+    tiktokMessage.classList.remove('hidden');
+  } catch (error) {
+    tiktokMessage.textContent = 'Erreur : ' + error.message;
+    tiktokMessage.classList.remove('hidden');
+  } finally {
+    saveButton.disabled = false;
+    saveButton.textContent = 'Enregistrer mon profil';
+  }
 });
 
 // DECONNEXION
