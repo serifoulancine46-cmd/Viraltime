@@ -157,79 +157,83 @@ J'ai déjà un compte : me connecter
 
 <section id="dashboard" class="hidden">
 
-<h1>Bonjour, Créateur 👋</h1>
+  <h1>ViralTime</h1>
 
-<p>Bienvenue dans ton espace ViralTime.</p>
+  <div id="homePage">
+    <h1>Bienvenue, Créateur 👋</h1>
+    <p>Ton espace pour mieux planifier tes publications.</p>
 
-<div class="card">
-  <h2>🎵 Mon profil TikTok</h2>
-  <p>Renseigne les informations de ton compte.</p>
+    <div class="card">
+      <h2>🕒 Meilleurs horaires</h2>
+      <p>Trouve tes heures de publication.</p>
+      <button type="button" class="secondary">Découvrir</button>
+    </div>
 
-  <form id="tiktokProfileForm">
-    <input
-      id="tiktokUsername"
-      type="text"
-      placeholder="Nom d'utilisateur TikTok"
-      required
-    >
+    <div class="card">
+      <h2>📅 Calendrier</h2>
+      <p>Organise tes publications.</p>
+      <button type="button" class="secondary">Ouvrir</button>
+    </div>
 
-    <input
-      id="tiktokFollowers"
-      type="number"
-      min="0"
-      placeholder="Nombre d'abonnés"
-      required
-    >
+    <div class="card">
+      <h2>📊 Performances</h2>
+      <p>Suis tes résultats.</p>
+      <button type="button" class="secondary">Voir mes résultats</button>
+    </div>
 
-    <input
-      id="tiktokPosts"
-      type="number"
-      min="0"
-      placeholder="Nombre de publications"
-      required
-    >
+    <div class="card">
+      <h2>👤 Mon profil</h2>
+      <p>Personnalise ton espace.</p>
+      <button id="openProfileBtn" type="button">Mon profil</button>
+    </div>
 
-    <input
-      id="tiktokNiche"
-      type="text"
-      placeholder="Thématique de ton compte"
-    >
+    <p>Aperçu du futur tableau de bord — les fonctions restent à développer.</p>
+  </div>
 
-    <input
-      id="tiktokCountry"
-      type="text"
-      placeholder="Pays de ton audience"
-    >
+  <div id="profilePage" class="hidden">
+    <div class="card">
+      <h2>🎵 Mon profil TikTok</h2>
+      <p>Renseigne les informations de ton compte.</p>
 
-    <button type="submit">
-      Enregistrer mon profil
+      <form id="tiktokProfileForm">
+        <input id="tiktokUsername" type="text"
+          placeholder="Nom d'utilisateur TikTok" required>
+
+        <input id="tiktokFollowers" type="number"
+          min="0" placeholder="Nombre d'abonnés" required>
+
+        <input id="tiktokPosts" type="number"
+          min="0" placeholder="Nombre de publications" required>
+
+        <input id="tiktokNiche" type="text"
+          placeholder="Thématique de ton compte">
+
+        <input id="tiktokCountry" type="text"
+          placeholder="Pays de ton audience">
+
+        <button type="submit">Enregistrer mon profil</button>
+      </form>
+
+      <div id="tiktokMessage" class="message hidden"></div>
+
+      <button id="backHomeBtn" class="secondary" type="button">
+        Retour à l'accueil
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ton compte</h2>
+    <p id="userEmail"></p>
+    <p>Tu es connecté à ViralTime.</p>
+
+    <button id="logoutBtn" class="secondary" type="button">
+      Se déconnecter
     </button>
-  </form>
 
-  <div id="tiktokMessage" class="message hidden"></div>
-</div>
+    <div id="dashboardMessage" class="message hidden"></div>
+  </div>
 
-<div class="card">
-<small>PROCHAINE FENÊTRE CONSEILLÉE · DÉMO</small>
-<div class="time">19h30</div>
-<p>Horaire fictif pour la démonstration.</p>
-</div>
-
-<div class="card">
-
-<h2>Ton compte</h2>
-
-<p id="userEmail"></p>
-
-<p>Tu es connecté à ViralTime.</p>
-
-<button id="logoutBtn" class="secondary" type="button">
-Se déconnecter
-</button>
-
-<div id="dashboardMessage" class="message hidden" role="status"></div>
-
-</div>
 </section>
 
 <p style="text-align:center;font-size:12px">
@@ -274,6 +278,9 @@ const userEmail = document.getElementById('userEmail');
 const dashboardMessage = document.getElementById('dashboardMessage');
 const logoutBtn = document.getElementById('logoutBtn');
 
+const homePage = document.getElementById('homePage');
+const profilePage = document.getElementById('profilePage');
+
 let isLogin = false;
 
 // MESSAGES
@@ -293,7 +300,12 @@ function showDashboardMessage(text) {
 function showDashboard(user) {
   authSection.classList.add('hidden');
   dashboard.classList.remove('hidden');
+
+  homePage.classList.remove('hidden');
+  profilePage.classList.add('hidden');
+
   userEmail.textContent = user.email || '';
+
   loadTikTokProfile();
 }
 
@@ -345,8 +357,6 @@ authForm.addEventListener('submit', async (event) => {
 
     if (isLogin) {
 
-      // CONNEXION
-
       const { data, error } =
         await supabase.auth.signInWithPassword({
           email,
@@ -359,14 +369,12 @@ authForm.addEventListener('submit', async (event) => {
 
     } else {
 
-      // CREATION DE COMPTE
-
       const { data, error } =
         await supabase.auth.signUp({
           email,
           password,
           options: {
-       emailRedirectTo: window.location.href
+            emailRedirectTo: window.location.href
           }
         });
 
@@ -400,29 +408,48 @@ authForm.addEventListener('submit', async (event) => {
 
   }
 
-
 });
+
+// NAVIGATION ENTRE LES PAGES
+
+document.getElementById('openProfileBtn').addEventListener('click', () => {
+  homePage.classList.add('hidden');
+  profilePage.classList.remove('hidden');
+});
+
+document.getElementById('backHomeBtn').addEventListener('click', () => {
+  profilePage.classList.add('hidden');
+  homePage.classList.remove('hidden');
+});
+
+// ENREGISTRER LE PROFIL TIKTOK
+
 const tiktokProfileForm = document.getElementById('tiktokProfileForm');
 
 tiktokProfileForm.addEventListener('submit', async (event) => {
+
   event.preventDefault();
 
   const tiktokMessage = document.getElementById('tiktokMessage');
   const saveButton = tiktokProfileForm.querySelector('button[type="submit"]');
 
-  const { data: { user }, error: userError } =
-    await supabase.auth.getUser();
-
-  if (userError || !user) {
-    tiktokMessage.textContent = 'Connecte-toi pour enregistrer ton profil.';
-    tiktokMessage.classList.remove('hidden');
-    return;
-  }
-
   saveButton.disabled = true;
   saveButton.textContent = 'Enregistrement...';
 
+  tiktokMessage.classList.add('hidden');
+  dashboardMessage.classList.add('hidden');
+
   try {
+
+    const { data: { user }, error: userError } =
+      await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Connecte-toi pour enregistrer ton profil.');
+    }
+
     const profile = {
       user_id: user.id,
       username: document.getElementById('tiktokUsername').value.trim(),
@@ -441,14 +468,28 @@ tiktokProfileForm.addEventListener('submit', async (event) => {
 
     tiktokMessage.textContent = 'Ton profil TikTok a été enregistré avec succès !';
     tiktokMessage.classList.remove('hidden');
+
+    showDashboardMessage('Ton profil TikTok a été enregistré avec succès !');
+
+    setTimeout(() => {
+      profilePage.classList.add('hidden');
+      homePage.classList.remove('hidden');
+    }, 1000);
+
   } catch (error) {
+
     tiktokMessage.textContent = 'Erreur : ' + error.message;
     tiktokMessage.classList.remove('hidden');
+
   } finally {
+
     saveButton.disabled = false;
     saveButton.textContent = 'Enregistrer mon profil';
+
   }
+
 });
+
 // CHARGER LE PROFIL TIKTOK
 
 async function loadTikTokProfile() {
@@ -476,7 +517,9 @@ async function loadTikTokProfile() {
   document.getElementById('tiktokPosts').value = data.post_count ?? 0;
   document.getElementById('tiktokNiche').value = data.niche || '';
   document.getElementById('tiktokCountry').value = data.audience_country || '';
+
 }
+
 // DECONNEXION
 
 logoutBtn.addEventListener('click', async () => {
