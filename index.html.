@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17132c">
+<title>ViralTime</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#100e1b;
+  color:white;
+  font-family:Arial,sans-serif;
+}
+
+main{
+  max-width:520px;
+  margin:auto;
+  padding:22px 16px;
+}
+
+header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:30px;
+}
+
+.logo{
+  background:#9b83ff;
+  padding:13px;
+  border-radius:14px;
+  font-size:24px;
+}
+
+h1{font-size:25px}
+
+p{
+  color:#b9b1d2;
+  line-height:1.6;
+}
+
+.card{
+  background:#1b1730;
+  padding:20px;
+  border-radius:18px;
+  margin:15px 0;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin:9px 0;
+  border-radius:10px;
+  border:1px solid #50456e;
+  background:#282143;
+  color:white;
+  font-size:15px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  background:#9b83ff;
+  border:0;
+  border-radius:12px;
+  font-weight:bold;
+  margin-top:12px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.secondary{
+  background:#332a50;
+  color:white;
+}
+
+.message{
+  padding:12px;
+  border-radius:10px;
+  background:#282143;
+  margin-top:12px;
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+
+.hidden{display:none}
+
+.time{
+  font-size:40px;
+  color:#9b83ff;
+  font-weight:bold;
+}
+
+small{color:#b9b1d2}
+</style>
+</head>
+
+<body>
+<main>
+
+<header>
+  <div class="logo">◷</div>
+  <div>
+    <strong>ViralTime</strong><br>
+    <small>Publie au bon moment.</small>
+  </div>
+</header>
+
+<section id="authSection" class="card">
+
+<h1 id="formTitle">Créer ton compte</h1>
+
+<p>Rejoins ViralTime et prépare tes publications.</p>
+
+<form id="authForm">
+
+<input
+  id="email"
+  type="email"
+  placeholder="Adresse e-mail"
+  autocomplete="email"
+  required
+>
+
+<input
+  id="password"
+  type="password"
+  placeholder="Mot de passe (6 caractères minimum)"
+  minlength="6"
+  autocomplete="current-password"
+  required
+>
+
+<button id="submitBtn" type="submit">
+Créer mon compte
+</button>
+
+</form>
+
+<button id="switchBtn" class="secondary" type="button">
+J'ai déjà un compte : me connecter
+</button>
+
+<div id="message" class="message hidden" role="status"></div>
+
+</section>
+
+<section id="dashboard" class="hidden">
+
+<h1>Bonjour, Créateur 👋</h1>
+
+<p>Bienvenue dans ton espace ViralTime.</p>
+
+<div class="card">
+<small>PROCHAINE FENÊTRE CONSEILLÉE · DÉMO</small>
+<div class="time">19h30</div>
+<p>Horaire fictif pour la démonstration.</p>
+</div>
+
+<div class="card">
+
+<h2>Ton compte</h2>
+
+<p id="userEmail"></p>
+
+<p>Tu es connecté à ViralTime.</p>
+
+<button id="logoutBtn" class="secondary" type="button">
+Se déconnecter
+</button>
+
+<div id="dashboardMessage" class="message hidden" role="status"></div>
+
+</div>
+</section>
+
+<p style="text-align:center;font-size:12px">
+ViralTime · Version de développement
+</p>
+
+</main>
+
+<script type="module">
+
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// CONFIGURATION SUPABASE
+
+const SUPABASE_URL = 'https://ncgdofbgazkvvazljhbn.supabase.co';
+
+const SUPABASE_KEY = 'sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
+);
+
+// ELEMENTS HTML
+
+const authSection = document.getElementById('authSection');
+const dashboard = document.getElementById('dashboard');
+const authForm = document.getElementById('authForm');
+const formTitle = document.getElementById('formTitle');
+const submitBtn = document.getElementById('submitBtn');
+const switchBtn = document.getElementById('switchBtn');
+const message = document.getElementById('message');
+const userEmail = document.getElementById('userEmail');
+const dashboardMessage = document.getElementById('dashboardMessage');
+const logoutBtn = document.getElementById('logoutBtn');
+
+let isLogin = false;
+
+// MESSAGES
+
+function showMessage(text) {
+  message.textContent = text;
+  message.classList.remove('hidden');
+}
+
+function showDashboardMessage(text) {
+  dashboardMessage.textContent = text;
+  dashboardMessage.classList.remove('hidden');
+}
+
+// AFFICHER LE TABLEAU DE BORD
+
+function showDashboard(user) {
+  authSection.classList.add('hidden');
+  dashboard.classList.remove('hidden');
+  userEmail.textContent = user.email || '';
+}
+
+// AFFICHER LE FORMULAIRE
+
+function showAuth() {
+  dashboard.classList.add('hidden');
+  authSection.classList.remove('hidden');
+}
+
+// CHANGER ENTRE INSCRIPTION ET CONNEXION
+
+switchBtn.addEventListener('click', () => {
+
+  isLogin = !isLogin;
+
+  formTitle.textContent = isLogin
+    ? 'Se connecter'
+    : 'Créer ton compte';
+
+  submitBtn.textContent = isLogin
+    ? 'Me connecter'
+    : 'Créer mon compte';
+
+  switchBtn.textContent = isLogin
+    ? 'Créer un nouveau compte'
+    : "J'ai déjà un compte : me connecter";
+
+  message.classList.add('hidden');
+
+});
+
+// INSCRIPTION ET CONNEXION
+
+authForm.addEventListener('submit', async (event) => {
+
+  event.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  submitBtn.disabled = true;
+  switchBtn.disabled = true;
+  submitBtn.textContent = 'Patiente...';
+
+  message.classList.add('hidden');
+
+  try {
+
+    if (isLogin) {
+
+      // CONNEXION
+
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      showDashboard(data.user);
+
+    } else {
+
+      // CREATION DE COMPTE
+
+      const { data, error } =
+        await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin
+          }
+        });
+
+      if (error) throw error;
+
+      if (data.session) {
+
+        showDashboard(data.user);
+
+      } else {
+
+        showMessage(
+          "Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter."
+        );
+
+      }
+    }
+
+  } catch (error) {
+
+    showMessage('Erreur : ' + error.message);
+
+  } finally {
+
+    submitBtn.disabled = false;
+    switchBtn.disabled = false;
+
+    submitBtn.textContent = isLogin
+      ? 'Me connecter'
+      : 'Créer mon compte';
+
+  }
+
+});
+
+// DECONNEXION
+
+logoutBtn.addEventListener('click', async () => {
+
+  logoutBtn.disabled = true;
+  logoutBtn.textContent = 'Déconnexion...';
+
+  try {
+
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    authForm.reset();
+
+    isLogin = true;
+
+    formTitle.textContent = 'Se connecter';
+    submitBtn.textContent = 'Me connecter';
+    switchBtn.textContent = 'Créer un nouveau compte';
+
+  } catch (error) {
+
+    showDashboardMessage(
+      'Erreur : ' + error.message
+    );
+
+  } finally {
+
+    logoutBtn.disabled = false;
+    logoutBtn.textContent = 'Se déconnecter';
+
+  }
+
+});
+
+// VERIFIER LA SESSION EXISTANTE
+
+async function checkSession() {
+
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    showAuth();
+    return;
+  }
+
+  if (data.session) {
+    showDashboard(data.session.user);
+  } else {
+    showAuth();
+  }
+
+}
+
+checkSession();
+
+// SURVEILLER LES CHANGEMENTS DE CONNEXION
+
+supabase.auth.onAuthStateChange((event, session) => {
+
+  if (session) {
+
+    showDashboard(session.user);
+
+  } else if (event === 'SIGNED_OUT') {
+
+    showAuth();
+
+  }
+
+});
+
+</script>
+</body>
+</html>
