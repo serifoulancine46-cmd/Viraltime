@@ -166,7 +166,9 @@ J'ai déjà un compte : me connecter
     <div class="card">
       <h2>🕒 Meilleurs horaires</h2>
       <p>Trouve tes heures de publication.</p>
-      <button type="button" class="secondary">Découvrir</button>
+    <button id="openHoursBtn" type="button" class="secondary">
+  Découvrir
+</button>
     </div>
 
     <div class="card">
@@ -189,6 +191,32 @@ J'ai déjà un compte : me connecter
 
     <p>Aperçu du futur tableau de bord — les fonctions restent à développer.</p>
   </div>
+<!-- PAGE MEILLEURS HORAIRES -->
+
+<div id="hoursPage" class="hidden">
+
+  <div class="card">
+    <h2>🕒 Meilleurs horaires</h2>
+
+    <p>
+      Découvre les moments recommandés pour publier
+      tes vidéos TikTok.
+    </p>
+
+    <h3>📅 Recommandations de publication</h3>
+
+    <p>Nous préparerons ici les jours et les heures recommandés.</p>
+
+    <div id="hoursRecommendations">
+      <p>Les recommandations seront bientôt disponibles.</p>
+    </div>
+
+    <button id="backHoursBtn" class="secondary" type="button">
+      Retour à l'accueil
+    </button>
+  </div>
+
+</div>
 
   <div id="profilePage" class="hidden">
     <div class="card">
@@ -280,7 +308,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 
 const homePage = document.getElementById('homePage');
 const profilePage = document.getElementById('profilePage');
-
+const hoursPage = document.getElementById('hoursPage');
 let isLogin = false;
 
 // MESSAGES
@@ -303,7 +331,7 @@ function showDashboard(user) {
 
   homePage.classList.remove('hidden');
   profilePage.classList.add('hidden');
-
+hoursPage.classList.add('hidden');
   userEmail.textContent = user.email || '';
 
   loadTikTokProfile();
@@ -411,6 +439,20 @@ authForm.addEventListener('submit', async (event) => {
 });
 
 // NAVIGATION ENTRE LES PAGES
+// OUVRIR LA PAGE MEILLEURS HORAIRES
+
+document.getElementById('openHoursBtn').addEventListener('click', () => {
+  homePage.classList.add('hidden');
+  profilePage.classList.add('hidden');
+  hoursPage.classList.remove('hidden');
+});
+
+// RETOUR À L'ACCUEIL DEPUIS MEILLEURS HORAIRES
+
+document.getElementById('backHoursBtn').addEventListener('click', () => {
+  hoursPage.classList.add('hidden');
+  homePage.classList.remove('hidden');
+});
 
 document.getElementById('openProfileBtn').addEventListener('click', () => {
   homePage.classList.add('hidden');
