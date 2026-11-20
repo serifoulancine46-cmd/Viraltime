@@ -161,6 +161,14 @@ J'ai déjà un compte : me connecter
 
   <div id="homePage">
     <h1>Bienvenue, Créateur 👋</h1>
+    <div class="card">
+  <h2>🔔 Notifications</h2>
+  <p>Reçois un rappel lorsqu'il est temps de publier.</p>
+  <button id="enableNotificationsBtn" type="button">
+    Activer les notifications
+  </button>
+  <div id="notificationMessage" class="message hidden"></div>
+</div>
     <p>Ton espace pour mieux planifier tes publications.</p>
 
     <div class="card">
@@ -324,7 +332,18 @@ ViralTime · Version de développement
 
 import { createClient } from
 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+// ENREGISTRER LE SERVICE WORKER
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+      console.log('Service Worker enregistré avec succès');
+    } catch (error) {
+      console.error('Erreur Service Worker :', error);
+    }
+  });
+}
 // CONFIGURATION SUPABASE
 
 const SUPABASE_URL = 'https://ncgdofbgazkvvazljhbn.supabase.co';
@@ -483,6 +502,79 @@ authForm.addEventListener('submit', async (event) => {
     submitBtn.textContent = isLogin
       ? 'Me connecter'
       : 'Créer mon compte';
+
+  }
+
+});
+
+// ACTIVATION DES NOTIFICATIONS
+
+const enableNotificationsBtn =
+  document.getElementById('enableNotificationsBtn');
+
+const notificationMessage =
+  document.getElementById('notificationMessage');
+
+enableNotificationsBtn.addEventListener('click', async () => {
+
+  if (!('Notification' in window)) {
+    notificationMessage.textContent =
+      'Ton navigateur ne prend pas en charge les notifications.';
+    notificationMessage.classList.remove('hidden');
+    return;
+  }
+
+  if (!('serviceWorker' in navigator)) {
+    notificationMessage.textContent =
+      'Les notifications ne sont pas prises en charge.';
+    notificationMessage.classList.remove('hidden');
+    return;
+  }
+
+  try {
+
+    enableNotificationsBtn.disabled = true;
+    enableNotificationsBtn.textContent = 'Activation...';
+
+    const permission = await Notification.requestPermission();
+
+    if (permission === 'granted') {
+
+      const registration = await navigator.serviceWorker.ready;
+
+      await registration.showNotification('ViralTime 🔔', {
+        body: 'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
+      });
+
+      notificationMessage.textContent =
+        'Notifications autorisées avec succès !';
+
+    } else if (permission === 'denied') {
+
+      notificationMessage.textContent =
+        'Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';
+
+    } else {
+
+      notificationMessage.textContent =
+        'Tu n’as pas encore autorisé les notifications.';
+
+    }
+
+    notificationMessage.classList.remove('hidden');
+
+  } catch (error) {
+
+    notificationMessage.textContent =
+      'Erreur : ' + error.message;
+
+    notificationMessage.classList.remove('hidden');
+
+  } finally {
+
+    enableNotificationsBtn.disabled = false;
+    enableNotificationsBtn.textContent =
+      'Activer les notifications';
 
   }
 
