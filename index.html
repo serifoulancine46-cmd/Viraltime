@@ -395,7 +395,7 @@ function openPage(page) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function showDashboard(user) {
+ showDashboard(user) {
   authSection.classList.add('hidden');
   dashboard.classList.remove('hidden');
 
@@ -465,6 +465,7 @@ authForm.addEventListener('submit', async event => {
       });
 
       if (error) throw error;
+alert('Connexion réussie ! Session : ' + !!data.session);
 
       showDashboard(data.user);
 
