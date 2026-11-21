@@ -445,7 +445,7 @@ switchBtn.addEventListener('click', () => {
 
 authForm.addEventListener('submit', async event => {
   event.preventDefault();
-
+alert('Connexion réussie ! Session : ' + !!data.session);
   const email = $('email').value.trim();
   const password = $('password').value;
   const firstName = firstNameInput.value.trim();
