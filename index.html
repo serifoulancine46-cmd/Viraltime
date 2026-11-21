@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,99 +8,35 @@
 
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#100e1b;
-  color:white;
-  font-family:Arial,sans-serif;
-}
-
-main{
-  max-width:520px;
-  margin:auto;
-  padding:22px 16px;
-}
-
-header{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:30px;
-}
-
-.logo{
-  background:#9b83ff;
-  padding:13px;
-  border-radius:14px;
-  font-size:24px;
-}
-
+body{margin:0;background:#100e1b;color:white;font-family:Arial,sans-serif}
+main{max-width:520px;margin:auto;padding:22px 16px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+.logo{background:#9b83ff;padding:13px;border-radius:14px;font-size:24px}
 h1{font-size:25px}
-
-p{
-  color:#b9b1d2;
-  line-height:1.6;
-}
-
-.card{
-  background:#1b1730;
-  padding:20px;
-  border-radius:18px;
-  margin:15px 0;
-}
-
-input{
-  width:100%;
-  padding:14px;
-  margin:9px 0;
-  border-radius:10px;
-  border:1px solid #50456e;
-  background:#282143;
-  color:white;
-  font-size:15px;
-}
-
-button{
-  width:100%;
-  padding:14px;
-  background:#9b83ff;
-  border:0;
-  border-radius:12px;
-  font-weight:bold;
-  margin-top:12px;
-  font-size:15px;
-  cursor:pointer;
-}
-
-button:disabled{
-  opacity:.6;
-  cursor:wait;
-}
-
-.secondary{
-  background:#332a50;
-  color:white;
-}
-
-.message{
-  padding:12px;
-  border-radius:10px;
-  background:#282143;
-  margin-top:12px;
-  font-size:13px;
-  overflow-wrap:anywhere;
-}
-
+p{color:#b9b1d2;line-height:1.6}
+.card{background:#1b1730;padding:20px;border-radius:18px;margin:15px 0}
+input,select{width:100%;padding:14px;margin:9px 0;border-radius:10px;border:1px solid #50456e;background:#282143;color:white;font-size:15px}
+input[type="datetime-local"]{color-scheme:dark}
+button{width:100%;padding:14px;background:#9b83ff;border:0;border-radius:12px;font-weight:bold;margin-top:12px;font-size:15px;cursor:pointer;color:#17132c}
+button:disabled{opacity:.6;cursor:wait}
+.secondary{background:#332a50;color:white}
+.danger{background:#713b50;color:white}
+.message{padding:12px;border-radius:10px;background:#282143;margin-top:12px;font-size:13px;overflow-wrap:anywhere}
 .hidden{display:none}
-
-.time{
-  font-size:40px;
-  color:#9b83ff;
-  font-weight:bold;
-}
-
 small{color:#b9b1d2}
+.field-label{display:block;margin-top:12px;color:#cfc5e8;font-size:13px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
+.stat{background:#282143;padding:16px;border-radius:13px}
+.stat strong{display:block;color:#b9a6ff;font-size:24px;margin-top:8px;overflow-wrap:anywhere}
+.publication{background:#282143;padding:15px;border-radius:13px;margin:13px 0;overflow-wrap:anywhere}
+.publication h3{margin-top:0}
+.publication p{margin:7px 0;font-size:14px}
+.status{display:inline-block;padding:5px 9px;border-radius:8px;background:#493b68;color:#e2d8ff;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions button{flex:1;min-width:100px}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.metric-grid input{min-width:0;padding:10px 6px;font-size:13px}
+hr{border:0;border-top:1px solid #493d64;margin:17px 0}
 </style>
 </head>
 
@@ -109,97 +44,43 @@ small{color:#b9b1d2}
 <main>
 
 <header>
-  <div class="logo">◷</div>
-  <div>
-    <strong>ViralTime</strong><br>
-    <small>Publie au bon moment.</small>
-  </div>
+<div class="logo">◷</div>
+<div><strong>ViralTime</strong><br><small>Publie au bon moment.</small></div>
 </header>
 
-<!-- INSCRIPTION ET CONNEXION -->
+<!-- AUTHENTIFICATION -->
 
 <section id="authSection" class="card">
-
 <h1 id="formTitle">Créer ton compte</h1>
-
 <p>Rejoins ViralTime et prépare tes publications.</p>
-
-<p>
-Le mot de passe demandé sert uniquement à ton compte ViralTime.
-Ne communique jamais ton mot de passe TikTok.
-</p>
+<p>Le mot de passe demandé sert uniquement à ton compte ViralTime. Ne communique jamais ton mot de passe TikTok.</p>
 
 <form id="authForm">
-
 <div id="registrationNameFields">
-
-  <input
-    id="firstName"
-    type="text"
-    placeholder="Ton prénom"
-    autocomplete="given-name"
-    required
-  >
-
-  <input
-    id="lastName"
-    type="text"
-    placeholder="Ton nom"
-    autocomplete="family-name"
-    required
-  >
-
+<input id="firstName" type="text" placeholder="Ton prénom" autocomplete="given-name" required>
+<input id="lastName" type="text" placeholder="Ton nom" autocomplete="family-name" required>
 </div>
-
-<input
-  id="email"
-  type="email"
-  placeholder="Adresse e-mail"
-  autocomplete="email"
-  required
->
-
-<input
-  id="password"
-  type="password"
-  placeholder="Mot de passe (6 caractères minimum)"
-  minlength="6"
-  autocomplete="current-password"
-  required
->
-
-<button id="submitBtn" type="submit">
-Créer mon compte
-</button>
-
+<input id="email" type="email" placeholder="Adresse e-mail" autocomplete="email" required>
+<input id="password" type="password" placeholder="Mot de passe (6 caractères minimum)" minlength="6" autocomplete="current-password" required>
+<button id="submitBtn" type="submit">Créer mon compte</button>
 </form>
 
-<button id="switchBtn" class="secondary" type="button">
-J'ai déjà un compte : me connecter
-</button>
-
+<button id="switchBtn" class="secondary" type="button">J'ai déjà un compte : me connecter</button>
 <div id="message" class="message hidden" role="status"></div>
-
 </section>
 
 <!-- TABLEAU DE BORD -->
 
 <section id="dashboard" class="hidden">
-
 <h1>ViralTime</h1>
 
 <div id="homePage">
-
 <h1 id="welcomeTitle">Bienvenue, Créateur 👋</h1>
 
 <div class="card">
 <h2>🔔 Notifications</h2>
 <p>Reçois un rappel lorsqu'il est temps de publier.</p>
-
-<button id="enableNotificationsBtn" type="button">
-Activer les notifications
-</button>
-
+<button id="enableNotificationsBtn" type="button">Activer les notifications</button>
 <div id="notificationMessage" class="message hidden"></div>
 </div>
 
@@ -208,189 +89,155 @@ Activer les notifications
 <div class="card">
 <h2>🕒 Meilleurs horaires</h2>
 <p>Trouve tes heures de publication.</p>
-
-<button id="openHoursBtn" type="button" class="secondary">
-Découvrir
-</button>
+<button id="openHoursBtn" class="secondary" type="button">Découvrir</button>
 </div>
 
 <div class="card">
 <h2>📅 Calendrier</h2>
 <p>Organise tes publications.</p>
-<button type="button" class="secondary">Ouvrir</button>
+<button id="openCalendarBtn" class="secondary" type="button">Ouvrir le calendrier</button>
 </div>
 
 <div class="card">
 <h2>📊 Performances</h2>
 <p>Suis tes résultats.</p>
-<button type="button" class="secondary">Voir mes résultats</button>
+<button id="openPerformanceBtn" class="secondary" type="button">Voir mes résultats</button>
 </div>
 
 <div class="card">
 <h2>👤 Mon profil</h2>
 <p>Personnalise ton espace.</p>
-
-<button id="openProfileBtn" type="button">
-Mon profil
-</button>
+<button id="openProfileBtn" type="button">Mon profil</button>
+</div>
 </div>
 
-<p>Aperçu du futur tableau de bord — les fonctions restent à développer.</p>
-
-</div>
-
-<!-- MEILLEURS HORAIRES -->
+<!-- HORAIRES -->
 
 <div id="hoursPage" class="hidden">
-
 <div class="card">
-
 <h2>🕒 Meilleurs horaires</h2>
+<p>Découvre les moments recommandés pour publier tes vidéos TikTok.</p>
 
-<p>
-Découvre les moments recommandés pour publier
-tes vidéos TikTok.
-</p>
+<div class="card"><h3>Lundi</h3><p>12h00 – 14h00</p><p>19h00 – 21h00</p></div>
+<div class="card"><h3>Mardi</h3><p>12h00 – 14h00</p><p>19h00 – 21h00</p></div>
+<div class="card"><h3>Mercredi</h3><p>12h00 – 14h00</p><p>18h00 – 21h00</p></div>
+<div class="card"><h3>Jeudi</h3><p>12h00 – 14h00</p><p>19h00 – 21h00</p></div>
+<div class="card"><h3>Vendredi</h3><p>12h00 – 14h00</p><p>18h00 – 21h00</p></div>
+<div class="card"><h3>Samedi</h3><p>10h00 – 12h00</p><p>18h00 – 21h00</p></div>
+<div class="card"><h3>Dimanche</h3><p>10h00 – 12h00</p><p>18h00 – 21h00</p></div>
 
-<h3>📅 Recommandations de publication</h3>
+<p><small>Horaires de départ à tester, en heure de Côte d'Ivoire. Ils ne garantissent pas des vues.</small></p>
+<button id="backHoursBtn" class="secondary" type="button">Retour à l'accueil</button>
+</div>
+</div>
 
-<div id="hoursRecommendations">
+<!-- CALENDRIER -->
 
+<div id="calendarPage" class="hidden">
 <div class="card">
-<h3>Lundi</h3>
-<p>12h00 – 14h00</p>
-<p>19h00 – 21h00</p>
+<h2>📅 Mon calendrier TikTok</h2>
+<p>Planifie tes prochaines vidéos et organise tes publications.</p>
+<div id="calendarMessage" class="message hidden"></div>
+
+<hr>
+<h3 id="calendarFormTitle">Ajouter une publication</h3>
+
+<form id="publicationForm">
+<input id="publicationTitle" type="text" maxlength="150" placeholder="Titre de ta vidéo" required>
+
+<label class="field-label" for="publicationDate">Date et heure de publication</label>
+<input id="publicationDate" type="datetime-local" required>
+
+<label class="field-label" for="publicationStatus">Statut</label>
+<select id="publicationStatus">
+<option value="planned">Prévue</option>
+<option value="published">Publiée</option>
+<option value="cancelled">Annulée</option>
+</select>
+
+<button id="savePublicationBtn" type="submit">Enregistrer la publication</button>
+<button id="cancelEditBtn" class="secondary hidden" type="button">Annuler la modification</button>
+</form>
+
+<button id="suggestTimeBtn" class="secondary" type="button">✨ Me proposer un horaire</button>
+
+<hr>
+<h3>Mes publications</h3>
+<div id="publicationList"><p>Chargement...</p></div>
+<button id="backCalendarBtn" class="secondary" type="button">Retour à l'accueil</button>
+</div>
 </div>
 
+<!-- PERFORMANCES -->
+
+<div id="performancePage" class="hidden">
 <div class="card">
-<h3>Mardi</h3>
-<p>12h00 – 14h00</p>
-<p>19h00 – 21h00</p>
+<h2>📊 Mes performances TikTok</h2>
+<p>Les statistiques sont saisies manuellement à partir de tes résultats TikTok.</p>
+<div id="performanceMessage" class="message hidden"></div>
+
+<div class="stat-grid">
+<div class="stat"><small>Vidéos publiées</small><strong id="totalVideos">0</strong></div>
+<div class="stat"><small>Total des vues</small><strong id="totalViews">0</strong></div>
+<div class="stat"><small>Mentions J'aime</small><strong id="totalLikes">0</strong></div>
+<div class="stat"><small>Commentaires</small><strong id="totalComments">0</strong></div>
 </div>
 
-<div class="card">
-<h3>Mercredi</h3>
-<p>12h00 – 14h00</p>
-<p>18h00 – 21h00</p>
-</div>
+<hr>
+<h3>🏆 Ta meilleure vidéo</h3>
+<div id="bestPublication"><p>Enregistre les résultats de tes vidéos pour voir ta meilleure publication.</p></div>
 
-<div class="card">
-<h3>Jeudi</h3>
-<p>12h00 – 14h00</p>
-<p>19h00 – 21h00</p>
-</div>
+<hr>
+<h3>💡 Conseil personnalisé</h3>
+<div id="personalAdvice"><p>Les résultats de tes publications permettront de comparer tes horaires.</p></div>
 
-<div class="card">
-<h3>Vendredi</h3>
-<p>12h00 – 14h00</p>
-<p>18h00 – 21h00</p>
-</div>
-
-<div class="card">
-<h3>Samedi</h3>
-<p>10h00 – 12h00</p>
-<p>18h00 – 21h00</p>
-</div>
-
-<div class="card">
-<h3>Dimanche</h3>
-<p>10h00 – 12h00</p>
-<p>18h00 – 21h00</p>
-</div>
-
-<p>
-<small>
-Horaires de départ à tester, en heure de Côte d'Ivoire.
-Ils ne garantissent pas des vues.
-</small>
-</p>
-
-</div>
-
-<button id="backHoursBtn" class="secondary" type="button">
-Retour à l'accueil
-</button>
-
+<button id="refreshPerformanceBtn" class="secondary" type="button">Actualiser mes statistiques</button>
+<button id="backPerformanceBtn" class="secondary" type="button">Retour à l'accueil</button>
 </div>
 </div>
 
 <!-- PROFIL TIKTOK -->
 
 <div id="profilePage" class="hidden">
-
 <div class="card">
-
 <h2>🎵 Mon profil TikTok</h2>
-
 <p>Renseigne les informations de ton compte.</p>
 
 <form id="tiktokProfileForm">
-
-<input id="tiktokUsername" type="text"
-placeholder="Nom d'utilisateur TikTok" required>
-
-<input id="tiktokFollowers" type="number"
-min="0" placeholder="Nombre d'abonnés" required>
-
-<input id="tiktokPosts" type="number"
-min="0" placeholder="Nombre de publications" required>
-
-<input id="tiktokNiche" type="text"
-placeholder="Thématique de ton compte">
-
-<input id="tiktokCountry" type="text"
-placeholder="Pays de ton audience">
-
+<input id="tiktokUsername" type="text" placeholder="Nom d'utilisateur TikTok" required>
+<input id="tiktokFollowers" type="number" min="0" placeholder="Nombre d'abonnés" required>
+<input id="tiktokPosts" type="number" min="0" placeholder="Nombre de publications" required>
+<input id="tiktokNiche" type="text" placeholder="Thématique de ton compte">
+<input id="tiktokCountry" type="text" placeholder="Pays de ton audience">
 <button type="submit">Enregistrer mon profil</button>
-
 </form>
 
 <div id="tiktokMessage" class="message hidden"></div>
-
-<button id="backHomeBtn" class="secondary" type="button">
-Retour à l'accueil
-</button>
-
+<button id="backHomeBtn" class="secondary" type="button">Retour à l'accueil</button>
 </div>
 </div>
 
-<!-- INFORMATIONS DU COMPTE -->
+<!-- COMPTE -->
 
 <div class="card">
-
 <h2>Ton compte</h2>
-
 <p id="userEmail"></p>
-
 <p>Tu es connecté à ViralTime.</p>
-
-<button id="logoutBtn" class="secondary" type="button">
-Se déconnecter
-</button>
-
+<button id="logoutBtn" class="secondary" type="button">Se déconnecter</button>
 <div id="dashboardMessage" class="message hidden"></div>
-
 </div>
 
 </section>
 
-<p style="text-align:center;font-size:12px">
-ViralTime · Version de développement
-</p>
-
+<p style="text-align:center;font-size:12px">ViralTime · Version de développement</p>
 <p style="text-align:center;font-size:13px">
-<a href="./confidentialite.html"
-style="color:#c4a7ff;text-decoration:underline">
-Politique de confidentialité
-</a>
+<a href="./confidentialite.html" style="color:#c4a7ff;text-decoration:underline">Politique de confidentialité</a>
 </p>
 
 </main>
 
 <script type="module">
-
-import { createClient } from
-'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 // SERVICE WORKER
 
@@ -398,68 +245,55 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       await navigator.serviceWorker.register('./sw.js');
-      console.log('Service Worker enregistré avec succès');
+      console.log('Service Worker enregistré');
     } catch (error) {
       console.error('Erreur Service Worker :', error);
     }
   });
 }
 
-// CONFIGURATION SUPABASE
+// SUPABASE
 
 const SUPABASE_URL = 'https://ncgdofbgazkvvazljhbn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_TS4oSDHFG1nz9PxfR-dQdg_mzUKqViA';
 
-const SUPABASE_KEY = 'sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';
-
-const supabase = createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
   }
-);
+});// ELEMENTS
 
-// ELEMENTS HTML
+const $ = id => document.getElementById(id);
 
-const authSection = document.getElementById('authSection');
-const dashboard = document.getElementById('dashboard');
+const authSection = $('authSection');
+const dashboard = $('dashboard');
+const authForm = $('authForm');
+const formTitle = $('formTitle');
+const submitBtn = $('submitBtn');
+const switchBtn = $('switchBtn');
+const message = $('message');
+const userEmail = $('userEmail');
+const dashboardMessage = $('dashboardMessage');
+const logoutBtn = $('logoutBtn');
 
-const authForm = document.getElementById('authForm');
-const formTitle = document.getElementById('formTitle');
-const submitBtn = document.getElementById('submitBtn');
-const switchBtn = document.getElementById('switchBtn');
+const homePage = $('homePage');
+const profilePage = $('profilePage');
+const hoursPage = $('hoursPage');
+const calendarPage = $('calendarPage');
+const performancePage = $('performancePage');
 
-const message = document.getElementById('message');
-const userEmail = document.getElementById('userEmail');
-
-const dashboardMessage =
-  document.getElementById('dashboardMessage');
-
-const logoutBtn = document.getElementById('logoutBtn');
-
-const homePage = document.getElementById('homePage');
-const profilePage = document.getElementById('profilePage');
-const hoursPage = document.getElementById('hoursPage');
-
-const registrationNameFields =
-  document.getElementById('registrationNameFields');
-
-const firstNameInput =
-  document.getElementById('firstName');
-
-const lastNameInput =
-  document.getElementById('lastName');
-
-const welcomeTitle =
-  document.getElementById('welcomeTitle');
+const registrationNameFields = $('registrationNameFields');
+const firstNameInput = $('firstName');
+const lastNameInput = $('lastName');
+const welcomeTitle = $('welcomeTitle');
 
 let isLogin = false;
+let editingPublicationId = null;
+let currentPublications = [];
 
-// MESSAGES
+// OUTILS
 
 function showMessage(text) {
   message.textContent = text;
@@ -471,22 +305,82 @@ function showDashboardMessage(text) {
   dashboardMessage.classList.remove('hidden');
 }
 
-// AFFICHER LE TABLEAU DE BORD
+function showBoxMessage(id, text) {
+  $(id).textContent = text;
+  $(id).classList.remove('hidden');
+}
 
-function showDashboard(user) {
+function hideBoxMessage(id) {
+  $(id).classList.add('hidden');
+}
 
-  authSection.classList.add('hidden');
-  dashboard.classList.remove('hidden');
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  })[char]);
+}
 
-  homePage.classList.remove('hidden');
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString('fr-FR');
+}
+
+function formatDate(value) {
+  return new Date(value).toLocaleString('fr-FR', {
+    dateStyle:'medium',
+    timeStyle:'short'
+  });
+}
+
+function localDateTimeValue(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth()+1).padStart(2,'0');
+  const day = String(date.getDate()).padStart(2,'0');
+  const hour = String(date.getHours()).padStart(2,'0');
+  const minute = String(date.getMinutes()).padStart(2,'0');
+  return `${year}-${month}-${day}T${hour}:${minute}`;
+}
+
+function statusLabel(status) {
+  if (status === 'published') return 'Publiée';
+  if (status === 'cancelled') return 'Annulée';
+  return 'Prévue';
+}
+
+async function getCurrentUser() {
+  const {data:{user},error} = await supabase.auth.getUser();
+  if (error) throw error;
+  if (!user) throw new Error('Ta session a expiré. Connecte-toi à nouveau.');
+  return user;
+}
+
+// NAVIGATION
+
+function hideAllPages() {
+  homePage.classList.add('hidden');
   profilePage.classList.add('hidden');
   hoursPage.classList.add('hidden');
+  calendarPage.classList.add('hidden');
+  performancePage.classList.add('hidden');
+}
+
+function openPage(page) {
+  hideAllPages();
+  page.classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showDashboard(user) {
+  authSection.classList.add('hidden');
+  dashboard.classList.remove('hidden');
+  openPage(homePage);
 
   userEmail.textContent = user.email || '';
 
-  const firstName =
-    user.user_metadata?.first_name || '';
-
+  const firstName = user.user_metadata?.first_name || '';
   welcomeTitle.textContent = firstName
     ? 'Bienvenue, ' + firstName + ' 👋'
     : 'Bienvenue, Créateur 👋';
@@ -494,484 +388,597 @@ function showDashboard(user) {
   loadTikTokProfile();
 }
 
-// AFFICHER LE FORMULAIRE
-
 function showAuth() {
   dashboard.classList.add('hidden');
   authSection.classList.remove('hidden');
 }
 
-// CHANGER ENTRE INSCRIPTION ET CONNEXION
+// AUTHENTIFICATION
 
 switchBtn.addEventListener('click', () => {
-
   isLogin = !isLogin;
 
-  registrationNameFields.classList.toggle('hidden', isLogin);
-
+  registrationNameFields.classList.toggle('hidden',isLogin);
   firstNameInput.required = !isLogin;
   lastNameInput.required = !isLogin;
 
-  formTitle.textContent = isLogin
-    ? 'Se connecter'
-    : 'Créer ton compte';
-
-  submitBtn.textContent = isLogin
-    ? 'Me connecter'
-    : 'Créer mon compte';
-
+  formTitle.textContent = isLogin ? 'Se connecter' : 'Créer ton compte';
+  submitBtn.textContent = isLogin ? 'Me connecter' : 'Créer mon compte';
   switchBtn.textContent = isLogin
     ? 'Créer un nouveau compte'
     : "J'ai déjà un compte : me connecter";
 
   message.classList.add('hidden');
-
 });
 
-// INSCRIPTION ET CONNEXION
-
-authForm.addEventListener('submit', async (event) => {
-
+authForm.addEventListener('submit', async event => {
   event.preventDefault();
 
-  const email =
-    document.getElementById('email').value.trim();
-
-  const password =
-    document.getElementById('password').value;
-
+  const email = $('email').value.trim();
+  const password = $('password').value;
   const firstName = firstNameInput.value.trim();
   const lastName = lastNameInput.value.trim();
 
   submitBtn.disabled = true;
   switchBtn.disabled = true;
-
   submitBtn.textContent = 'Patiente...';
-
   message.classList.add('hidden');
 
   try {
-
     if (isLogin) {
-
-      const { data, error } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-
+      const {data,error} = await supabase.auth.signInWithPassword({
+        email,password
+      });
       if (error) throw error;
-
       showDashboard(data.user);
-
     } else {
-
       if (!firstName || !lastName) {
         throw new Error('Entre ton prénom et ton nom.');
       }
 
       const fullName = firstName + ' ' + lastName;
 
-      const { data, error } =
-        await supabase.auth.signUp({
-
-          email,
-          password,
-
-          options: {
-
-            emailRedirectTo: window.location.href,
-
-            data: {
-              first_name: firstName,
-              last_name: lastName,
-              name: fullName,
-              display_name: fullName
-            }
-
+      const {data,error} = await supabase.auth.signUp({
+        email,
+        password,
+        options:{
+          emailRedirectTo:window.location.href,
+          data:{
+            first_name:firstName,
+            last_name:lastName,
+            name:fullName,
+            display_name:fullName
           }
-
-        });
+        }
+      });
 
       if (error) throw error;
 
       if (data.session) {
-
         showDashboard(data.user);
-
       } else {
-
-        showMessage(
-          "Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter."
-        );
-
+        showMessage("Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter.");
       }
-
     }
-
   } catch (error) {
-
     showMessage('Erreur : ' + error.message);
-
   } finally {
-
     submitBtn.disabled = false;
     switchBtn.disabled = false;
-
-    submitBtn.textContent = isLogin
-      ? 'Me connecter'
-      : 'Créer mon compte';
-
+    submitBtn.textContent = isLogin ? 'Me connecter' : 'Créer mon compte';
   }
-
 });
 
-// NOTIFICATIONS
+// NOTIFICATIONS - CONSERVEES
 
-const enableNotificationsBtn =
-  document.getElementById('enableNotificationsBtn');
-
-const notificationMessage =
-  document.getElementById('notificationMessage');
+const enableNotificationsBtn = $('enableNotificationsBtn');
 
 enableNotificationsBtn.addEventListener('click', async () => {
-
   if (!('Notification' in window)) {
-
-    notificationMessage.textContent =
-      'Ton navigateur ne prend pas en charge les notifications.';
-
-    notificationMessage.classList.remove('hidden');
+    showBoxMessage('notificationMessage','Ton navigateur ne prend pas en charge les notifications.');
     return;
-
   }
 
   if (!('serviceWorker' in navigator)) {
-
-    notificationMessage.textContent =
-      'Les notifications ne sont pas prises en charge.';
-
-    notificationMessage.classList.remove('hidden');
+    showBoxMessage('notificationMessage','Les notifications ne sont pas prises en charge.');
     return;
-
   }
 
   try {
-
     enableNotificationsBtn.disabled = true;
     enableNotificationsBtn.textContent = 'Activation...';
 
-    const permission =
-      await Notification.requestPermission();
+    const permission = await Notification.requestPermission();
 
     if (permission === 'granted') {
-
-      const registration =
-        await navigator.serviceWorker.ready;
-
-      await registration.showNotification('ViralTime 🔔', {
-
-        body: 'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
-
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification('ViralTime 🔔',{
+        body:'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
       });
-
-      notificationMessage.textContent =
-        'Notifications autorisées avec succès !';
-
+      showBoxMessage('notificationMessage','Notifications autorisées avec succès !');
     } else if (permission === 'denied') {
-
-      notificationMessage.textContent =
-        'Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';
-
+      showBoxMessage('notificationMessage','Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.');
     } else {
-
-      notificationMessage.textContent =
-        'Tu n’as pas encore autorisé les notifications.';
-
+      showBoxMessage('notificationMessage','Tu n’as pas encore autorisé les notifications.');
     }
-
-    notificationMessage.classList.remove('hidden');
-
   } catch (error) {
-
-    notificationMessage.textContent =
-      'Erreur : ' + error.message;
-
-    notificationMessage.classList.remove('hidden');
-
+    showBoxMessage('notificationMessage','Erreur : ' + error.message);
   } finally {
-
     enableNotificationsBtn.disabled = false;
-
-    enableNotificationsBtn.textContent =
-      'Activer les notifications';
-
+    enableNotificationsBtn.textContent = 'Activer les notifications';
   }
-
 });
 
-// NAVIGATION MEILLEURS HORAIRES
+// NAVIGATION DES PAGES
 
-document.getElementById('openHoursBtn')
-.addEventListener('click', () => {
+$('openHoursBtn').addEventListener('click',() => openPage(hoursPage));
+$('backHoursBtn').addEventListener('click',() => openPage(homePage));
 
-  homePage.classList.add('hidden');
-  profilePage.classList.add('hidden');
-  hoursPage.classList.remove('hidden');
+$('openProfileBtn').addEventListener('click',() => openPage(profilePage));
+$('backHomeBtn').addEventListener('click',() => openPage(homePage));
 
+$('openCalendarBtn').addEventListener('click',async () => {
+  openPage(calendarPage);
+  resetPublicationForm();
+  await loadPublications();
 });
 
-document.getElementById('backHoursBtn')
-.addEventListener('click', () => {
+$('backCalendarBtn').addEventListener('click',() => openPage(homePage));
 
-  hoursPage.classList.add('hidden');
-  homePage.classList.remove('hidden');
-
+$('openPerformanceBtn').addEventListener('click',async () => {
+  openPage(performancePage);
+  await loadPerformance();
 });
 
-// NAVIGATION PROFIL
+$('backPerformanceBtn').addEventListener('click',() => openPage(homePage));
+$('refreshPerformanceBtn').addEventListener('click',loadPerformance);
 
-document.getElementById('openProfileBtn')
-.addEventListener('click', () => {
+// PROFIL TIKTOK
 
-  homePage.classList.add('hidden');
-  profilePage.classList.remove('hidden');
-
-});
-
-document.getElementById('backHomeBtn')
-.addEventListener('click', () => {
-
-  profilePage.classList.add('hidden');
-  homePage.classList.remove('hidden');
-
-});
-
-// ENREGISTRER LE PROFIL TIKTOK
-
-const tiktokProfileForm =
-  document.getElementById('tiktokProfileForm');
-
-tiktokProfileForm.addEventListener('submit', async (event) => {
-
+$('tiktokProfileForm').addEventListener('submit',async event => {
   event.preventDefault();
 
-  const tiktokMessage =
-    document.getElementById('tiktokMessage');
-
-  const saveButton =
-    tiktokProfileForm.querySelector('button[type="submit"]');
+  const form = $('tiktokProfileForm');
+  const saveButton = form.querySelector('button[type="submit"]');
 
   saveButton.disabled = true;
   saveButton.textContent = 'Enregistrement...';
-
-  tiktokMessage.classList.add('hidden');
-  dashboardMessage.classList.add('hidden');
+  $('tiktokMessage').classList.add('hidden');
 
   try {
-
-    const { data: { user }, error: userError } =
-      await supabase.auth.getUser();
-
-    if (userError) throw userError;
-
-    if (!user) {
-      throw new Error('Connecte-toi pour enregistrer ton profil.');
-    }
+    const user = await getCurrentUser();
 
     const profile = {
-
-      user_id: user.id,
-
-      username:
-        document.getElementById('tiktokUsername').value.trim(),
-
-      follower_count:
-        Number(document.getElementById('tiktokFollowers').value),
-
-      post_count:
-        Number(document.getElementById('tiktokPosts').value),
-
-      niche:
-        document.getElementById('tiktokNiche').value.trim(),
-
-      audience_country:
-        document.getElementById('tiktokCountry').value.trim(),
-
-      updated_at: new Date().toISOString()
-
+      user_id:user.id,
+      username:$('tiktokUsername').value.trim(),
+      follower_count:Number($('tiktokFollowers').value),
+      post_count:Number($('tiktokPosts').value),
+      niche:$('tiktokNiche').value.trim(),
+      audience_country:$('tiktokCountry').value.trim(),
+      updated_at:new Date().toISOString()
     };
 
-    const { error } = await supabase
+    const {error} = await supabase
       .from('tiktok_profiles')
-      .upsert(profile, { onConflict: 'user_id' });
+      .upsert(profile,{onConflict:'user_id'});
 
     if (error) throw error;
 
-    tiktokMessage.textContent =
-      'Ton profil TikTok a été enregistré avec succès !';
+    showBoxMessage('tiktokMessage','Ton profil TikTok a été enregistré avec succès !');
+    showDashboardMessage('Ton profil TikTok a été enregistré avec succès !');
 
-    tiktokMessage.classList.remove('hidden');
-
-    showDashboardMessage(
-      'Ton profil TikTok a été enregistré avec succès !'
-    );
-
-    setTimeout(() => {
-
-      profilePage.classList.add('hidden');
-      homePage.classList.remove('hidden');
-
-    }, 1000);
+    setTimeout(() => openPage(homePage),1000);
 
   } catch (error) {
-
-    tiktokMessage.textContent =
-      'Erreur : ' + error.message;
-
-    tiktokMessage.classList.remove('hidden');
-
+    showBoxMessage('tiktokMessage','Erreur : ' + error.message);
   } finally {
-
     saveButton.disabled = false;
-
-    saveButton.textContent =
-      'Enregistrer mon profil';
-
+    saveButton.textContent = 'Enregistrer mon profil';
   }
-
 });
 
-// CHARGER LE PROFIL TIKTOK
-
 async function loadTikTokProfile() {
+  try {
+    const user = await getCurrentUser();
 
-  const { data: { user }, error: userError } =
-    await supabase.auth.getUser();
+    const {data,error} = await supabase
+      .from('tiktok_profiles')
+      .select('*')
+      .eq('user_id',user.id)
+      .maybeSingle();
 
-  if (userError || !user) return;
+    if (error) throw error;
+    if (!data) return;
 
-  const { data, error } = await supabase
-    .from('tiktok_profiles')
-    .select('*')
-    .eq('user_id', user.id)
-    .maybeSingle();
+    $('tiktokUsername').value = data.username || '';
+    $('tiktokFollowers').value = data.follower_count ?? 0;
+    $('tiktokPosts').value = data.post_count ?? 0;
+    $('tiktokNiche').value = data.niche || '';
+    $('tiktokCountry').value = data.audience_country || '';
 
-  if (error) {
-
-    console.error(
-      'Erreur de chargement :',
-      error.message
-    );
-
-    return;
-
+  } catch (error) {
+    console.error('Erreur de chargement du profil TikTok :',error.message);
   }
+}// CALENDRIER : FORMULAIRE
 
-  if (!data) return;
+function resetPublicationForm() {
+  editingPublicationId = null;
+  $('publicationForm').reset();
+  $('calendarFormTitle').textContent = 'Ajouter une publication';
+  $('savePublicationBtn').textContent = 'Enregistrer la publication';
+  $('cancelEditBtn').classList.add('hidden');
+  $('publicationStatus').value = 'planned';
+}
 
-  document.getElementById('tiktokUsername').value =
-    data.username || '';
+$('cancelEditBtn').addEventListener('click',resetPublicationForm);
 
-  document.getElementById('tiktokFollowers').value =
-    data.follower_count ?? 0;
+$('suggestTimeBtn').addEventListener('click',() => {
+  const suggested = new Date();
+  suggested.setDate(suggested.getDate()+1);
+  suggested.setHours(19,0,0,0);
 
-  document.getElementById('tiktokPosts').value =
-    data.post_count ?? 0;
+  $('publicationDate').value = localDateTimeValue(suggested);
+  showBoxMessage('calendarMessage','Suggestion : demain à 19h00. C'est un horaire à tester, pas une garantie de visibilité.');
+});
 
-  document.getElementById('tiktokNiche').value =
-    data.niche || '';
+// ENREGISTRER OU MODIFIER UNE PUBLICATION
 
-  document.getElementById('tiktokCountry').value =
-    data.audience_country || '';
+$('publicationForm').addEventListener('submit',async event => {
+  event.preventDefault();
 
+  const button = $('savePublicationBtn');
+  button.disabled = true;
+  button.textContent = 'Enregistrement...';
+  hideBoxMessage('calendarMessage');
+
+  try {
+    const user = await getCurrentUser();
+
+    const title = $('publicationTitle').value.trim();
+    const dateValue = $('publicationDate').value;
+    const status = $('publicationStatus').value;
+
+    if (!title || !dateValue) {
+      throw new Error('Complète le titre et la date de publication.');
+    }
+
+    const scheduledDate = new Date(dateValue);
+
+    if (Number.isNaN(scheduledDate.getTime())) {
+      throw new Error('La date indiquée est invalide.');
+    }
+
+    const publication = {
+      user_id:user.id,
+      title,
+      scheduled_at:scheduledDate.toISOString(),
+      status
+    };
+
+    let result;
+
+    if (editingPublicationId) {
+      result = await supabase
+        .from('publication_calendar')
+        .update({
+          title,
+          scheduled_at:scheduledDate.toISOString(),
+          status,
+          updated_at:new Date().toISOString()
+        })
+        .eq('id',editingPublicationId)
+        .eq('user_id',user.id);
+    } else {
+      result = await supabase
+        .from('publication_calendar')
+        .insert(publication);
+    }
+
+    if (result.error) throw result.error;
+
+    showBoxMessage('calendarMessage',editingPublicationId
+      ? 'Publication modifiée avec succès !'
+      : 'Publication ajoutée au calendrier !');
+
+    resetPublicationForm();
+    await loadPublications();
+
+  } catch (error) {
+    showBoxMessage('calendarMessage','Erreur : ' + error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = editingPublicationId
+      ? 'Enregistrer les modifications'
+      : 'Enregistrer la publication';
+  }
+});
+
+// CHARGER LES PUBLICATIONS
+
+async function loadPublications() {
+  const list = $('publicationList');
+  list.innerHTML = '<p>Chargement des publications...</p>';
+
+  try {
+    const user = await getCurrentUser();
+
+    const {data,error} = await supabase
+      .from('publication_calendar')
+      .select('*')
+      .eq('user_id',user.id)
+      .order('scheduled_at',{ascending:true});
+
+    if (error) throw error;
+
+    currentPublications = data || [];
+
+    if (!currentPublications.length) {
+      list.innerHTML = '<p>Tu n’as pas encore de publication planifiée. Ajoute ta première vidéo ci-dessus.</p>';
+      return;
+    }
+
+    list.innerHTML = currentPublications.map(item => `
+      <div class="publication">
+        <h3>${escapeHTML(item.title)}</h3>
+        <p>📅 ${escapeHTML(formatDate(item.scheduled_at))}</p>
+        <p><span class="status">${statusLabel(item.status)}</span></p>
+        <p>👁️ ${formatNumber(item.views)} vues · ❤️ ${formatNumber(item.likes)} J'aime · 💬 ${formatNumber(item.comments)} commentaires</p>
+
+        ${item.status === 'published' ? `
+          <hr>
+          <strong>Mettre à jour les statistiques</strong>
+          <div class="metric-grid">
+            <input type="number" min="0" id="views-${item.id}" value="${Number(item.views)||0}" placeholder="Vues" aria-label="Vues">
+            <input type="number" min="0" id="likes-${item.id}" value="${Number(item.likes)||0}" placeholder="J'aime" aria-label="J'aime">
+            <input type="number" min="0" id="comments-${item.id}" value="${Number(item.comments)||0}" placeholder="Commentaires" aria-label="Commentaires">
+          </div>
+          <button type="button" class="secondary" data-action="metrics" data-id="${item.id}">Enregistrer les statistiques</button>
+        ` : ''}
+
+        <div class="actions">
+          <button type="button" class="secondary" data-action="edit" data-id="${item.id}">Modifier</button>
+          ${item.status !== 'published' ? `
+            <button type="button" data-action="publish" data-id="${item.id}">Marquer publiée</button>
+          ` : ''}
+          <button type="button" class="danger" data-action="delete" data-id="${item.id}">Supprimer</button>
+        </div>
+      </div>
+    `).join('');
+
+  } catch (error) {
+    list.innerHTML = '<p>Impossible de charger les publications.</p>';
+    showBoxMessage('calendarMessage','Erreur : ' + error.message);
+  }
+}
+
+// ACTIONS SUR LES PUBLICATIONS
+
+$('publicationList').addEventListener('click',async event => {
+  const button = event.target.closest('button[data-action]');
+  if (!button) return;
+
+  const id = button.dataset.id;
+  const action = button.dataset.action;
+  const item = currentPublications.find(publication => publication.id === id);
+
+  if (!item) return;
+
+  button.disabled = true;
+
+  try {
+    const user = await getCurrentUser();
+
+    if (action === 'edit') {
+      editingPublicationId = id;
+      $('publicationTitle').value = item.title;
+      $('publicationDate').value = localDateTimeValue(new Date(item.scheduled_at));
+      $('publicationStatus').value = item.status;
+
+      $('calendarFormTitle').textContent = 'Modifier la publication';
+      $('savePublicationBtn').textContent = 'Enregistrer les modifications';
+      $('cancelEditBtn').classList.remove('hidden');
+
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
+    }
+
+    if (action === 'delete') {
+      if (!confirm('Veux-tu vraiment supprimer cette publication ?')) return;
+
+      const {error} = await supabase
+        .from('publication_calendar')
+        .delete()
+        .eq('id',id)
+        .eq('user_id',user.id);
+
+      if (error) throw error;
+
+      showBoxMessage('calendarMessage','Publication supprimée.');
+      await loadPublications();
+      return;
+    }
+
+    if (action === 'publish') {
+      const {error} = await supabase
+        .from('publication_calendar')
+        .update({
+          status:'published',
+          updated_at:new Date().toISOString()
+        })
+        .eq('id',id)
+        .eq('user_id',user.id);
+
+      if (error) throw error;
+
+      showBoxMessage('calendarMessage','Publication marquée comme publiée. Tu peux maintenant saisir ses statistiques.');
+      await loadPublications();
+      return;
+    }
+
+    if (action === 'metrics') {
+      const views = Number($('views-'+id).value);
+      const likes = Number($('likes-'+id).value);
+      const comments = Number($('comments-'+id).value);
+
+      if (![views,likes,comments].every(value => Number.isInteger(value) && value >= 0)) {
+        throw new Error('Les statistiques doivent être des nombres entiers positifs.');
+      }
+
+      const {error} = await supabase
+        .from('publication_calendar')
+        .update({
+          views,
+          likes,
+          comments,
+          updated_at:new Date().toISOString()
+        })
+        .eq('id',id)
+        .eq('user_id',user.id);
+
+      if (error) throw error;
+
+      showBoxMessage('calendarMessage','Statistiques enregistrées !');
+      await loadPublications();
+    }
+
+  } catch (error) {
+    showBoxMessage('calendarMessage','Erreur : ' + error.message);
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// PERFORMANCES
+
+async function loadPerformance() {
+  hideBoxMessage('performanceMessage');
+
+  $('totalVideos').textContent = '...';
+  $('totalViews').textContent = '...';
+  $('totalLikes').textContent = '...';
+  $('totalComments').textContent = '...';
+
+  try {
+    const user = await getCurrentUser();
+
+    const {data,error} = await supabase
+      .from('publication_calendar')
+      .select('*')
+      .eq('user_id',user.id)
+      .eq('status','published')
+      .order('views',{ascending:false});
+
+    if (error) throw error;
+
+    const publications = data || [];
+
+    const totals = publications.reduce((result,item) => {
+      result.views += Number(item.views || 0);
+      result.likes += Number(item.likes || 0);
+      result.comments += Number(item.comments || 0);
+      return result;
+    },{views:0,likes:0,comments:0});
+
+    $('totalVideos').textContent = formatNumber(publications.length);
+    $('totalViews').textContent = formatNumber(totals.views);
+    $('totalLikes').textContent = formatNumber(totals.likes);
+    $('totalComments').textContent = formatNumber(totals.comments);
+
+    if (!publications.length) {
+      $('bestPublication').innerHTML = '<p>Aucune vidéo publiée enregistrée pour le moment.</p>';
+      $('personalAdvice').innerHTML = '<p>Marque une publication comme publiée dans ton calendrier, puis saisis ses statistiques pour commencer.</p>';
+      return;
+    }
+
+    const best = publications[0];
+
+    $('bestPublication').innerHTML = `
+      <div class="publication">
+        <h3>${escapeHTML(best.title)}</h3>
+        <p>👁️ ${formatNumber(best.views)} vues</p>
+        <p>❤️ ${formatNumber(best.likes)} J'aime</p>
+        <p>💬 ${formatNumber(best.comments)} commentaires</p>
+      </div>
+    `;
+
+    if (publications.length >= 2) {
+      $('personalAdvice').innerHTML = `
+        <p>Tu as déjà enregistré ${publications.length} vidéos publiées.</p>
+        <p>Ta vidéo qui compte le plus de vues est : <strong>${escapeHTML(best.title)}</strong>.</p>
+        <p>Compare les jours et les heures de publication de tes vidéos pour repérer les habitudes qui semblent fonctionner.</p>
+      `;
+    } else {
+      $('personalAdvice').innerHTML = `
+        <p>Tu as enregistré une vidéo publiée.</p>
+        <p>Ajoute les statistiques de plusieurs vidéos pour commencer à comparer leurs résultats.</p>
+      `;
+    }
+
+  } catch (error) {
+    showBoxMessage('performanceMessage','Erreur : ' + error.message);
+    $('totalVideos').textContent = '0';
+    $('totalViews').textContent = '0';
+    $('totalLikes').textContent = '0';
+    $('totalComments').textContent = '0';
+  }
 }
 
 // DECONNEXION
 
-logoutBtn.addEventListener('click', async () => {
-
+logoutBtn.addEventListener('click',async () => {
   logoutBtn.disabled = true;
   logoutBtn.textContent = 'Déconnexion...';
 
   try {
-
-    const { error } = await supabase.auth.signOut();
-
+    const {error} = await supabase.auth.signOut();
     if (error) throw error;
 
     authForm.reset();
-
     isLogin = true;
 
     registrationNameFields.classList.add('hidden');
-
     firstNameInput.required = false;
     lastNameInput.required = false;
 
     formTitle.textContent = 'Se connecter';
-
     submitBtn.textContent = 'Me connecter';
-
     switchBtn.textContent = 'Créer un nouveau compte';
 
+    showAuth();
+
   } catch (error) {
-
-    showDashboardMessage(
-      'Erreur : ' + error.message
-    );
-
+    showDashboardMessage('Erreur : ' + error.message);
   } finally {
-
     logoutBtn.disabled = false;
     logoutBtn.textContent = 'Se déconnecter';
-
   }
-
 });
 
-// VERIFIER LA SESSION EXISTANTE
+// SESSION
 
 async function checkSession() {
-
-  const { data, error } =
-    await supabase.auth.getSession();
+  const {data,error} = await supabase.auth.getSession();
 
   if (error) {
-
     showAuth();
     return;
-
   }
 
   if (data.session) {
-
     showDashboard(data.session.user);
-
   } else {
-
     showAuth();
-
   }
-
 }
 
 checkSession();
 
-// SURVEILLER LES CHANGEMENTS DE CONNEXION
-
-supabase.auth.onAuthStateChange((event, session) => {
-
+supabase.auth.onAuthStateChange((event,session) => {
   if (session) {
-
     showDashboard(session.user);
-
   } else if (event === 'SIGNED_OUT') {
-
     showAuth();
-
   }
-
 });
 
 </script>
