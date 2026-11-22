@@ -121,8 +121,6 @@ small{color:#b9b1d2}
   font-size:14px;
 }
 
-/* STYLES PERFORMANCES */
-
 .performance-item{
   background:#282143;
   padding:16px;
@@ -291,11 +289,7 @@ small{color:#b9b1d2}
       <h2>📊 Performances</h2>
       <p>Suis tes résultats.</p>
 
-      <button
-        id="openPerformanceBtn"
-        type="button"
-        class="secondary"
-      >
+      <button id="openPerformanceBtn" type="button" class="secondary">
         Voir mes résultats
       </button>
     </div>
@@ -312,7 +306,6 @@ small{color:#b9b1d2}
     <p>Aperçu du futur tableau de bord — les fonctions restent à développer.</p>
 
   </div>
-  <!-- FIN PAGE ACCUEIL -->
 
 
   <!-- CALENDRIER DES PUBLICATIONS -->
@@ -350,17 +343,9 @@ small{color:#b9b1d2}
           <option value="Live">Live</option>
         </select>
 
-        <input
-          id="publicationDate"
-          type="date"
-          required
-        >
+        <input id="publicationDate" type="date" required>
 
-        <input
-          id="publicationTime"
-          type="time"
-          required
-        >
+        <input id="publicationTime" type="time" required>
 
         <button id="publicationSubmitBtn" type="submit">
           Programmer
@@ -384,7 +369,6 @@ small{color:#b9b1d2}
     </button>
 
   </div>
-  <!-- FIN CALENDRIER -->
 
 
   <!-- MEILLEURS HORAIRES -->
@@ -462,7 +446,6 @@ small{color:#b9b1d2}
     </div>
 
   </div>
-  <!-- FIN MEILLEURS HORAIRES -->
 
 
   <!-- PAGE PERFORMANCES -->
@@ -475,45 +458,44 @@ small{color:#b9b1d2}
 
       <p>
         Enregistre les résultats de tes publications TikTok.
-      </p><h3>📌 Confirmer une publication</h3>
+      </p>
 
-<form id="publishedForm">
+      <!-- CONFIRMER UNE PUBLICATION -->
 
-  <label class="performance-label" for="publishedPublication">
-    Choisir la publication
-  </label>
+      <h3>📌 Confirmer une publication</h3>
 
-  <select id="publishedPublication" required>
-    <option value="">Chargement des publications...</option>
-  </select>
+      <form id="publishedForm">
 
-  <label class="performance-label" for="publishedDate">
-    Date réelle de publication
-  </label>
+        <label class="performance-label" for="publishedPublication">
+          Choisir la publication
+        </label>
 
-  <input
-    id="publishedDate"
-    type="date"
-    required
-  >
+        <select id="publishedPublication" required>
+          <option value="">Chargement des publications...</option>
+        </select>
 
-  <label class="performance-label" for="publishedTime">
-    Heure réelle de publication
-  </label>
+        <label class="performance-label" for="publishedDate">
+          Date réelle de publication
+        </label>
 
-  <input
-    id="publishedTime"
-    type="time"
-    required
-  >
+        <input id="publishedDate" type="date" required>
 
-  <button id="confirmPublishedBtn" type="submit">
-    Confirmer comme publiée
-  </button>
+        <label class="performance-label" for="publishedTime">
+          Heure réelle de publication
+        </label>
 
-</form>
+        <input id="publishedTime" type="time" required>
 
-<div id="publishedMessage" class="message hidden"></div>
+        <button id="confirmPublishedBtn" type="submit">
+          Confirmer comme publiée
+        </button>
+
+      </form>
+
+      <div id="publishedMessage" class="message hidden" role="status"></div>
+
+
+      <!-- FORMULAIRE DES STATISTIQUES -->
 
       <h3>➕ Ajouter ou actualiser des statistiques</h3>
 
@@ -619,18 +601,13 @@ small{color:#b9b1d2}
         <p>Aucune statistique enregistrée pour le moment.</p>
       </div>
 
-      <button
-        id="backPerformanceBtn"
-        class="secondary"
-        type="button"
-      >
+      <button id="backPerformanceBtn" class="secondary" type="button">
         Retour à l'accueil
       </button>
 
     </div>
 
   </div>
-  <!-- FIN PAGE PERFORMANCES -->
 
 
   <!-- PROFIL TIKTOK -->
@@ -694,7 +671,6 @@ small{color:#b9b1d2}
     </div>
 
   </div>
-  <!-- FIN PROFIL TIKTOK -->
 
 
   <!-- INFORMATIONS DU COMPTE -->
@@ -870,7 +846,10 @@ const totalComments =
   document.getElementById('totalComments');
 
 const totalShares =
-  document.getElementById('totalShares');// ELEMENTS CONFIRMATION DE PUBLICATION
+  document.getElementById('totalShares');
+
+
+// ELEMENTS CONFIRMATION DE PUBLICATION
 
 const publishedForm =
   document.getElementById('publishedForm');
@@ -891,17 +870,22 @@ const publishedMessage =
   document.getElementById('publishedMessage');
 
 
-// DATE MINIMUM : AUJOURD'HUI
+// DATE ET HEURE DE COTE D'IVOIRE
 
 function getLocalDateString() {
 
-  const now = new Date();
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Africa/Abidjan',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(new Date());
 
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
+}
 
-  return `${year}-${month}-${day}`;
+function getAbidjanDateTime(date, time) {
+
+  return new Date(`${date}T${time}:00+00:00`);
 
 }
 
@@ -1315,7 +1299,7 @@ publicationForm.addEventListener('submit', async (event) => {
       throw new Error('Choisis une date et une heure.');
     }
 
-    const scheduledDate = new Date(`${date}T${time}:00`);
+    const scheduledDate = getAbidjanDateTime(date, time);
 
     if (Number.isNaN(scheduledDate.getTime())) {
       throw new Error('La date ou l’heure choisie est invalide.');
@@ -1328,15 +1312,10 @@ publicationForm.addEventListener('submit', async (event) => {
     const publication = {
 
       user_id: user.id,
-
       title: title,
-
       description: description,
-
       content_type: contentType,
-
       scheduled_at: scheduledDate.toISOString(),
-
       status: 'programmée'
 
     };
@@ -1448,7 +1427,7 @@ async function loadPublications() {
       if (!Number.isNaN(scheduledDate.getTime())) {
 
         date.textContent =
-          'Date : ' +
+          'Date programmée : ' +
           scheduledDate.toLocaleString('fr-FR', {
             timeZone: 'Africa/Abidjan',
             dateStyle: 'long',
@@ -1464,6 +1443,24 @@ async function loadPublications() {
       const status = document.createElement('p');
       status.textContent =
         'Statut : ' + (publication.status || 'Non précisé');
+
+      if (publication.published_at) {
+
+        const realDate = new Date(publication.published_at);
+
+        const publishedInfo = document.createElement('p');
+
+        publishedInfo.textContent =
+          'Date réelle de publication : ' +
+          realDate.toLocaleString('fr-FR', {
+            timeZone: 'Africa/Abidjan',
+            dateStyle: 'long',
+            timeStyle: 'short'
+          });
+
+        item.appendChild(publishedInfo);
+
+      }
 
       item.appendChild(title);
       item.appendChild(description);
@@ -1495,13 +1492,16 @@ async function loadPublications() {
 // ======================================
 
 
-// CHARGER LES PUBLICATIONS DANS LE FORMULAIRE
+// CHARGER LES PUBLICATIONS ET LES STATISTIQUES
 
 async function loadPerformanceData() {
 
   performanceMessage.classList.add('hidden');
 
   performancePublication.innerHTML =
+    '<option value="">Chargement des publications...</option>';
+
+  publishedPublication.innerHTML =
     '<option value="">Chargement des publications...</option>';
 
   performanceList.textContent =
@@ -1520,38 +1520,44 @@ async function loadPerformanceData() {
       throw new Error('Connecte-toi pour consulter tes performances.');
     }
 
-    // Charger les publications du créateur
+    // CHARGER LES PUBLICATIONS
 
     const { data: publications, error: publicationsError } =
-  await supabase
-    .from('publications')
-    .select('id,title,scheduled_at,status,published_at')
-    .eq('user_id', user.id)
-    .order('scheduled_at', { ascending: false });
+      await supabase
+        .from('publications')
+        .select('id,title,scheduled_at,status,published_at')
+        .eq('user_id', user.id)
+        .order('scheduled_at', { ascending: false });
 
-    if (publicationsError) throw publicationsError;// Charger les publications dans le formulaire de confirmation
+    if (publicationsError) throw publicationsError;
 
-publishedPublication.innerHTML = '';
 
-const publishedOption = document.createElement('option');
-publishedOption.value = '';
-publishedOption.textContent = 'Choisir une publication';
+    // REMPLIR LE FORMULAIRE DE CONFIRMATION
 
-publishedPublication.appendChild(publishedOption);
+    publishedPublication.innerHTML = '';
 
-(publications || []).forEach((publication) => {
+    const publishedOption = document.createElement('option');
+    publishedOption.value = '';
+    publishedOption.textContent = 'Choisir une publication';
 
-  const option = document.createElement('option');
+    publishedPublication.appendChild(publishedOption);
 
-  option.value = publication.id;
+    (publications || []).forEach((publication) => {
 
-  option.textContent =
-    (publication.title || 'Publication sans titre') +
-    (publication.status === 'publiée' ? ' — Déjà publiée' : '');
+      const option = document.createElement('option');
 
-  publishedPublication.appendChild(option);
+      option.value = publication.id;
 
-});
+      option.textContent =
+        (publication.title || 'Publication sans titre') +
+        (publication.status === 'publiée' ? ' — Déjà publiée' : '');
+
+      publishedPublication.appendChild(option);
+
+    });
+
+
+    // REMPLIR LE FORMULAIRE DES STATISTIQUES
 
     performancePublication.innerHTML = '';
 
@@ -1576,14 +1582,11 @@ publishedPublication.appendChild(publishedOption);
 
     }
 
-    // Ajouter les publications dans la liste
-
     publications.forEach((publication) => {
 
       const option = document.createElement('option');
 
       option.value = publication.id;
-
       option.textContent =
         publication.title || 'Publication sans titre';
 
@@ -1591,7 +1594,8 @@ publishedPublication.appendChild(publishedOption);
 
     });
 
-    // Charger les statistiques déjà enregistrées
+
+    // CHARGER LES STATISTIQUES ENREGISTREES
 
     const { data: performances, error: performanceError } =
       await supabase
@@ -1603,7 +1607,8 @@ publishedPublication.appendChild(publishedOption);
 
     const safePerformances = performances || [];
 
-    // Calculer les totaux
+
+    // CALCULER LES TOTAUX
 
     const totals = safePerformances.reduce((result, item) => {
 
@@ -1633,7 +1638,8 @@ publishedPublication.appendChild(publishedOption);
     totalShares.textContent =
       totals.shares.toLocaleString('fr-FR');
 
-    // Afficher les publications suivies
+
+    // AFFICHER LES PUBLICATIONS SUIVIES
 
     performanceList.replaceChildren();
 
@@ -1718,7 +1724,7 @@ publishedPublication.appendChild(publishedOption);
 
     }
 
-    // Charger les statistiques de la première publication
+    // CHARGER LES STATISTIQUES DE LA PREMIERE PUBLICATION
 
     await loadSelectedPerformance();
 
@@ -1735,7 +1741,15 @@ publishedPublication.appendChild(publishedOption);
     showPerformanceMessage(
       'Erreur : ' + error.message
     );
+
+  }
+
+}
+
+
+// ======================================
 // CONFIRMER UNE PUBLICATION COMME PUBLIEE
+// ======================================
 
 publishedForm.addEventListener('submit', async (event) => {
 
@@ -1767,16 +1781,19 @@ publishedForm.addEventListener('submit', async (event) => {
       throw new Error('Choisis une publication, une date et une heure.');
     }
 
-    // Interpréter la date et l'heure en heure de Côte d'Ivoire (UTC+0)
+    // DATE ET HEURE EN UTC+0 : COTE D'IVOIRE
 
-    const publishedDateTime = new Date(`${date}T${time}:00+00:00`);
+    const publishedDateTime =
+      getAbidjanDateTime(date, time);
 
     if (Number.isNaN(publishedDateTime.getTime())) {
       throw new Error('La date ou l’heure est invalide.');
     }
 
     if (publishedDateTime.getTime() > Date.now()) {
-      throw new Error('La date et l’heure de publication ne peuvent pas être dans le futur.');
+      throw new Error(
+        'La date et l’heure de publication ne peuvent pas être dans le futur.'
+      );
     }
 
     const { data, error } = await supabase
@@ -1793,18 +1810,22 @@ publishedForm.addEventListener('submit', async (event) => {
     if (error) throw error;
 
     if (!data) {
-      throw new Error('Publication introuvable ou modification non autorisée.');
+      throw new Error(
+        'Publication introuvable ou modification non autorisée.'
+      );
     }
 
-    publishedMessage.textContent =
-      'Publication confirmée avec succès !';
-
-    publishedMessage.classList.remove('hidden');
+    // RECHARGER LES DONNEES
 
     await loadPerformanceData();
     await loadPublications();
 
     publishedForm.reset();
+
+    publishedMessage.textContent =
+      'Publication confirmée avec succès !';
+
+    publishedMessage.classList.remove('hidden');
 
   } catch (error) {
 
@@ -1823,9 +1844,6 @@ publishedForm.addEventListener('submit', async (event) => {
   }
 
 });
-  }
-
-}
 
 
 // CHARGER LES STATISTIQUES DE LA PUBLICATION SELECTIONNEE
@@ -1915,7 +1933,6 @@ performanceForm.addEventListener('submit', async (event) => {
   const shares = Number(performanceShares.value);
 
   savePerformanceBtn.disabled = true;
-
   savePerformanceBtn.textContent = 'Enregistrement...';
 
   try {
@@ -1928,7 +1945,9 @@ performanceForm.addEventListener('submit', async (event) => {
     if (userError) throw userError;
 
     if (!user) {
-      throw new Error('Tu dois être connecté pour enregistrer les statistiques.');
+      throw new Error(
+        'Tu dois être connecté pour enregistrer les statistiques.'
+      );
     }
 
     if (!publicationId) {
@@ -1947,27 +1966,17 @@ performanceForm.addEventListener('submit', async (event) => {
 
     }
 
-    // Préparer les statistiques
-
     const performance = {
 
       publication_id: publicationId,
-
       user_id: user.id,
-
       views: views,
-
       likes: likes,
-
       comments: comments,
-
       shares: shares,
-
       updated_at: new Date().toISOString()
 
     };
-
-    // Enregistrer ou actualiser dans Supabase
 
     const { error } = await supabase
       .from('publication_performance')
@@ -1977,13 +1986,11 @@ performanceForm.addEventListener('submit', async (event) => {
 
     if (error) throw error;
 
+    await loadPerformanceData();
+
     showPerformanceMessage(
       'Statistiques enregistrées avec succès !'
     );
-
-    // Actualiser les résultats
-
-    await loadPerformanceData();
 
   } catch (error) {
 
