@@ -121,13 +121,14 @@ small{color:#b9b1d2}
   font-size:14px;
 }
 
-/* NOUVEAUX STYLES PERFORMANCES */
+/* STYLES PERFORMANCES */
 
 .performance-item{
   background:#282143;
   padding:16px;
   border-radius:12px;
   margin:12px 0;
+  overflow-wrap:anywhere;
 }
 
 .performance-item h3{
@@ -140,6 +141,31 @@ small{color:#b9b1d2}
   font-weight:bold;
   color:#9b83ff;
   margin:5px 0;
+}
+
+.performance-label{
+  display:block;
+  margin-top:12px;
+  color:#c4a7ff;
+  font-size:14px;
+}
+
+.performance-publication{
+  background:#282143;
+  padding:14px;
+  border-radius:12px;
+  margin:12px 0;
+  overflow-wrap:anywhere;
+}
+
+.performance-publication h4{
+  color:#c4a7ff;
+  margin:0 0 10px;
+}
+
+.performance-publication p{
+  margin:5px 0;
+  font-size:14px;
 }
 </style>
 </head>
@@ -448,39 +474,112 @@ small{color:#b9b1d2}
       <h2>📊 Mes performances</h2>
 
       <p>
-        Suis l'évolution des résultats de tes publications TikTok.
+        Enregistre les résultats de tes publications TikTok.
       </p>
 
+      <h3>➕ Ajouter ou actualiser des statistiques</h3>
+
+      <form id="performanceForm">
+
+        <label class="performance-label" for="performancePublication">
+          Choisir une publication
+        </label>
+
+        <select id="performancePublication" required>
+          <option value="">Chargement des publications...</option>
+        </select>
+
+        <label class="performance-label" for="performanceViews">
+          👁️ Nombre de vues
+        </label>
+
+        <input
+          id="performanceViews"
+          type="number"
+          min="0"
+          step="1"
+          value="0"
+          required
+        >
+
+        <label class="performance-label" for="performanceLikes">
+          ❤️ Mentions J'aime
+        </label>
+
+        <input
+          id="performanceLikes"
+          type="number"
+          min="0"
+          step="1"
+          value="0"
+          required
+        >
+
+        <label class="performance-label" for="performanceComments">
+          💬 Commentaires
+        </label>
+
+        <input
+          id="performanceComments"
+          type="number"
+          min="0"
+          step="1"
+          value="0"
+          required
+        >
+
+        <label class="performance-label" for="performanceShares">
+          🔄 Partages
+        </label>
+
+        <input
+          id="performanceShares"
+          type="number"
+          min="0"
+          step="1"
+          value="0"
+          required
+        >
+
+        <button id="savePerformanceBtn" type="submit">
+          Enregistrer les statistiques
+        </button>
+
+      </form>
+
+      <div id="performanceMessage" class="message hidden"></div>
+
+    </div>
+
+    <div class="card">
+
+      <h3>📈 Résultats enregistrés</h3>
+
       <div class="performance-item">
-        <h3>👁️ Vues</h3>
-        <div class="performance-value">—</div>
-        <p>Les vues de tes publications apparaîtront ici.</p>
+        <h3>👁️ Total des vues</h3>
+        <div id="totalViews" class="performance-value">0</div>
       </div>
 
       <div class="performance-item">
-        <h3>❤️ Mentions J'aime</h3>
-        <div class="performance-value">—</div>
-        <p>Tes mentions J'aime apparaîtront ici.</p>
+        <h3>❤️ Total des likes</h3>
+        <div id="totalLikes" class="performance-value">0</div>
       </div>
 
       <div class="performance-item">
-        <h3>💬 Commentaires</h3>
-        <div class="performance-value">—</div>
-        <p>Tes commentaires apparaîtront ici.</p>
+        <h3>💬 Total des commentaires</h3>
+        <div id="totalComments" class="performance-value">0</div>
       </div>
 
       <div class="performance-item">
-        <h3>🔄 Partages</h3>
-        <div class="performance-value">—</div>
-        <p>Tes partages apparaîtront ici.</p>
+        <h3>🔄 Total des partages</h3>
+        <div id="totalShares" class="performance-value">0</div>
       </div>
 
-      <p>
-        <small>
-          Les statistiques seront affichées après la mise en place
-          de leur système d'enregistrement.
-        </small>
-      </p>
+      <h3>Mes publications suivies</h3>
+
+      <div id="performanceList">
+        <p>Aucune statistique enregistrée pour le moment.</p>
+      </div>
 
       <button
         id="backPerformanceBtn"
@@ -658,7 +757,6 @@ const profilePage = document.getElementById('profilePage');
 const hoursPage = document.getElementById('hoursPage');
 const calendarPage = document.getElementById('calendarPage');
 
-/* NOUVEL ELEMENT : PAGE PERFORMANCES */
 const performancePage =
   document.getElementById('performancePage');
 
@@ -695,6 +793,48 @@ const publicationDateInput =
   document.getElementById('publicationDate');
 
 
+// ELEMENTS PERFORMANCES
+
+const performanceForm =
+  document.getElementById('performanceForm');
+
+const performancePublication =
+  document.getElementById('performancePublication');
+
+const performanceViews =
+  document.getElementById('performanceViews');
+
+const performanceLikes =
+  document.getElementById('performanceLikes');
+
+const performanceComments =
+  document.getElementById('performanceComments');
+
+const performanceShares =
+  document.getElementById('performanceShares');
+
+const savePerformanceBtn =
+  document.getElementById('savePerformanceBtn');
+
+const performanceMessage =
+  document.getElementById('performanceMessage');
+
+const performanceList =
+  document.getElementById('performanceList');
+
+const totalViews =
+  document.getElementById('totalViews');
+
+const totalLikes =
+  document.getElementById('totalLikes');
+
+const totalComments =
+  document.getElementById('totalComments');
+
+const totalShares =
+  document.getElementById('totalShares');
+
+
 // DATE MINIMUM : AUJOURD'HUI
 
 function getLocalDateString() {
@@ -729,6 +869,11 @@ function showPublicationMessage(text) {
   publicationMessage.classList.remove('hidden');
 }
 
+function showPerformanceMessage(text) {
+  performanceMessage.textContent = text;
+  performanceMessage.classList.remove('hidden');
+}
+
 
 // NAVIGATION : AFFICHER UNE SEULE PAGE
 
@@ -738,14 +883,16 @@ function showPage(page) {
   profilePage.classList.add('hidden');
   hoursPage.classList.add('hidden');
   calendarPage.classList.add('hidden');
-
-  /* MASQUER AUSSI LA PAGE PERFORMANCES */
   performancePage.classList.add('hidden');
 
   page.classList.remove('hidden');
 
   if (page === calendarPage) {
     loadPublications();
+  }
+
+  if (page === performancePage) {
+    loadPerformanceData();
   }
 
 }
@@ -1093,8 +1240,6 @@ publicationForm.addEventListener('submit', async (event) => {
 
   try {
 
-    // Vérifier l'utilisateur connecté
-
     const {
       data: { user },
       error: userError
@@ -1106,8 +1251,6 @@ publicationForm.addEventListener('submit', async (event) => {
       throw new Error('Tu dois être connecté pour programmer une publication.');
     }
 
-    // Vérifier les champs
-
     if (!title) {
       throw new Error('Entre un titre pour ta publication.');
     }
@@ -1115,8 +1258,6 @@ publicationForm.addEventListener('submit', async (event) => {
     if (!date || !time) {
       throw new Error('Choisis une date et une heure.');
     }
-
-    // Construire la date locale
 
     const scheduledDate = new Date(`${date}T${time}:00`);
 
@@ -1127,8 +1268,6 @@ publicationForm.addEventListener('submit', async (event) => {
     if (scheduledDate.getTime() <= Date.now()) {
       throw new Error('Choisis une date et une heure dans le futur.');
     }
-
-    // Préparer les données
 
     const publication = {
 
@@ -1146,31 +1285,19 @@ publicationForm.addEventListener('submit', async (event) => {
 
     };
 
-    // Enregistrer dans Supabase
-
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('publications')
-      .insert(publication)
-      .select()
-      .single();
+      .insert(publication);
 
     if (error) throw error;
-
-    // Confirmer l'enregistrement
 
     showPublicationMessage(
       'Publication programmée avec succès !'
     );
 
-    // Vider le formulaire après réussite
-
     publicationForm.reset();
 
-    // Actualiser la date minimum
-
     publicationDateInput.min = getLocalDateString();
-
-    // Actualiser la liste
 
     await loadPublications();
 
@@ -1227,8 +1354,6 @@ async function loadPublications() {
 
     if (error) throw error;
 
-    // Effacer l'ancien affichage
-
     publicationsList.replaceChildren();
 
     if (!data || data.length === 0) {
@@ -1244,8 +1369,6 @@ async function loadPublications() {
 
     }
 
-    // Afficher chaque publication
-
     data.forEach((publication) => {
 
       const item = document.createElement('div');
@@ -1256,7 +1379,7 @@ async function loadPublications() {
 
       const description = document.createElement('p');
       description.textContent =
-        publication.description || publication.text || 'Aucune description';
+        publication.description || 'Aucune description';
 
       const type = document.createElement('p');
       type.textContent =
@@ -1309,6 +1432,415 @@ async function loadPublications() {
   }
 
 }
+
+
+// ======================================
+// SYSTEME DE PERFORMANCES
+// ======================================
+
+
+// CHARGER LES PUBLICATIONS DANS LE FORMULAIRE
+
+async function loadPerformanceData() {
+
+  performanceMessage.classList.add('hidden');
+
+  performancePublication.innerHTML =
+    '<option value="">Chargement des publications...</option>';
+
+  performanceList.textContent =
+    'Chargement des statistiques...';
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Connecte-toi pour consulter tes performances.');
+    }
+
+    // Charger les publications du créateur
+
+    const { data: publications, error: publicationsError } =
+      await supabase
+        .from('publications')
+        .select('id,title,scheduled_at,status')
+        .eq('user_id', user.id)
+        .order('scheduled_at', { ascending: false });
+
+    if (publicationsError) throw publicationsError;
+
+    performancePublication.innerHTML = '';
+
+    if (!publications || publications.length === 0) {
+
+      const option = document.createElement('option');
+
+      option.value = '';
+      option.textContent = 'Aucune publication disponible';
+
+      performancePublication.appendChild(option);
+
+      performanceList.textContent =
+        'Programme d’abord une publication dans ton calendrier.';
+
+      totalViews.textContent = '0';
+      totalLikes.textContent = '0';
+      totalComments.textContent = '0';
+      totalShares.textContent = '0';
+
+      return;
+
+    }
+
+    // Ajouter les publications dans la liste
+
+    publications.forEach((publication) => {
+
+      const option = document.createElement('option');
+
+      option.value = publication.id;
+
+      option.textContent =
+        publication.title || 'Publication sans titre';
+
+      performancePublication.appendChild(option);
+
+    });
+
+    // Charger les statistiques déjà enregistrées
+
+    const { data: performances, error: performanceError } =
+      await supabase
+        .from('publication_performance')
+        .select('*')
+        .eq('user_id', user.id);
+
+    if (performanceError) throw performanceError;
+
+    const safePerformances = performances || [];
+
+    // Calculer les totaux
+
+    const totals = safePerformances.reduce((result, item) => {
+
+      result.views += Number(item.views || 0);
+      result.likes += Number(item.likes || 0);
+      result.comments += Number(item.comments || 0);
+      result.shares += Number(item.shares || 0);
+
+      return result;
+
+    }, {
+      views: 0,
+      likes: 0,
+      comments: 0,
+      shares: 0
+    });
+
+    totalViews.textContent =
+      totals.views.toLocaleString('fr-FR');
+
+    totalLikes.textContent =
+      totals.likes.toLocaleString('fr-FR');
+
+    totalComments.textContent =
+      totals.comments.toLocaleString('fr-FR');
+
+    totalShares.textContent =
+      totals.shares.toLocaleString('fr-FR');
+
+    // Afficher les publications suivies
+
+    performanceList.replaceChildren();
+
+    const performanceMap = new Map(
+      safePerformances.map(item => [item.publication_id, item])
+    );
+
+    let numberOfTracked = 0;
+
+    publications.forEach((publication) => {
+
+      const performance =
+        performanceMap.get(publication.id);
+
+      if (!performance) return;
+
+      numberOfTracked++;
+
+      const item = document.createElement('div');
+      item.className = 'performance-publication';
+
+      const title = document.createElement('h4');
+      title.textContent = publication.title || 'Sans titre';
+
+      const views = document.createElement('p');
+      views.textContent =
+        '👁️ Vues : ' +
+        Number(performance.views).toLocaleString('fr-FR');
+
+      const likes = document.createElement('p');
+      likes.textContent =
+        '❤️ Likes : ' +
+        Number(performance.likes).toLocaleString('fr-FR');
+
+      const comments = document.createElement('p');
+      comments.textContent =
+        '💬 Commentaires : ' +
+        Number(performance.comments).toLocaleString('fr-FR');
+
+      const shares = document.createElement('p');
+      shares.textContent =
+        '🔄 Partages : ' +
+        Number(performance.shares).toLocaleString('fr-FR');
+
+      const editButton = document.createElement('button');
+
+      editButton.type = 'button';
+      editButton.className = 'secondary';
+      editButton.textContent = 'Modifier les statistiques';
+
+      editButton.addEventListener('click', () => {
+
+        performancePublication.value = publication.id;
+
+        performanceViews.value = performance.views;
+        performanceLikes.value = performance.likes;
+        performanceComments.value = performance.comments;
+        performanceShares.value = performance.shares;
+
+        performanceForm.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+      });
+
+      item.appendChild(title);
+      item.appendChild(views);
+      item.appendChild(likes);
+      item.appendChild(comments);
+      item.appendChild(shares);
+      item.appendChild(editButton);
+
+      performanceList.appendChild(item);
+
+    });
+
+    if (numberOfTracked === 0) {
+
+      performanceList.textContent =
+        'Aucune statistique enregistrée pour le moment.';
+
+    }
+
+    // Charger les statistiques de la première publication
+
+    await loadSelectedPerformance();
+
+  } catch (error) {
+
+    console.error(
+      'Erreur de chargement des performances :',
+      error
+    );
+
+    performanceList.textContent =
+      'Impossible de charger les performances : ' + error.message;
+
+    showPerformanceMessage(
+      'Erreur : ' + error.message
+    );
+
+  }
+
+}
+
+
+// CHARGER LES STATISTIQUES DE LA PUBLICATION SELECTIONNEE
+
+async function loadSelectedPerformance() {
+
+  const publicationId = performancePublication.value;
+
+  if (!publicationId) return;
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('publication_performance')
+      .select('*')
+      .eq('publication_id', publicationId)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (data) {
+
+      performanceViews.value = data.views;
+      performanceLikes.value = data.likes;
+      performanceComments.value = data.comments;
+      performanceShares.value = data.shares;
+
+    } else {
+
+      performanceViews.value = 0;
+      performanceLikes.value = 0;
+      performanceComments.value = 0;
+      performanceShares.value = 0;
+
+    }
+
+    performanceMessage.classList.add('hidden');
+
+  } catch (error) {
+
+    console.error(
+      'Erreur de lecture des statistiques :',
+      error
+    );
+
+    showPerformanceMessage(
+      'Impossible de charger ces statistiques : ' + error.message
+    );
+
+  }
+
+}
+
+
+// CHANGER DE PUBLICATION
+
+performancePublication.addEventListener('change', () => {
+
+  loadSelectedPerformance();
+
+});
+
+
+// ENREGISTRER OU ACTUALISER LES STATISTIQUES
+
+performanceForm.addEventListener('submit', async (event) => {
+
+  event.preventDefault();
+
+  performanceMessage.classList.add('hidden');
+
+  const publicationId = performancePublication.value;
+
+  const views = Number(performanceViews.value);
+  const likes = Number(performanceLikes.value);
+  const comments = Number(performanceComments.value);
+  const shares = Number(performanceShares.value);
+
+  savePerformanceBtn.disabled = true;
+
+  savePerformanceBtn.textContent = 'Enregistrement...';
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Tu dois être connecté pour enregistrer les statistiques.');
+    }
+
+    if (!publicationId) {
+      throw new Error('Choisis une publication.');
+    }
+
+    const values = [views, likes, comments, shares];
+
+    if (values.some(value =>
+      !Number.isSafeInteger(value) || value < 0
+    )) {
+
+      throw new Error(
+        'Entre des nombres entiers positifs ou égaux à zéro.'
+      );
+
+    }
+
+    // Préparer les statistiques
+
+    const performance = {
+
+      publication_id: publicationId,
+
+      user_id: user.id,
+
+      views: views,
+
+      likes: likes,
+
+      comments: comments,
+
+      shares: shares,
+
+      updated_at: new Date().toISOString()
+
+    };
+
+    // Enregistrer ou actualiser dans Supabase
+
+    const { error } = await supabase
+      .from('publication_performance')
+      .upsert(performance, {
+        onConflict: 'publication_id'
+      });
+
+    if (error) throw error;
+
+    showPerformanceMessage(
+      'Statistiques enregistrées avec succès !'
+    );
+
+    // Actualiser les résultats
+
+    await loadPerformanceData();
+
+  } catch (error) {
+
+    console.error(
+      'Erreur d’enregistrement des performances :',
+      error
+    );
+
+    showPerformanceMessage(
+      'Erreur : ' + error.message
+    );
+
+  } finally {
+
+    savePerformanceBtn.disabled = false;
+
+    savePerformanceBtn.textContent =
+      'Enregistrer les statistiques';
+
+  }
+
+});
 
 
 // ENREGISTRER LE PROFIL TIKTOK
