@@ -475,7 +475,45 @@ small{color:#b9b1d2}
 
       <p>
         Enregistre les résultats de tes publications TikTok.
-      </p>
+      </p><h3>📌 Confirmer une publication</h3>
+
+<form id="publishedForm">
+
+  <label class="performance-label" for="publishedPublication">
+    Choisir la publication
+  </label>
+
+  <select id="publishedPublication" required>
+    <option value="">Chargement des publications...</option>
+  </select>
+
+  <label class="performance-label" for="publishedDate">
+    Date réelle de publication
+  </label>
+
+  <input
+    id="publishedDate"
+    type="date"
+    required
+  >
+
+  <label class="performance-label" for="publishedTime">
+    Heure réelle de publication
+  </label>
+
+  <input
+    id="publishedTime"
+    type="time"
+    required
+  >
+
+  <button id="confirmPublishedBtn" type="submit">
+    Confirmer comme publiée
+  </button>
+
+</form>
+
+<div id="publishedMessage" class="message hidden"></div>
 
       <h3>➕ Ajouter ou actualiser des statistiques</h3>
 
@@ -832,7 +870,25 @@ const totalComments =
   document.getElementById('totalComments');
 
 const totalShares =
-  document.getElementById('totalShares');
+  document.getElementById('totalShares');// ELEMENTS CONFIRMATION DE PUBLICATION
+
+const publishedForm =
+  document.getElementById('publishedForm');
+
+const publishedPublication =
+  document.getElementById('publishedPublication');
+
+const publishedDate =
+  document.getElementById('publishedDate');
+
+const publishedTime =
+  document.getElementById('publishedTime');
+
+const confirmPublishedBtn =
+  document.getElementById('confirmPublishedBtn');
+
+const publishedMessage =
+  document.getElementById('publishedMessage');
 
 
 // DATE MINIMUM : AUJOURD'HUI
@@ -1467,13 +1523,35 @@ async function loadPerformanceData() {
     // Charger les publications du créateur
 
     const { data: publications, error: publicationsError } =
-      await supabase
-        .from('publications')
-        .select('id,title,scheduled_at,status')
-        .eq('user_id', user.id)
-        .order('scheduled_at', { ascending: false });
+  await supabase
+    .from('publications')
+    .select('id,title,scheduled_at,status,published_at')
+    .eq('user_id', user.id)
+    .order('scheduled_at', { ascending: false });
 
-    if (publicationsError) throw publicationsError;
+    if (publicationsError) throw publicationsError;// Charger les publications dans le formulaire de confirmation
+
+publishedPublication.innerHTML = '';
+
+const publishedOption = document.createElement('option');
+publishedOption.value = '';
+publishedOption.textContent = 'Choisir une publication';
+
+publishedPublication.appendChild(publishedOption);
+
+(publications || []).forEach((publication) => {
+
+  const option = document.createElement('option');
+
+  option.value = publication.id;
+
+  option.textContent =
+    (publication.title || 'Publication sans titre') +
+    (publication.status === 'publiée' ? ' — Déjà publiée' : '');
+
+  publishedPublication.appendChild(option);
+
+});
 
     performancePublication.innerHTML = '';
 
@@ -1657,7 +1735,94 @@ async function loadPerformanceData() {
     showPerformanceMessage(
       'Erreur : ' + error.message
     );
+// CONFIRMER UNE PUBLICATION COMME PUBLIEE
 
+publishedForm.addEventListener('submit', async (event) => {
+
+  event.preventDefault();
+
+  publishedMessage.classList.add('hidden');
+
+  const publicationId = publishedPublication.value;
+  const date = publishedDate.value;
+  const time = publishedTime.value;
+
+  confirmPublishedBtn.disabled = true;
+  confirmPublishedBtn.textContent = 'Enregistrement...';
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Tu dois être connecté.');
+    }
+
+    if (!publicationId || !date || !time) {
+      throw new Error('Choisis une publication, une date et une heure.');
+    }
+
+    // Interpréter la date et l'heure en heure de Côte d'Ivoire (UTC+0)
+
+    const publishedDateTime = new Date(`${date}T${time}:00+00:00`);
+
+    if (Number.isNaN(publishedDateTime.getTime())) {
+      throw new Error('La date ou l’heure est invalide.');
+    }
+
+    if (publishedDateTime.getTime() > Date.now()) {
+      throw new Error('La date et l’heure de publication ne peuvent pas être dans le futur.');
+    }
+
+    const { data, error } = await supabase
+      .from('publications')
+      .update({
+        status: 'publiée',
+        published_at: publishedDateTime.toISOString()
+      })
+      .eq('id', publicationId)
+      .eq('user_id', user.id)
+      .select('id')
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      throw new Error('Publication introuvable ou modification non autorisée.');
+    }
+
+    publishedMessage.textContent =
+      'Publication confirmée avec succès !';
+
+    publishedMessage.classList.remove('hidden');
+
+    await loadPerformanceData();
+    await loadPublications();
+
+    publishedForm.reset();
+
+  } catch (error) {
+
+    console.error('Erreur de confirmation :', error);
+
+    publishedMessage.textContent =
+      'Erreur : ' + error.message;
+
+    publishedMessage.classList.remove('hidden');
+
+  } finally {
+
+    confirmPublishedBtn.disabled = false;
+    confirmPublishedBtn.textContent = 'Confirmer comme publiée';
+
+  }
+
+});
   }
 
 }
