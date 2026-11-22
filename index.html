@@ -102,6 +102,24 @@ button:disabled{
 }
 
 small{color:#b9b1d2}
+
+.publication-item{
+  background:#282143;
+  padding:14px;
+  border-radius:12px;
+  margin:12px 0;
+  overflow-wrap:anywhere;
+}
+
+.publication-item h4{
+  margin:0 0 8px;
+  color:#c4a7ff;
+}
+
+.publication-item p{
+  margin:5px 0;
+  font-size:14px;
+}
 </style>
 </head>
 
@@ -292,7 +310,9 @@ small{color:#b9b1d2}
           required
         >
 
-        <button type="submit">Programmer</button>
+        <button id="publicationSubmitBtn" type="submit">
+          Programmer
+        </button>
 
       </form>
 
@@ -553,8 +573,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 const homePage = document.getElementById('homePage');
 const profilePage = document.getElementById('profilePage');
 const hoursPage = document.getElementById('hoursPage');
-const calendarPage = document.getElementById('calendarPage');console.log('Bouton calendrier :', document.getElementById('openCalendarBtn'));
-console.log('Page calendrier :', calendarPage);
+const calendarPage = document.getElementById('calendarPage');
 
 const registrationNameFields =
   document.getElementById('registrationNameFields');
@@ -571,6 +590,41 @@ const welcomeTitle =
 let isLogin = false;
 
 
+// ELEMENTS CALENDRIER
+
+const publicationForm =
+  document.getElementById('publicationForm');
+
+const publicationMessage =
+  document.getElementById('publicationMessage');
+
+const publicationsList =
+  document.getElementById('publicationsList');
+
+const publicationSubmitBtn =
+  document.getElementById('publicationSubmitBtn');
+
+const publicationDateInput =
+  document.getElementById('publicationDate');
+
+
+// DATE MINIMUM : AUJOURD'HUI
+
+function getLocalDateString() {
+
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+
+}
+
+publicationDateInput.min = getLocalDateString();
+
+
 // MESSAGES
 
 function showMessage(text) {
@@ -583,16 +637,27 @@ function showDashboardMessage(text) {
   dashboardMessage.classList.remove('hidden');
 }
 
+function showPublicationMessage(text) {
+  publicationMessage.textContent = text;
+  publicationMessage.classList.remove('hidden');
+}
+
 
 // NAVIGATION : AFFICHER UNE SEULE PAGE
 
 function showPage(page) {
+
   homePage.classList.add('hidden');
   profilePage.classList.add('hidden');
   hoursPage.classList.add('hidden');
   calendarPage.classList.add('hidden');
 
   page.classList.remove('hidden');
+
+  if (page === calendarPage) {
+    loadPublications();
+  }
+
 }
 
 
@@ -615,14 +680,18 @@ function showDashboard(user) {
     : 'Bienvenue, Créateur 👋';
 
   loadTikTokProfile();
+  loadPublications();
+
 }
 
 
 // AFFICHER LE FORMULAIRE
 
 function showAuth() {
+
   dashboard.classList.add('hidden');
   authSection.classList.remove('hidden');
+
 }
 
 
@@ -887,6 +956,254 @@ document.getElementById('backHomeBtn')
   showPage(homePage);
 
 });
+
+
+// PROGRAMMER UNE PUBLICATION DANS SUPABASE
+
+publicationForm.addEventListener('submit', async (event) => {
+
+  event.preventDefault();
+
+  publicationMessage.classList.add('hidden');
+
+  const title =
+    document.getElementById('publicationTitle').value.trim();
+
+  const description =
+    document.getElementById('publicationDescription').value.trim();
+
+  const contentType =
+    document.getElementById('publicationType').value;
+
+  const date =
+    publicationDateInput.value;
+
+  const time =
+    document.getElementById('publicationTime').value;
+
+  publicationSubmitBtn.disabled = true;
+  publicationSubmitBtn.textContent = 'Enregistrement...';
+
+  try {
+
+    // Vérifier l'utilisateur connecté
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Tu dois être connecté pour programmer une publication.');
+    }
+
+    // Vérifier les champs
+
+    if (!title) {
+      throw new Error('Entre un titre pour ta publication.');
+    }
+
+    if (!date || !time) {
+      throw new Error('Choisis une date et une heure.');
+    }
+
+    // Construire la date locale
+
+    const scheduledDate = new Date(`${date}T${time}:00`);
+
+    if (Number.isNaN(scheduledDate.getTime())) {
+      throw new Error('La date ou l’heure choisie est invalide.');
+    }
+
+    if (scheduledDate.getTime() <= Date.now()) {
+      throw new Error('Choisis une date et une heure dans le futur.');
+    }
+
+    // Préparer les données
+
+    const publication = {
+
+      user_id: user.id,
+
+      title: title,
+
+      text: description,
+
+      description: description,
+
+      content_type: contentType,
+
+      scheduled_at: scheduledDate.toISOString(),
+
+      status: 'scheduled'
+
+    };
+
+    // Enregistrer dans Supabase
+
+    const { data, error } = await supabase
+      .from('publications')
+      .insert(publication)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    // Confirmer l'enregistrement
+
+    showPublicationMessage(
+      'Publication programmée avec succès !'
+    );
+
+    // Vider le formulaire après réussite
+
+    publicationForm.reset();
+
+    // Actualiser la date minimum
+
+    publicationDateInput.min = getLocalDateString();
+
+    // Actualiser la liste
+
+    await loadPublications();
+
+  } catch (error) {
+
+    console.error(
+      'Erreur de programmation :',
+      error
+    );
+
+    showPublicationMessage(
+      'Erreur : ' + error.message
+    );
+
+  } finally {
+
+    publicationSubmitBtn.disabled = false;
+    publicationSubmitBtn.textContent = 'Programmer';
+
+  }
+
+});
+
+
+// CHARGER LES PUBLICATIONS DE L'UTILISATEUR
+
+async function loadPublications() {
+
+  publicationsList.textContent = 'Chargement des publications...';
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+
+      publicationsList.textContent =
+        'Connecte-toi pour voir tes publications.';
+
+      return;
+
+    }
+
+    const { data, error } = await supabase
+      .from('publications')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('scheduled_at', { ascending: true });
+
+    if (error) throw error;
+
+    // Effacer l'ancien affichage
+
+    publicationsList.replaceChildren();
+
+    if (!data || data.length === 0) {
+
+      const emptyMessage = document.createElement('p');
+
+      emptyMessage.textContent =
+        'Aucune publication programmée pour le moment.';
+
+      publicationsList.appendChild(emptyMessage);
+
+      return;
+
+    }
+
+    // Afficher chaque publication
+
+    data.forEach((publication) => {
+
+      const item = document.createElement('div');
+      item.className = 'publication-item';
+
+      const title = document.createElement('h4');
+      title.textContent = publication.title || 'Sans titre';
+
+      const description = document.createElement('p');
+      description.textContent =
+        publication.description || publication.text || 'Aucune description';
+
+      const type = document.createElement('p');
+      type.textContent =
+        'Type : ' + (publication.content_type || 'Non précisé');
+
+      const date = document.createElement('p');
+
+      const scheduledDate = new Date(publication.scheduled_at);
+
+      if (!Number.isNaN(scheduledDate.getTime())) {
+
+        date.textContent =
+          'Date : ' +
+          scheduledDate.toLocaleString('fr-FR', {
+            timeZone: 'Africa/Abidjan',
+            dateStyle: 'long',
+            timeStyle: 'short'
+          });
+
+      } else {
+
+        date.textContent = 'Date non disponible';
+
+      }
+
+      const status = document.createElement('p');
+      status.textContent =
+        'Statut : ' + (publication.status || 'Non précisé');
+
+      item.appendChild(title);
+      item.appendChild(description);
+      item.appendChild(type);
+      item.appendChild(date);
+      item.appendChild(status);
+
+      publicationsList.appendChild(item);
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      'Erreur de chargement des publications :',
+      error
+    );
+
+    publicationsList.textContent =
+      'Impossible de charger les publications : ' + error.message;
+
+  }
+
+}
 
 
 // ENREGISTRER LE PROFIL TIKTOK
