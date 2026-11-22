@@ -1025,21 +1025,19 @@ publicationForm.addEventListener('submit', async (event) => {
 
     const publication = {
 
-      user_id: user.id,
+  user_id: user.id,
 
-      title: title,
+  title: title,
 
-      text: description,
+  description: description,
 
-      description: description,
+  content_type: contentType,
 
-      content_type: contentType,
+  scheduled_at: scheduledDate.toISOString(),
 
-      scheduled_at: scheduledDate.toISOString(),
+  status: 'scheduled'
 
-      status: 'scheduled'
-
-    };
+};
 
     // Enregistrer dans Supabase
 
