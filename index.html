@@ -120,6 +120,27 @@ small{color:#b9b1d2}
   margin:5px 0;
   font-size:14px;
 }
+
+/* NOUVEAUX STYLES PERFORMANCES */
+
+.performance-item{
+  background:#282143;
+  padding:16px;
+  border-radius:12px;
+  margin:12px 0;
+}
+
+.performance-item h3{
+  margin:0 0 8px;
+  color:#c4a7ff;
+}
+
+.performance-value{
+  font-size:25px;
+  font-weight:bold;
+  color:#9b83ff;
+  margin:5px 0;
+}
 </style>
 </head>
 
@@ -243,7 +264,12 @@ small{color:#b9b1d2}
     <div class="card">
       <h2>📊 Performances</h2>
       <p>Suis tes résultats.</p>
-      <button type="button" class="secondary">
+
+      <button
+        id="openPerformanceBtn"
+        type="button"
+        class="secondary"
+      >
         Voir mes résultats
       </button>
     </div>
@@ -413,6 +439,63 @@ small{color:#b9b1d2}
   <!-- FIN MEILLEURS HORAIRES -->
 
 
+  <!-- PAGE PERFORMANCES -->
+
+  <div id="performancePage" class="hidden">
+
+    <div class="card">
+
+      <h2>📊 Mes performances</h2>
+
+      <p>
+        Suis l'évolution des résultats de tes publications TikTok.
+      </p>
+
+      <div class="performance-item">
+        <h3>👁️ Vues</h3>
+        <div class="performance-value">—</div>
+        <p>Les vues de tes publications apparaîtront ici.</p>
+      </div>
+
+      <div class="performance-item">
+        <h3>❤️ Mentions J'aime</h3>
+        <div class="performance-value">—</div>
+        <p>Tes mentions J'aime apparaîtront ici.</p>
+      </div>
+
+      <div class="performance-item">
+        <h3>💬 Commentaires</h3>
+        <div class="performance-value">—</div>
+        <p>Tes commentaires apparaîtront ici.</p>
+      </div>
+
+      <div class="performance-item">
+        <h3>🔄 Partages</h3>
+        <div class="performance-value">—</div>
+        <p>Tes partages apparaîtront ici.</p>
+      </div>
+
+      <p>
+        <small>
+          Les statistiques seront affichées après la mise en place
+          de leur système d'enregistrement.
+        </small>
+      </p>
+
+      <button
+        id="backPerformanceBtn"
+        class="secondary"
+        type="button"
+      >
+        Retour à l'accueil
+      </button>
+
+    </div>
+
+  </div>
+  <!-- FIN PAGE PERFORMANCES -->
+
+
   <!-- PROFIL TIKTOK -->
 
   <div id="profilePage" class="hidden">
@@ -575,6 +658,10 @@ const profilePage = document.getElementById('profilePage');
 const hoursPage = document.getElementById('hoursPage');
 const calendarPage = document.getElementById('calendarPage');
 
+/* NOUVEL ELEMENT : PAGE PERFORMANCES */
+const performancePage =
+  document.getElementById('performancePage');
+
 const registrationNameFields =
   document.getElementById('registrationNameFields');
 
@@ -651,6 +738,9 @@ function showPage(page) {
   profilePage.classList.add('hidden');
   hoursPage.classList.add('hidden');
   calendarPage.classList.add('hidden');
+
+  /* MASQUER AUSSI LA PAGE PERFORMANCES */
+  performancePage.classList.add('hidden');
 
   page.classList.remove('hidden');
 
@@ -941,6 +1031,23 @@ document.getElementById('backCalendarBtn')
 });
 
 
+// NAVIGATION PERFORMANCES
+
+document.getElementById('openPerformanceBtn')
+.addEventListener('click', () => {
+
+  showPage(performancePage);
+
+});
+
+document.getElementById('backPerformanceBtn')
+.addEventListener('click', () => {
+
+  showPage(homePage);
+
+});
+
+
 // NAVIGATION PROFIL
 
 document.getElementById('openProfileBtn')
@@ -1025,19 +1132,19 @@ publicationForm.addEventListener('submit', async (event) => {
 
     const publication = {
 
-  user_id: user.id,
+      user_id: user.id,
 
-  title: title,
+      title: title,
 
-  description: description,
+      description: description,
 
-  content_type: contentType,
+      content_type: contentType,
 
-  scheduled_at: scheduledDate.toISOString(),
+      scheduled_at: scheduledDate.toISOString(),
 
-  status: 'programmée'
+      status: 'programmée'
 
-};
+    };
 
     // Enregistrer dans Supabase
 
