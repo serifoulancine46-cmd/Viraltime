@@ -1,831 +1,1128 @@
-<!DOCTYPE html>  <html lang="fr">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1">  
-<meta name="theme-color" content="#17132c">  
-<title>ViralTime</title>  <style>  
-*{box-sizing:border-box}  
-  
-body{  
-  margin:0;  
-  background:#100e1b;  
-  color:white;  
-  font-family:Arial,sans-serif;  
-}  
-  
-main{  
-  max-width:520px;  
-  margin:auto;  
-  padding:22px 16px;  
-}  
-  
-header{  
-  display:flex;  
-  align-items:center;  
-  gap:12px;  
-  margin-bottom:30px;  
-}  
-  
-.logo{  
-  background:#9b83ff;  
-  padding:13px;  
-  border-radius:14px;  
-  font-size:24px;  
-}  
-  
-h1{font-size:25px}  
-  
-p{  
-  color:#b9b1d2;  
-  line-height:1.6;  
-}  
-  
-.card{  
-  background:#1b1730;  
-  padding:20px;  
-  border-radius:18px;  
-  margin:15px 0;  
-}  
-  
-input{  
-  width:100%;  
-  padding:14px;  
-  margin:9px 0;  
-  border-radius:10px;  
-  border:1px solid #50456e;  
-  background:#282143;  
-  color:white;  
-  font-size:15px;  
-}  
-  
-button{  
-  width:100%;  
-  padding:14px;  
-  background:#9b83ff;  
-  border:0;  
-  border-radius:12px;  
-  font-weight:bold;  
-  margin-top:12px;  
-  font-size:15px;  
-  cursor:pointer;  
-}  
-  
-button:disabled{  
-  opacity:.6;  
-  cursor:wait;  
-}  
-  
-.secondary{  
-  background:#332a50;  
-  color:white;  
-}  
-  
-.message{  
-  padding:12px;  
-  border-radius:10px;  
-  background:#282143;  
-  margin-top:12px;  
-  font-size:13px;  
-  overflow-wrap:anywhere;  
-}  
-  
-.hidden{display:none}  
-  
-.time{  
-  font-size:40px;  
-  color:#9b83ff;  
-  font-weight:bold;  
-}  
-  
-small{color:#b9b1d2}  
-</style>  </head>  <body>  
-<main>  <header>  
-  <div class="logo">◷</div>  
-  <div>  
-    <strong>ViralTime</strong><br>  
-    <small>Publie au bon moment.</small>  
-  </div>  
-</header>  <!-- INSCRIPTION ET CONNEXION -->  <section id="authSection" class="card">  <h1 id="formTitle">Créer ton compte</h1>  <p>Rejoins ViralTime et prépare tes publications.</p>  <p>  
-Le mot de passe demandé sert uniquement à ton compte ViralTime.  
-Ne communique jamais ton mot de passe TikTok.  
-</p>  <form id="authForm">  <div id="registrationNameFields">  <input
-id="firstName"
-type="text"
-placeholder="Ton prénom"
-autocomplete="given-name"
-required
 
-> 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17132c">
+<title>ViralTime</title>
 
-<input
-id="lastName"
-type="text"
-placeholder="Ton nom"
-autocomplete="family-name"
-required
+<style>
+*{box-sizing:border-box}
 
-> 
+body{
+  margin:0;
+  background:#100e1b;
+  color:white;
+  font-family:Arial,sans-serif;
+}
 
-</div>  <input
-id="email"
-type="email"
-placeholder="Adresse e-mail"
-autocomplete="email"
-required
+main{
+  max-width:520px;
+  margin:auto;
+  padding:22px 16px;
+}
 
-> 
+header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:30px;
+}
 
-<input
-id="password"
-type="password"
-placeholder="Mot de passe (6 caractères minimum)"
-minlength="6"
-autocomplete="current-password"
-required
+.logo{
+  background:#9b83ff;
+  padding:13px;
+  border-radius:14px;
+  font-size:24px;
+}
 
-> 
+h1{font-size:25px}
 
-<button id="submitBtn" type="submit">  
-Créer mon compte  
-</button>  </form>  <button id="switchBtn" class="secondary" type="button">  
-J'ai déjà un compte : me connecter  
-</button>  <div id="message" class="message hidden" role="status"></div>  </section>  <!-- TABLEAU DE BORD -->  <section id="dashboard" class="hidden">  <h1>ViralTime</h1>  <div id="homePage">  <h1 id="welcomeTitle">Bienvenue, Créateur 👋</h1>  <div class="card">  
-<h2>🔔 Notifications</h2>  
-<p>Reçois un rappel lorsqu'il est temps de publier.</p>  <button id="enableNotificationsBtn" type="button">  
-Activer les notifications  
-</button>  <div id="notificationMessage" class="message hidden"></div>  
-</div>  <p>Ton espace pour mieux planifier tes publications.</p>  <div class="card">  
-<h2>🕒 Meilleurs horaires</h2>  
-<p>Trouve tes heures de publication.</p>  <button id="openHoursBtn" type="button" class="secondary">  
-Découvrir  
-</button>  
-</div>  <div class="card">  
-<h2>📅 Calendrier</h2>  
-<p>Organise tes publications.</p>  
-<button type="button" class="secondary">Ouvrir</button>  
-</div>  <div class="card">  
-<h2>📊 Performances</h2>  
-<p>Suis tes résultats.</p>  
-<button type="button" class="secondary">Voir mes résultats</button>  
-</div>  <div class="card">  
-<h2>👤 Mon profil</h2>  
-<p>Personnalise ton espace.</p>  <button id="openProfileBtn" type="button">  
-Mon profil  
-</button>  
-</div>  <p>Aperçu du futur tableau de bord — les fonctions restent à développer.</p>  </div>  <!-- MEILLEURS HORAIRES -->  <div id="hoursPage" class="hidden">  <div class="card">  <h2>🕒 Meilleurs horaires</h2>  <p>  
-Découvre les moments recommandés pour publier  
-tes vidéos TikTok.  
-</p>  <h3>📅 Recommandations de publication</h3>  <div id="hoursRecommendations">  <div class="card">  
-<h3>Lundi</h3>  
-<p>12h00 – 14h00</p>  
-<p>19h00 – 21h00</p>  
-</div>  <div class="card">  
-<h3>Mardi</h3>  
-<p>12h00 – 14h00</p>  
-<p>19h00 – 21h00</p>  
-</div>  <div class="card">  
-<h3>Mercredi</h3>  
-<p>12h00 – 14h00</p>  
-<p>18h00 – 21h00</p>  
-</div>  <div class="card">  
-<h3>Jeudi</h3>  
-<p>12h00 – 14h00</p>  
-<p>19h00 – 21h00</p>  
-</div>  <div class="card">  
-<h3>Vendredi</h3>  
-<p>12h00 – 14h00</p>  
-<p>18h00 – 21h00</p>  
-</div>  <div class="card">  
-<h3>Samedi</h3>  
-<p>10h00 – 12h00</p>  
-<p>18h00 – 21h00</p>  
-</div>  <div class="card">  
-<h3>Dimanche</h3>  
-<p>10h00 – 12h00</p>  
-<p>18h00 – 21h00</p>  
-</div>  <p>  
-<small>  
-Horaires de départ à tester, en heure de Côte d'Ivoire.  
-Ils ne garantissent pas des vues.  
-</small>  
-</p>  </div>  <button id="backHoursBtn" class="secondary" type="button">  
-Retour à l'accueil  
-</button>  </div>  
-</div>  <!-- PROFIL TIKTOK -->  <div id="profilePage" class="hidden">  <div class="card">  <h2>🎵 Mon profil TikTok</h2>  <p>Renseigne les informations de ton compte.</p>  <form id="tiktokProfileForm">  <input id="tiktokUsername" type="text"  
-placeholder="Nom d'utilisateur TikTok" required>
+p{
+  color:#b9b1d2;
+  line-height:1.6;
+}
 
-<input id="tiktokFollowers" type="number"  
-min="0" placeholder="Nombre d'abonnés" required>
+.card{
+  background:#1b1730;
+  padding:20px;
+  border-radius:18px;
+  margin:15px 0;
+}
 
-<input id="tiktokPosts" type="number"  
-min="0" placeholder="Nombre de publications" required>
+input,select{
+  width:100%;
+  padding:14px;
+  margin:9px 0;
+  border-radius:10px;
+  border:1px solid #50456e;
+  background:#282143;
+  color:white;
+  font-size:15px;
+}
 
-<input id="tiktokNiche" type="text"  
-placeholder="Thématique de ton compte">
+button{
+  width:100%;
+  padding:14px;
+  background:#9b83ff;
+  border:0;
+  border-radius:12px;
+  font-weight:bold;
+  margin-top:12px;
+  font-size:15px;
+  cursor:pointer;
+}
 
-<input id="tiktokCountry" type="text"  
-placeholder="Pays de ton audience">
+button:disabled{
+  opacity:.6;
+  cursor:wait;
+}
 
-<button type="submit">Enregistrer mon profil</button>
+.secondary{
+  background:#332a50;
+  color:white;
+}
 
-</form>  <div id="tiktokMessage" class="message hidden"></div>  <button id="backHomeBtn" class="secondary" type="button">  
-Retour à l'accueil  
-</button>  </div>  
-</div>  <!-- INFORMATIONS DU COMPTE -->  <div class="card">  <h2>Ton compte</h2>  <p id="userEmail"></p>  <p>Tu es connecté à ViralTime.</p>  <button id="logoutBtn" class="secondary" type="button">  
-Se déconnecter  
-</button>  <div id="dashboardMessage" class="message hidden"></div>  </div>  </section>  <p style="text-align:center;font-size:12px">  
-ViralTime · Version de développement  
-</p>  <p style="text-align:center;font-size:13px">  
-<a href="./confidentialite.html"  
-style="color:#c4a7ff;text-decoration:underline">  
-Politique de confidentialité  
-</a>  
-</p>  </main>  <script type="module">  
-  
-import { createClient } from  
-'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';  
-  
-// SERVICE WORKER  
-  
-if ('serviceWorker' in navigator) {  
-  window.addEventListener('load', async () => {  
-    try {  
-      await navigator.serviceWorker.register('./sw.js');  
-      console.log('Service Worker enregistré avec succès');  
-    } catch (error) {  
-      console.error('Erreur Service Worker :', error);  
-    }  
-  });  
-}  
-  
-// CONFIGURATION SUPABASE  
-  
-const SUPABASE_URL = 'https://ncgdofbgazkvvazljhbn.supabase.co';  
-  
-const SUPABASE_KEY = 'sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';  
-  
-const supabase = createClient(  
-  SUPABASE_URL,  
-  SUPABASE_KEY,  
-  {  
-    auth: {  
-      persistSession: true,  
-      autoRefreshToken: true,  
-      detectSessionInUrl: true  
-    }  
-  }  
-);  
-  
-// ELEMENTS HTML  
-  
-const authSection = document.getElementById('authSection');  
-const dashboard = document.getElementById('dashboard');  
-  
-const authForm = document.getElementById('authForm');  
-const formTitle = document.getElementById('formTitle');  
-const submitBtn = document.getElementById('submitBtn');  
-const switchBtn = document.getElementById('switchBtn');  
-  
-const message = document.getElementById('message');  
-const userEmail = document.getElementById('userEmail');  
-  
-const dashboardMessage =  
-  document.getElementById('dashboardMessage');  
-  
-const logoutBtn = document.getElementById('logoutBtn');  
-  
-const homePage = document.getElementById('homePage');  
-const profilePage = document.getElementById('profilePage');  
-const hoursPage = document.getElementById('hoursPage');  
-  
-const registrationNameFields =  
-  document.getElementById('registrationNameFields');  
-  
-const firstNameInput =  
-  document.getElementById('firstName');  
-  
-const lastNameInput =  
-  document.getElementById('lastName');  
-  
-const welcomeTitle =  
-  document.getElementById('welcomeTitle');  
-  
-let isLogin = false;  
-  
-// MESSAGES  
-  
-function showMessage(text) {  
-  message.textContent = text;  
-  message.classList.remove('hidden');  
-}  
-  
-function showDashboardMessage(text) {  
-  dashboardMessage.textContent = text;  
-  dashboardMessage.classList.remove('hidden');  
-}  
-  
-// AFFICHER LE TABLEAU DE BORD  
-  
-function showDashboard(user) {  
-  
-  authSection.classList.add('hidden');  
-  dashboard.classList.remove('hidden');  
-  
-  homePage.classList.remove('hidden');  
-  profilePage.classList.add('hidden');  
-  hoursPage.classList.add('hidden');  
-  
-  userEmail.textContent = user.email || '';  
-  
-  const firstName =  
-    user.user_metadata?.first_name || '';  
-  
-  welcomeTitle.textContent = firstName  
-    ? 'Bienvenue, ' + firstName + ' 👋'  
-    : 'Bienvenue, Créateur 👋';  
-  
-  loadTikTokProfile();  
-}  
-  
-// AFFICHER LE FORMULAIRE  
-  
-function showAuth() {  
-  dashboard.classList.add('hidden');  
-  authSection.classList.remove('hidden');  
-}  
-  
-// CHANGER ENTRE INSCRIPTION ET CONNEXION  
-  
-switchBtn.addEventListener('click', () => {  
-  
-  isLogin = !isLogin;  
-  
-  registrationNameFields.classList.toggle('hidden', isLogin);  
-  
-  firstNameInput.required = !isLogin;  
-  lastNameInput.required = !isLogin;  
-  
-  formTitle.textContent = isLogin  
-    ? 'Se connecter'  
-    : 'Créer ton compte';  
-  
-  submitBtn.textContent = isLogin  
-    ? 'Me connecter'  
-    : 'Créer mon compte';  
-  
-  switchBtn.textContent = isLogin  
-    ? 'Créer un nouveau compte'  
-    : "J'ai déjà un compte : me connecter";  
-  
-  message.classList.add('hidden');  
-  
-});  
-  
-// INSCRIPTION ET CONNEXION  
-  
-authForm.addEventListener('submit', async (event) => {  
-  
-  event.preventDefault();  
-  
-  const email =  
-    document.getElementById('email').value.trim();  
-  
-  const password =  
-    document.getElementById('password').value;  
-  
-  const firstName = firstNameInput.value.trim();  
-  const lastName = lastNameInput.value.trim();  
-  
-  submitBtn.disabled = true;  
-  switchBtn.disabled = true;  
-  
-  submitBtn.textContent = 'Patiente...';  
-  
-  message.classList.add('hidden');  
-  
-  try {  
-  
-    if (isLogin) {  
-  
-      const { data, error } =  
-        await supabase.auth.signInWithPassword({  
-          email,  
-          password  
-        });  
-  
-      if (error) throw error;  
-  
-      showDashboard(data.user);  
-  
-    } else {  
-  
-      if (!firstName || !lastName) {  
-        throw new Error('Entre ton prénom et ton nom.');  
-      }  
-  
-      const fullName = firstName + ' ' + lastName;  
-  
-      const { data, error } =  
-        await supabase.auth.signUp({  
-  
-          email,  
-          password,  
-  
-          options: {  
-  
-            emailRedirectTo: window.location.href,  
-  
-            data: {  
-              first_name: firstName,  
-              last_name: lastName,  
-              name: fullName,  
-              display_name: fullName  
-            }  
-  
-          }  
-  
-        });  
-  
-      if (error) throw error;  
-  
-      if (data.session) {  
-  
-        showDashboard(data.user);  
-  
-      } else {  
-  
-        showMessage(  
-          "Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter."  
-        );  
-  
-      }  
-  
-    }  
-  
-  } catch (error) {  
-  
-    showMessage('Erreur : ' + error.message);  
-  
-  } finally {  
-  
-    submitBtn.disabled = false;  
-    switchBtn.disabled = false;  
-  
-    submitBtn.textContent = isLogin  
-      ? 'Me connecter'  
-      : 'Créer mon compte';  
-  
-  }  
-  
-});  
-  
-// NOTIFICATIONS  
-  
-const enableNotificationsBtn =  
-  document.getElementById('enableNotificationsBtn');  
-  
-const notificationMessage =  
-  document.getElementById('notificationMessage');  
-  
-enableNotificationsBtn.addEventListener('click', async () => {  
-  
-  if (!('Notification' in window)) {  
-  
-    notificationMessage.textContent =  
-      'Ton navigateur ne prend pas en charge les notifications.';  
-  
-    notificationMessage.classList.remove('hidden');  
-    return;  
-  
-  }  
-  
-  if (!('serviceWorker' in navigator)) {  
-  
-    notificationMessage.textContent =  
-      'Les notifications ne sont pas prises en charge.';  
-  
-    notificationMessage.classList.remove('hidden');  
-    return;  
-  
-  }  
-  
-  try {  
-  
-    enableNotificationsBtn.disabled = true;  
-    enableNotificationsBtn.textContent = 'Activation...';  
-  
-    const permission =  
-      await Notification.requestPermission();  
-  
-    if (permission === 'granted') {  
-  
-      const registration =  
-        await navigator.serviceWorker.ready;  
-  
-      await registration.showNotification('ViralTime 🔔', {  
-  
-        body: 'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'  
-  
-      });  
-  
-      notificationMessage.textContent =  
-        'Notifications autorisées avec succès !';  
-  
-    } else if (permission === 'denied') {  
-  
-      notificationMessage.textContent =  
-        'Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';  
-  
-    } else {  
-  
-      notificationMessage.textContent =  
-        'Tu n’as pas encore autorisé les notifications.';  
-  
-    }  
-  
-    notificationMessage.classList.remove('hidden');  
-  
-  } catch (error) {  
-  
-    notificationMessage.textContent =  
-      'Erreur : ' + error.message;  
-  
-    notificationMessage.classList.remove('hidden');  
-  
-  } finally {  
-  
-    enableNotificationsBtn.disabled = false;  
-  
-    enableNotificationsBtn.textContent =  
-      'Activer les notifications';  
-  
-  }  
-  
-});  
-  
-// NAVIGATION MEILLEURS HORAIRES  
-  
-document.getElementById('openHoursBtn')  
-.addEventListener('click', () => {  
-  
-  homePage.classList.add('hidden');  
-  profilePage.classList.add('hidden');  
-  hoursPage.classList.remove('hidden');  
-  
-});  
-  
-document.getElementById('backHoursBtn')  
-.addEventListener('click', () => {  
-  
-  hoursPage.classList.add('hidden');  
-  homePage.classList.remove('hidden');  
-  
-});  
-  
-// NAVIGATION PROFIL  
-  
-document.getElementById('openProfileBtn')  
-.addEventListener('click', () => {  
-  
-  homePage.classList.add('hidden');  
-  profilePage.classList.remove('hidden');  
-  
-});  
-  
-document.getElementById('backHomeBtn')  
-.addEventListener('click', () => {  
-  
-  profilePage.classList.add('hidden');  
-  homePage.classList.remove('hidden');  
-  
-});  
-  
-// ENREGISTRER LE PROFIL TIKTOK  
-  
-const tiktokProfileForm =  
-  document.getElementById('tiktokProfileForm');  
-  
-tiktokProfileForm.addEventListener('submit', async (event) => {  
-  
-  event.preventDefault();  
-  
-  const tiktokMessage =  
-    document.getElementById('tiktokMessage');  
-  
-  const saveButton =  
-    tiktokProfileForm.querySelector('button[type="submit"]');  
-  
-  saveButton.disabled = true;  
-  saveButton.textContent = 'Enregistrement...';  
-  
-  tiktokMessage.classList.add('hidden');  
-  dashboardMessage.classList.add('hidden');  
-  
-  try {  
-  
-    const { data: { user }, error: userError } =  
-      await supabase.auth.getUser();  
-  
-    if (userError) throw userError;  
-  
-    if (!user) {  
-      throw new Error('Connecte-toi pour enregistrer ton profil.');  
-    }  
-  
-    const profile = {  
-  
-      user_id: user.id,  
-  
-      username:  
-        document.getElementById('tiktokUsername').value.trim(),  
-  
-      follower_count:  
-        Number(document.getElementById('tiktokFollowers').value),  
-  
-      post_count:  
-        Number(document.getElementById('tiktokPosts').value),  
-  
-      niche:  
-        document.getElementById('tiktokNiche').value.trim(),  
-  
-      audience_country:  
-        document.getElementById('tiktokCountry').value.trim(),  
-  
-      updated_at: new Date().toISOString()  
-  
-    };  
-  
-    const { error } = await supabase  
-      .from('tiktok_profiles')  
-      .upsert(profile, { onConflict: 'user_id' });  
-  
-    if (error) throw error;  
-  
-    tiktokMessage.textContent =  
-      'Ton profil TikTok a été enregistré avec succès !';  
-  
-    tiktokMessage.classList.remove('hidden');  
-  
-    showDashboardMessage(  
-      'Ton profil TikTok a été enregistré avec succès !'  
-    );  
-  
-    setTimeout(() => {  
-  
-      profilePage.classList.add('hidden');  
-      homePage.classList.remove('hidden');  
-  
-    }, 1000);  
-  
-  } catch (error) {  
-  
-    tiktokMessage.textContent =  
-      'Erreur : ' + error.message;  
-  
-    tiktokMessage.classList.remove('hidden');  
-  
-  } finally {  
-  
-    saveButton.disabled = false;  
-  
-    saveButton.textContent =  
-      'Enregistrer mon profil';  
-  
-  }  
-  
-});  
-  
-// CHARGER LE PROFIL TIKTOK  
-  
-async function loadTikTokProfile() {  
-  
-  const { data: { user }, error: userError } =  
-    await supabase.auth.getUser();  
-  
-  if (userError || !user) return;  
-  
-  const { data, error } = await supabase  
-    .from('tiktok_profiles')  
-    .select('*')  
-    .eq('user_id', user.id)  
-    .maybeSingle();  
-  
-  if (error) {  
-  
-    console.error(  
-      'Erreur de chargement :',  
-      error.message  
-    );  
-  
-    return;  
-  
-  }  
-  
-  if (!data) return;  
-  
-  document.getElementById('tiktokUsername').value =  
-    data.username || '';  
-  
-  document.getElementById('tiktokFollowers').value =  
-    data.follower_count ?? 0;  
-  
-  document.getElementById('tiktokPosts').value =  
-    data.post_count ?? 0;  
-  
-  document.getElementById('tiktokNiche').value =  
-    data.niche || '';  
-  
-  document.getElementById('tiktokCountry').value =  
-    data.audience_country || '';  
-  
-}  
-  
-// DECONNEXION  
-  
-logoutBtn.addEventListener('click', async () => {  
-  
-  logoutBtn.disabled = true;  
-  logoutBtn.textContent = 'Déconnexion...';  
-  
-  try {  
-  
-    const { error } = await supabase.auth.signOut();  
-  
-    if (error) throw error;  
-  
-    authForm.reset();  
-  
-    isLogin = true;  
-  
-    registrationNameFields.classList.add('hidden');  
-  
-    firstNameInput.required = false;  
-    lastNameInput.required = false;  
-  
-    formTitle.textContent = 'Se connecter';  
-  
-    submitBtn.textContent = 'Me connecter';  
-  
-    switchBtn.textContent = 'Créer un nouveau compte';  
-  
-  } catch (error) {  
-  
-    showDashboardMessage(  
-      'Erreur : ' + error.message  
-    );  
-  
-  } finally {  
-  
-    logoutBtn.disabled = false;  
-    logoutBtn.textContent = 'Se déconnecter';  
-  
-  }  
-  
-});  
-  
-// VERIFIER LA SESSION EXISTANTE  
-  
-async function checkSession() {  
-  
-  const { data, error } =  
-    await supabase.auth.getSession();  
-  
-  if (error) {  
-  
-    showAuth();  
-    return;  
-  
-  }  
-  
-  if (data.session) {  
-  
-    showDashboard(data.session.user);  
-  
-  } else {  
-  
-    showAuth();  
-  
-  }  
-  
-}  
-  
-checkSession();  
-  
-// SURVEILLER LES CHANGEMENTS DE CONNEXION  
-  
-supabase.auth.onAuthStateChange((event, session) => {  
-  
-  if (session) {  
-  
-    showDashboard(session.user);  
-  
-  } else if (event === 'SIGNED_OUT') {  
-  
-    showAuth();  
-  
-  }  
-  
-});  
-  
-</script>  </body>  
+.message{
+  padding:12px;
+  border-radius:10px;
+  background:#282143;
+  margin-top:12px;
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+
+.hidden{display:none}
+
+.time{
+  font-size:40px;
+  color:#9b83ff;
+  font-weight:bold;
+}
+
+small{color:#b9b1d2}
+</style>
+</head>
+
+<body>
+<main>
+
+<header>
+  <div class="logo">◷</div>
+  <div>
+    <strong>ViralTime</strong><br>
+    <small>Publie au bon moment.</small>
+  </div>
+</header>
+
+<!-- INSCRIPTION ET CONNEXION -->
+
+<section id="authSection" class="card">
+
+  <h1 id="formTitle">Créer ton compte</h1>
+
+  <p>Rejoins ViralTime et prépare tes publications.</p>
+
+  <p>
+    Le mot de passe demandé sert uniquement à ton compte ViralTime.
+    Ne communique jamais ton mot de passe TikTok.
+  </p>
+
+  <form id="authForm">
+
+    <div id="registrationNameFields">
+      <input
+        id="firstName"
+        type="text"
+        placeholder="Ton prénom"
+        autocomplete="given-name"
+        required
+      >
+
+      <input
+        id="lastName"
+        type="text"
+        placeholder="Ton nom"
+        autocomplete="family-name"
+        required
+      >
+    </div>
+
+    <input
+      id="email"
+      type="email"
+      placeholder="Adresse e-mail"
+      autocomplete="email"
+      required
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Mot de passe (6 caractères minimum)"
+      minlength="6"
+      autocomplete="current-password"
+      required
+    >
+
+    <button id="submitBtn" type="submit">
+      Créer mon compte
+    </button>
+
+  </form>
+
+  <button id="switchBtn" class="secondary" type="button">
+    J'ai déjà un compte : me connecter
+  </button>
+
+  <div id="message" class="message hidden" role="status"></div>
+
+</section>
+
+
+<!-- TABLEAU DE BORD -->
+
+<section id="dashboard" class="hidden">
+
+  <!-- PAGE ACCUEIL -->
+
+  <div id="homePage">
+
+    <h1 id="welcomeTitle">Bienvenue, Créateur 👋</h1>
+
+    <div class="card">
+      <h2>🔔 Notifications</h2>
+      <p>Reçois un rappel lorsqu'il est temps de publier.</p>
+
+      <button id="enableNotificationsBtn" type="button">
+        Activer les notifications
+      </button>
+
+      <div id="notificationMessage" class="message hidden"></div>
+    </div>
+
+    <p>Ton espace pour mieux planifier tes publications.</p>
+
+    <div class="card">
+      <h2>🕒 Meilleurs horaires</h2>
+      <p>Trouve tes heures de publication.</p>
+
+      <button id="openHoursBtn" type="button" class="secondary">
+        Découvrir
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>📅 Calendrier</h2>
+      <p>Organise tes prochaines publications.</p>
+
+      <button id="openCalendarBtn" type="button" class="secondary">
+        Ouvrir
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>📊 Performances</h2>
+      <p>Suis tes résultats.</p>
+      <button type="button" class="secondary">
+        Voir mes résultats
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>👤 Mon profil</h2>
+      <p>Personnalise ton espace.</p>
+
+      <button id="openProfileBtn" type="button">
+        Mon profil
+      </button>
+    </div>
+
+    <p>Aperçu du futur tableau de bord — les fonctions restent à développer.</p>
+
+  </div>
+  <!-- FIN PAGE ACCUEIL -->
+
+
+  <!-- CALENDRIER DES PUBLICATIONS -->
+
+  <div id="calendarPage" class="hidden">
+
+    <div class="card">
+      <h2>📅 Mon calendrier</h2>
+
+      <p>
+        Organise et planifie tes prochaines publications TikTok.
+      </p>
+
+      <h3>➕ Programmer une publication</h3>
+
+      <form id="publicationForm">
+
+        <input
+          id="publicationTitle"
+          type="text"
+          placeholder="Titre de ta publication"
+          required
+        >
+
+        <input
+          id="publicationDescription"
+          type="text"
+          placeholder="Description de la publication"
+        >
+
+        <select id="publicationType" required>
+          <option value="Vidéo">Vidéo</option>
+          <option value="Photo">Photo</option>
+          <option value="Texte">Texte</option>
+          <option value="Live">Live</option>
+        </select>
+
+        <input
+          id="publicationDate"
+          type="date"
+          required
+        >
+
+        <input
+          id="publicationTime"
+          type="time"
+          required
+        >
+
+        <button type="submit">Programmer</button>
+
+      </form>
+
+      <div id="publicationMessage" class="message hidden"></div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Mes publications</h3>
+
+      <div id="publicationsList">
+        <p>Aucune publication affichée pour le moment.</p>
+      </div>
+    </div>
+
+    <button id="backCalendarBtn" class="secondary" type="button">
+      Retour à l'accueil
+    </button>
+
+  </div>
+  <!-- FIN CALENDRIER -->
+
+
+  <!-- MEILLEURS HORAIRES -->
+
+  <div id="hoursPage" class="hidden">
+
+    <div class="card">
+
+      <h2>🕒 Meilleurs horaires</h2>
+
+      <p>
+        Découvre les moments recommandés pour publier
+        tes vidéos TikTok.
+      </p>
+
+      <h3>📅 Recommandations de publication</h3>
+
+      <div id="hoursRecommendations">
+
+        <div class="card">
+          <h3>Lundi</h3>
+          <p>12h00 – 14h00</p>
+          <p>19h00 – 21h00</p>
+        </div>
+
+        <div class="card">
+          <h3>Mardi</h3>
+          <p>12h00 – 14h00</p>
+          <p>19h00 – 21h00</p>
+        </div>
+
+        <div class="card">
+          <h3>Mercredi</h3>
+          <p>12h00 – 14h00</p>
+          <p>18h00 – 21h00</p>
+        </div>
+
+        <div class="card">
+          <h3>Jeudi</h3>
+          <p>12h00 – 14h00</p>
+          <p>19h00 – 21h00</p>
+        </div>
+
+        <div class="card">
+          <h3>Vendredi</h3>
+          <p>12h00 – 14h00</p>
+          <p>18h00 – 21h00</p>
+        </div>
+
+        <div class="card">
+          <h3>Samedi</h3>
+          <p>10h00 – 12h00</p>
+          <p>18h00 – 21h00</p>
+        </div>
+
+        <div class="card">
+          <h3>Dimanche</h3>
+          <p>10h00 – 12h00</p>
+          <p>18h00 – 21h00</p>
+        </div>
+
+        <p>
+          <small>
+            Horaires de départ à tester, en heure de Côte d'Ivoire.
+            Ils ne garantissent pas des vues.
+          </small>
+        </p>
+
+      </div>
+
+      <button id="backHoursBtn" class="secondary" type="button">
+        Retour à l'accueil
+      </button>
+
+    </div>
+
+  </div>
+  <!-- FIN MEILLEURS HORAIRES -->
+
+
+  <!-- PROFIL TIKTOK -->
+
+  <div id="profilePage" class="hidden">
+
+    <div class="card">
+
+      <h2>🎵 Mon profil TikTok</h2>
+      <p>Renseigne les informations de ton compte.</p>
+
+      <form id="tiktokProfileForm">
+
+        <input
+          id="tiktokUsername"
+          type="text"
+          placeholder="Nom d'utilisateur TikTok"
+          required
+        >
+
+        <input
+          id="tiktokFollowers"
+          type="number"
+          min="0"
+          placeholder="Nombre d'abonnés"
+          required
+        >
+
+        <input
+          id="tiktokPosts"
+          type="number"
+          min="0"
+          placeholder="Nombre de publications"
+          required
+        >
+
+        <input
+          id="tiktokNiche"
+          type="text"
+          placeholder="Thématique de ton compte"
+        >
+
+        <input
+          id="tiktokCountry"
+          type="text"
+          placeholder="Pays de ton audience"
+        >
+
+        <button type="submit">
+          Enregistrer mon profil
+        </button>
+
+      </form>
+
+      <div id="tiktokMessage" class="message hidden"></div>
+
+      <button id="backHomeBtn" class="secondary" type="button">
+        Retour à l'accueil
+      </button>
+
+    </div>
+
+  </div>
+  <!-- FIN PROFIL TIKTOK -->
+
+
+  <!-- INFORMATIONS DU COMPTE -->
+
+  <div class="card">
+
+    <h2>Ton compte</h2>
+
+    <p id="userEmail"></p>
+    <p>Tu es connecté à ViralTime.</p>
+
+    <button id="logoutBtn" class="secondary" type="button">
+      Se déconnecter
+    </button>
+
+    <div id="dashboardMessage" class="message hidden"></div>
+
+  </div>
+
+</section>
+
+
+<p style="text-align:center;font-size:12px">
+  ViralTime · Version de développement
+</p>
+
+<p style="text-align:center;font-size:13px">
+  <a
+    href="./confidentialite.html"
+    style="color:#c4a7ff;text-decoration:underline"
+  >
+    Politique de confidentialité
+  </a>
+</p>
+
+</main>
+
+
+<script type="module">
+
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+
+// SERVICE WORKER
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+      console.log('Service Worker enregistré avec succès');
+    } catch (error) {
+      console.error('Erreur Service Worker :', error);
+    }
+  });
+}
+
+
+// CONFIGURATION SUPABASE
+
+const SUPABASE_URL = 'https://ncgdofbgazkvvazljhbn.supabase.co';
+
+const SUPABASE_KEY = 'sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
+);
+
+
+// ELEMENTS HTML
+
+const authSection = document.getElementById('authSection');
+const dashboard = document.getElementById('dashboard');
+
+const authForm = document.getElementById('authForm');
+const formTitle = document.getElementById('formTitle');
+const submitBtn = document.getElementById('submitBtn');
+const switchBtn = document.getElementById('switchBtn');
+
+const message = document.getElementById('message');
+const userEmail = document.getElementById('userEmail');
+
+const dashboardMessage =
+  document.getElementById('dashboardMessage');
+
+const logoutBtn = document.getElementById('logoutBtn');
+
+const homePage = document.getElementById('homePage');
+const profilePage = document.getElementById('profilePage');
+const hoursPage = document.getElementById('hoursPage');
+const calendarPage = document.getElementById('calendarPage');
+
+const registrationNameFields =
+  document.getElementById('registrationNameFields');
+
+const firstNameInput =
+  document.getElementById('firstName');
+
+const lastNameInput =
+  document.getElementById('lastName');
+
+const welcomeTitle =
+  document.getElementById('welcomeTitle');
+
+let isLogin = false;
+
+
+// MESSAGES
+
+function showMessage(text) {
+  message.textContent = text;
+  message.classList.remove('hidden');
+}
+
+function showDashboardMessage(text) {
+  dashboardMessage.textContent = text;
+  dashboardMessage.classList.remove('hidden');
+}
+
+
+// NAVIGATION : AFFICHER UNE SEULE PAGE
+
+function showPage(page) {
+  homePage.classList.add('hidden');
+  profilePage.classList.add('hidden');
+  hoursPage.classList.add('hidden');
+  calendarPage.classList.add('hidden');
+
+  page.classList.remove('hidden');
+}
+
+
+// AFFICHER LE TABLEAU DE BORD
+
+function showDashboard(user) {
+
+  authSection.classList.add('hidden');
+  dashboard.classList.remove('hidden');
+
+  showPage(homePage);
+
+  userEmail.textContent = user.email || '';
+
+  const firstName =
+    user.user_metadata?.first_name || '';
+
+  welcomeTitle.textContent = firstName
+    ? 'Bienvenue, ' + firstName + ' 👋'
+    : 'Bienvenue, Créateur 👋';
+
+  loadTikTokProfile();
+}
+
+
+// AFFICHER LE FORMULAIRE
+
+function showAuth() {
+  dashboard.classList.add('hidden');
+  authSection.classList.remove('hidden');
+}
+
+
+// CHANGER ENTRE INSCRIPTION ET CONNEXION
+
+switchBtn.addEventListener('click', () => {
+
+  isLogin = !isLogin;
+
+  registrationNameFields.classList.toggle('hidden', isLogin);
+
+  firstNameInput.required = !isLogin;
+  lastNameInput.required = !isLogin;
+
+  formTitle.textContent = isLogin
+    ? 'Se connecter'
+    : 'Créer ton compte';
+
+  submitBtn.textContent = isLogin
+    ? 'Me connecter'
+    : 'Créer mon compte';
+
+  switchBtn.textContent = isLogin
+    ? 'Créer un nouveau compte'
+    : "J'ai déjà un compte : me connecter";
+
+  message.classList.add('hidden');
+
+});
+
+
+// INSCRIPTION ET CONNEXION
+
+authForm.addEventListener('submit', async (event) => {
+
+  event.preventDefault();
+
+  const email =
+    document.getElementById('email').value.trim();
+
+  const password =
+    document.getElementById('password').value;
+
+  const firstName = firstNameInput.value.trim();
+  const lastName = lastNameInput.value.trim();
+
+  submitBtn.disabled = true;
+  switchBtn.disabled = true;
+
+  submitBtn.textContent = 'Patiente...';
+
+  message.classList.add('hidden');
+
+  try {
+
+    if (isLogin) {
+
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      showDashboard(data.user);
+
+    } else {
+
+      if (!firstName || !lastName) {
+        throw new Error('Entre ton prénom et ton nom.');
+      }
+
+      const fullName = firstName + ' ' + lastName;
+
+      const { data, error } =
+        await supabase.auth.signUp({
+
+          email,
+          password,
+
+          options: {
+
+            emailRedirectTo: window.location.href,
+
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+              name: fullName,
+              display_name: fullName
+            }
+
+          }
+
+        });
+
+      if (error) throw error;
+
+      if (data.session) {
+
+        showDashboard(data.user);
+
+      } else {
+
+        showMessage(
+          "Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter."
+        );
+
+      }
+
+    }
+
+  } catch (error) {
+
+    showMessage('Erreur : ' + error.message);
+
+  } finally {
+
+    submitBtn.disabled = false;
+    switchBtn.disabled = false;
+
+    submitBtn.textContent = isLogin
+      ? 'Me connecter'
+      : 'Créer mon compte';
+
+  }
+
+});
+
+
+// NOTIFICATIONS
+
+const enableNotificationsBtn =
+  document.getElementById('enableNotificationsBtn');
+
+const notificationMessage =
+  document.getElementById('notificationMessage');
+
+enableNotificationsBtn.addEventListener('click', async () => {
+
+  if (!('Notification' in window)) {
+
+    notificationMessage.textContent =
+      'Ton navigateur ne prend pas en charge les notifications.';
+
+    notificationMessage.classList.remove('hidden');
+    return;
+
+  }
+
+  if (!('serviceWorker' in navigator)) {
+
+    notificationMessage.textContent =
+      'Les notifications ne sont pas prises en charge.';
+
+    notificationMessage.classList.remove('hidden');
+    return;
+
+  }
+
+  try {
+
+    enableNotificationsBtn.disabled = true;
+    enableNotificationsBtn.textContent = 'Activation...';
+
+    const permission =
+      await Notification.requestPermission();
+
+    if (permission === 'granted') {
+
+      const registration =
+        await navigator.serviceWorker.ready;
+
+      await registration.showNotification('ViralTime 🔔', {
+
+        body: 'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
+
+      });
+
+      notificationMessage.textContent =
+        'Notifications autorisées avec succès !';
+
+    } else if (permission === 'denied') {
+
+      notificationMessage.textContent =
+        'Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';
+
+    } else {
+
+      notificationMessage.textContent =
+        'Tu n’as pas encore autorisé les notifications.';
+
+    }
+
+    notificationMessage.classList.remove('hidden');
+
+  } catch (error) {
+
+    notificationMessage.textContent =
+      'Erreur : ' + error.message;
+
+    notificationMessage.classList.remove('hidden');
+
+  } finally {
+
+    enableNotificationsBtn.disabled = false;
+
+    enableNotificationsBtn.textContent =
+      'Activer les notifications';
+
+  }
+
+});
+
+
+// NAVIGATION MEILLEURS HORAIRES
+
+document.getElementById('openHoursBtn')
+.addEventListener('click', () => {
+
+  showPage(hoursPage);
+
+});
+
+document.getElementById('backHoursBtn')
+.addEventListener('click', () => {
+
+  showPage(homePage);
+
+});
+
+
+// NAVIGATION CALENDRIER
+
+document.getElementById('openCalendarBtn')
+.addEventListener('click', () => {
+
+  showPage(calendarPage);
+
+});
+
+document.getElementById('backCalendarBtn')
+.addEventListener('click', () => {
+
+  showPage(homePage);
+
+});
+
+
+// NAVIGATION PROFIL
+
+document.getElementById('openProfileBtn')
+.addEventListener('click', () => {
+
+  showPage(profilePage);
+
+});
+
+document.getElementById('backHomeBtn')
+.addEventListener('click', () => {
+
+  showPage(homePage);
+
+});
+
+
+// ENREGISTRER LE PROFIL TIKTOK
+
+const tiktokProfileForm =
+  document.getElementById('tiktokProfileForm');
+
+tiktokProfileForm.addEventListener('submit', async (event) => {
+
+  event.preventDefault();
+
+  const tiktokMessage =
+    document.getElementById('tiktokMessage');
+
+  const saveButton =
+    tiktokProfileForm.querySelector('button[type="submit"]');
+
+  saveButton.disabled = true;
+  saveButton.textContent = 'Enregistrement...';
+
+  tiktokMessage.classList.add('hidden');
+  dashboardMessage.classList.add('hidden');
+
+  try {
+
+    const { data: { user }, error: userError } =
+      await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Connecte-toi pour enregistrer ton profil.');
+    }
+
+    const profile = {
+
+      user_id: user.id,
+
+      username:
+        document.getElementById('tiktokUsername').value.trim(),
+
+      follower_count:
+        Number(document.getElementById('tiktokFollowers').value),
+
+      post_count:
+        Number(document.getElementById('tiktokPosts').value),
+
+      niche:
+        document.getElementById('tiktokNiche').value.trim(),
+
+      audience_country:
+        document.getElementById('tiktokCountry').value.trim(),
+
+      updated_at: new Date().toISOString()
+
+    };
+
+    const { error } = await supabase
+      .from('tiktok_profiles')
+      .upsert(profile, { onConflict: 'user_id' });
+
+    if (error) throw error;
+
+    tiktokMessage.textContent =
+      'Ton profil TikTok a été enregistré avec succès !';
+
+    tiktokMessage.classList.remove('hidden');
+
+    showDashboardMessage(
+      'Ton profil TikTok a été enregistré avec succès !'
+    );
+
+    setTimeout(() => {
+
+      showPage(homePage);
+
+    }, 1000);
+
+  } catch (error) {
+
+    tiktokMessage.textContent =
+      'Erreur : ' + error.message;
+
+    tiktokMessage.classList.remove('hidden');
+
+  } finally {
+
+    saveButton.disabled = false;
+
+    saveButton.textContent =
+      'Enregistrer mon profil';
+
+  }
+
+});
+
+
+// CHARGER LE PROFIL TIKTOK
+
+async function loadTikTokProfile() {
+
+  const { data: { user }, error: userError } =
+    await supabase.auth.getUser();
+
+  if (userError || !user) return;
+
+  const { data, error } = await supabase
+    .from('tiktok_profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (error) {
+
+    console.error(
+      'Erreur de chargement :',
+      error.message
+    );
+
+    return;
+
+  }
+
+  if (!data) return;
+
+  document.getElementById('tiktokUsername').value =
+    data.username || '';
+
+  document.getElementById('tiktokFollowers').value =
+    data.follower_count ?? 0;
+
+  document.getElementById('tiktokPosts').value =
+    data.post_count ?? 0;
+
+  document.getElementById('tiktokNiche').value =
+    data.niche || '';
+
+  document.getElementById('tiktokCountry').value =
+    data.audience_country || '';
+
+}
+
+
+// DECONNEXION
+
+logoutBtn.addEventListener('click', async () => {
+
+  logoutBtn.disabled = true;
+  logoutBtn.textContent = 'Déconnexion...';
+
+  try {
+
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    authForm.reset();
+
+    isLogin = true;
+
+    registrationNameFields.classList.add('hidden');
+
+    firstNameInput.required = false;
+    lastNameInput.required = false;
+
+    formTitle.textContent = 'Se connecter';
+
+    submitBtn.textContent = 'Me connecter';
+
+    switchBtn.textContent = 'Créer un nouveau compte';
+
+    showAuth();
+
+  } catch (error) {
+
+    showDashboardMessage(
+      'Erreur : ' + error.message
+    );
+
+  } finally {
+
+    logoutBtn.disabled = false;
+    logoutBtn.textContent = 'Se déconnecter';
+
+  }
+
+});
+
+
+// VERIFIER LA SESSION EXISTANTE
+
+async function checkSession() {
+
+  const { data, error } =
+    await supabase.auth.getSession();
+
+  if (error) {
+
+    showAuth();
+    return;
+
+  }
+
+  if (data.session) {
+
+    showDashboard(data.session.user);
+
+  } else {
+
+    showAuth();
+
+  }
+
+}
+
+checkSession();
+
+
+// SURVEILLER LES CHANGEMENTS DE CONNEXION
+
+supabase.auth.onAuthStateChange((event, session) => {
+
+  if (session) {
+
+    Promise.resolve().then(() => {
+      showDashboard(session.user);
+    });
+
+  } else if (event === 'SIGNED_OUT') {
+
+    showAuth();
+
+  }
+
+});
+
+</script>
+
+</body>
 </html>
