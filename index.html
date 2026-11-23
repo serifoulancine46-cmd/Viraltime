@@ -160,6 +160,7 @@ small{color:#b9b1d2}
   color:#c4a7ff;
   margin:0 0 10px;
 }
+
 .performance-publication p{
   margin:5px 0;
   font-size:14px;
@@ -757,25 +758,40 @@ import { createClient } from
 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 
+// ======================================
 // SERVICE WORKER
+// ======================================
 
 if ('serviceWorker' in navigator) {
+
   window.addEventListener('load', async () => {
+
     try {
+
       await navigator.serviceWorker.register('./sw.js');
+
       console.log('Service Worker enregistré avec succès');
+
     } catch (error) {
+
       console.error('Erreur Service Worker :', error);
+
     }
+
   });
+
 }
 
 
+// ======================================
 // CONFIGURATION SUPABASE
+// ======================================
 
-const SUPABASE_URL = 'https://ncgdofbgazkvvazljhbn.supabase.co';
+const SUPABASE_URL =
+  'https://ncgdofbgazkvvazljhbn.supabase.co';
 
-const SUPABASE_KEY = 'sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';
+const SUPABASE_KEY =
+  'sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';
 
 const supabase = createClient(
   SUPABASE_URL,
@@ -790,7 +806,9 @@ const supabase = createClient(
 );
 
 
+// ======================================
 // ELEMENTS HTML
+// ======================================
 
 const authSection = document.getElementById('authSection');
 const dashboard = document.getElementById('dashboard');
@@ -831,7 +849,9 @@ const welcomeTitle =
 let isLogin = false;
 
 
+// ======================================
 // ELEMENTS CALENDRIER
+// ======================================
 
 const publicationForm =
   document.getElementById('publicationForm');
@@ -849,7 +869,9 @@ const publicationDateInput =
   document.getElementById('publicationDate');
 
 
+// ======================================
 // ELEMENTS PERFORMANCES
+// ======================================
 
 const performanceForm =
   document.getElementById('performanceForm');
@@ -891,7 +913,9 @@ const totalShares =
   document.getElementById('totalShares');
 
 
-// ELEMENTS CONFIRMATION DE PUBLICATION
+// ======================================
+// ELEMENTS CONFIRMATION PUBLICATION
+// ======================================
 
 const publishedForm =
   document.getElementById('publishedForm');
@@ -912,7 +936,9 @@ const publishedMessage =
   document.getElementById('publishedMessage');
 
 
+// ======================================
 // ELEMENTS ANCIENNES VIDEOS
+// ======================================
 
 const oldVideoForm =
   document.getElementById('oldVideoForm');
@@ -930,7 +956,9 @@ const oldVideoMessage =
   document.getElementById('oldVideoMessage');
 
 
+// ======================================
 // DATE ET HEURE DE COTE D'IVOIRE
+// ======================================
 
 function getLocalDateString() {
 
@@ -951,34 +979,45 @@ function getAbidjanDateTime(date, time) {
 
 publicationDateInput.min = getLocalDateString();
 
-// Une ancienne vidéo ne peut pas avoir une date future.
 oldVideoDate.max = getLocalDateString();
 
 
+// ======================================
 // MESSAGES
+// ======================================
 
 function showMessage(text) {
+
   message.textContent = text;
   message.classList.remove('hidden');
+
 }
 
 function showDashboardMessage(text) {
+
   dashboardMessage.textContent = text;
   dashboardMessage.classList.remove('hidden');
+
 }
 
 function showPublicationMessage(text) {
+
   publicationMessage.textContent = text;
   publicationMessage.classList.remove('hidden');
+
 }
 
 function showPerformanceMessage(text) {
+
   performanceMessage.textContent = text;
   performanceMessage.classList.remove('hidden');
+
 }
 
 
-// NAVIGATION : AFFICHER UNE SEULE PAGE
+// ======================================
+// NAVIGATION
+// ======================================
 
 function showPage(page) {
 
@@ -1001,7 +1040,9 @@ function showPage(page) {
 }
 
 
+// ======================================
 // AFFICHER LE TABLEAU DE BORD
+// ======================================
 
 function showDashboard(user) {
 
@@ -1025,7 +1066,9 @@ function showDashboard(user) {
 }
 
 
+// ======================================
 // AFFICHER LE FORMULAIRE
+// ======================================
 
 function showAuth() {
 
@@ -1035,7 +1078,9 @@ function showAuth() {
 }
 
 
+// ======================================
 // CHANGER ENTRE INSCRIPTION ET CONNEXION
+// ======================================
 
 switchBtn.addEventListener('click', () => {
 
@@ -1063,7 +1108,9 @@ switchBtn.addEventListener('click', () => {
 });
 
 
+// ======================================
 // INSCRIPTION ET CONNEXION
+// ======================================
 
 authForm.addEventListener('submit', async (event) => {
 
@@ -1162,7 +1209,9 @@ authForm.addEventListener('submit', async (event) => {
 });
 
 
+// ======================================
 // NOTIFICATIONS
+// ======================================
 
 const enableNotificationsBtn =
   document.getElementById('enableNotificationsBtn');
@@ -1247,7 +1296,9 @@ enableNotificationsBtn.addEventListener('click', async () => {
 });
 
 
+// ======================================
 // NAVIGATION MEILLEURS HORAIRES
+// ======================================
 
 document.getElementById('openHoursBtn')
 .addEventListener('click', () => {
@@ -1264,7 +1315,9 @@ document.getElementById('backHoursBtn')
 });
 
 
+// ======================================
 // NAVIGATION CALENDRIER
+// ======================================
 
 document.getElementById('openCalendarBtn')
 .addEventListener('click', () => {
@@ -1281,7 +1334,9 @@ document.getElementById('backCalendarBtn')
 });
 
 
+// ======================================
 // NAVIGATION PERFORMANCES
+// ======================================
 
 document.getElementById('openPerformanceBtn')
 .addEventListener('click', () => {
@@ -1298,7 +1353,9 @@ document.getElementById('backPerformanceBtn')
 });
 
 
+// ======================================
 // NAVIGATION PROFIL
+// ======================================
 
 document.getElementById('openProfileBtn')
 .addEventListener('click', () => {
@@ -1315,7 +1372,9 @@ document.getElementById('backHomeBtn')
 });
 
 
-// PROGRAMMER UNE PUBLICATION DANS SUPABASE
+// ======================================
+// PROGRAMMER UNE PUBLICATION
+// ======================================
 
 publicationForm.addEventListener('submit', async (event) => {
 
@@ -1420,7 +1479,9 @@ publicationForm.addEventListener('submit', async (event) => {
 });
 
 
-// CHARGER LES PUBLICATIONS DE L'UTILISATEUR
+// ======================================
+// CHARGER LES PUBLICATIONS
+// ======================================
 
 async function loadPublications() {
 
@@ -1580,8 +1641,6 @@ async function loadPerformanceData() {
       throw new Error('Connecte-toi pour consulter tes performances.');
     }
 
-    // CHARGER LES PUBLICATIONS
-
     const { data: publications, error: publicationsError } =
       await supabase
         .from('publications')
@@ -1592,7 +1651,7 @@ async function loadPerformanceData() {
     if (publicationsError) throw publicationsError;
 
 
-    // REMPLIR LE FORMULAIRE DE CONFIRMATION
+    // FORMULAIRE DE CONFIRMATION
 
     publishedPublication.innerHTML = '';
 
@@ -1617,7 +1676,7 @@ async function loadPerformanceData() {
     });
 
 
-    // REMPLIR LE FORMULAIRE DES STATISTIQUES
+    // FORMULAIRE DES STATISTIQUES
 
     performancePublication.innerHTML = '';
 
@@ -1655,7 +1714,7 @@ async function loadPerformanceData() {
     });
 
 
-    // CHARGER LES STATISTIQUES ENREGISTREES
+    // CHARGER LES STATISTIQUES
 
     const { data: performances, error: performanceError } =
       await supabase
@@ -1784,8 +1843,6 @@ async function loadPerformanceData() {
 
     }
 
-    // CHARGER LES STATISTIQUES DE LA PREMIERE PUBLICATION
-
     await loadSelectedPerformance();
 
   } catch (error) {
@@ -1823,7 +1880,11 @@ oldVideoForm.addEventListener('submit', async (event) => {
   saveOldVideoBtn.disabled = true;
   saveOldVideoBtn.textContent = 'Enregistrement...';
 
+  let createdPublicationId = null;
+
   try {
+
+    // VERIFIER L'UTILISATEUR
 
     const {
       data: { user },
@@ -1836,26 +1897,34 @@ oldVideoForm.addEventListener('submit', async (event) => {
       throw new Error('Tu dois être connecté.');
     }
 
+    // VERIFIER LA DATE
+
     if (!date) {
       throw new Error('Choisis la date réelle de publication.');
     }
 
     if (date > getLocalDateString()) {
-      throw new Error('La date de publication ne peut pas être dans le futur.');
+      throw new Error(
+        'La date de publication ne peut pas être dans le futur.'
+      );
     }
+
+    const parsedDate = new Date(date + 'T00:00:00+00:00');
+
+    if (
+      Number.isNaN(parsedDate.getTime()) ||
+      parsedDate.toISOString().slice(0, 10) !== date
+    ) {
+      throw new Error('La date choisie est invalide.');
+    }
+
+    // VERIFIER LE NOMBRE DE VUES
 
     if (!Number.isSafeInteger(views) || views < 0) {
       throw new Error('Entre un nombre de vues valide.');
     }
 
-    // La date seule est enregistrée à minuit,
-    // en heure de Côte d'Ivoire (UTC+0).
-
-    const publicationDate = new Date(date + 'T00:00:00+00:00');
-
-    if (Number.isNaN(publicationDate.getTime())) {
-      throw new Error('La date choisie est invalide.');
-    }
+    const publicationDate = parsedDate.toISOString();
 
     // CREER UNE PUBLICATION DEJA PUBLIEE
 
@@ -1868,8 +1937,8 @@ oldVideoForm.addEventListener('submit', async (event) => {
           title: 'Ancienne vidéo TikTok',
           description: 'Vidéo ajoutée directement dans Performances.',
           content_type: 'Vidéo',
-          scheduled_at: publicationDate.toISOString(),
-          published_at: publicationDate.toISOString(),
+          scheduled_at: publicationDate,
+          published_at: publicationDate,
           status: 'publiée'
 
         })
@@ -1878,7 +1947,13 @@ oldVideoForm.addEventListener('submit', async (event) => {
 
     if (publicationError) throw publicationError;
 
-    // ENREGISTRER LE NOMBRE DE VUES
+    if (!publication || !publication.id) {
+      throw new Error('La publication n’a pas pu être créée correctement.');
+    }
+
+    createdPublicationId = publication.id;
+
+    // ENREGISTRER LES VUES
 
     const { error: performanceError } =
       await supabase
@@ -1897,27 +1972,49 @@ oldVideoForm.addEventListener('submit', async (event) => {
 
     if (performanceError) {
 
+      // TENTER D'ANNULER LA PUBLICATION INCOMPLETE
+
+      const { error: rollbackError } = await supabase
+        .from('publications')
+        .delete()
+        .eq('id', createdPublicationId)
+        .eq('user_id', user.id);
+
+      if (rollbackError) {
+
+        throw new Error(
+          'Les vues n’ont pas été enregistrées et la publication créée n’a pas pu être supprimée automatiquement. Ne recommence pas cette opération avant de vérifier dans Supabase. Erreur : ' +
+          performanceError.message +
+          ' | Suppression : ' +
+          rollbackError.message
+        );
+
+      }
+
+      createdPublicationId = null;
+
       throw new Error(
-        'La vidéo a été créée, mais les vues n’ont pas été enregistrées. Ne soumets pas une deuxième fois cette vidéo. Erreur : ' +
+        'L’enregistrement des vues a échoué. La publication incomplète a été supprimée. Tu peux vérifier puis réessayer. Détail : ' +
         performanceError.message
       );
 
     }
 
-    // REINITIALISER LE FORMULAIRE
+    // LES DEUX ENREGISTREMENTS SONT REUSSIS
 
     oldVideoForm.reset();
+
     oldVideoDate.max = getLocalDateString();
-
-    // ACTUALISER LES DONNEES
-
-    await loadPerformanceData();
-    await loadPublications();
 
     oldVideoMessage.textContent =
       'Ancienne vidéo et nombre de vues enregistrés avec succès !';
 
     oldVideoMessage.classList.remove('hidden');
+
+    // ACTUALISER LES DONNEES
+
+    await loadPerformanceData();
+    await loadPublications();
 
   } catch (error) {
 
@@ -1974,8 +2071,6 @@ publishedForm.addEventListener('submit', async (event) => {
       throw new Error('Choisis une publication, une date et une heure.');
     }
 
-    // DATE ET HEURE EN UTC+0 : COTE D'IVOIRE
-
     const publishedDateTime =
       getAbidjanDateTime(date, time);
 
@@ -2008,8 +2103,6 @@ publishedForm.addEventListener('submit', async (event) => {
       );
     }
 
-    // RECHARGER LES DONNEES
-
     await loadPerformanceData();
     await loadPublications();
 
@@ -2039,7 +2132,9 @@ publishedForm.addEventListener('submit', async (event) => {
 });
 
 
-// CHARGER LES STATISTIQUES DE LA PUBLICATION SELECTIONNEE
+// ======================================
+// CHARGER LES STATISTIQUES SELECTIONNEES
+// ======================================
 
 async function loadSelectedPerformance() {
 
@@ -2101,7 +2196,9 @@ async function loadSelectedPerformance() {
 }
 
 
+// ======================================
 // CHANGER DE PUBLICATION
+// ======================================
 
 performancePublication.addEventListener('change', () => {
 
@@ -2110,7 +2207,9 @@ performancePublication.addEventListener('change', () => {
 });
 
 
+// ======================================
 // ENREGISTRER OU ACTUALISER LES STATISTIQUES
+// ======================================
 
 performanceForm.addEventListener('submit', async (event) => {
 
@@ -2208,7 +2307,9 @@ performanceForm.addEventListener('submit', async (event) => {
 });
 
 
+// ======================================
 // ENREGISTRER LE PROFIL TIKTOK
+// ======================================
 
 const tiktokProfileForm =
   document.getElementById('tiktokProfileForm');
@@ -2303,7 +2404,9 @@ tiktokProfileForm.addEventListener('submit', async (event) => {
 });
 
 
+// ======================================
 // CHARGER LE PROFIL TIKTOK
+// ======================================
 
 async function loadTikTokProfile() {
 
@@ -2349,7 +2452,9 @@ async function loadTikTokProfile() {
 }
 
 
+// ======================================
 // DECONNEXION
+// ======================================
 
 logoutBtn.addEventListener('click', async () => {
 
@@ -2395,7 +2500,9 @@ logoutBtn.addEventListener('click', async () => {
 });
 
 
+// ======================================
 // VERIFIER LA SESSION EXISTANTE
+// ======================================
 
 async function checkSession() {
 
@@ -2424,7 +2531,9 @@ async function checkSession() {
 checkSession();
 
 
+// ======================================
 // SURVEILLER LES CHANGEMENTS DE CONNEXION
+// ======================================
 
 supabase.auth.onAuthStateChange((event, session) => {
 
