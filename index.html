@@ -160,7 +160,6 @@ small{color:#b9b1d2}
   color:#c4a7ff;
   margin:0 0 10px;
 }
-
 .performance-publication p{
   margin:5px 0;
   font-size:14px;
@@ -493,6 +492,49 @@ small{color:#b9b1d2}
       </form>
 
       <div id="publishedMessage" class="message hidden" role="status"></div>
+
+
+      <!-- AJOUTER UNE ANCIENNE VIDEO TIKTOK -->
+
+      <h3>➕ Ajouter une ancienne vidéo TikTok</h3>
+
+      <p>
+        Tu peux enregistrer une vidéo déjà publiée sur TikTok,
+        même si elle n'a jamais été programmée dans ViralTime.
+      </p>
+
+      <form id="oldVideoForm">
+
+        <label class="performance-label" for="oldVideoDate">
+          📅 Date réelle de publication
+        </label>
+
+        <input
+          id="oldVideoDate"
+          type="date"
+          required
+        >
+
+        <label class="performance-label" for="oldVideoViews">
+          👁️ Nombre de vues
+        </label>
+
+        <input
+          id="oldVideoViews"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Exemple : 1500"
+          required
+        >
+
+        <button id="saveOldVideoBtn" type="submit">
+          Enregistrer cette vidéo
+        </button>
+
+      </form>
+
+      <div id="oldVideoMessage" class="message hidden" role="status"></div>
 
 
       <!-- FORMULAIRE DES STATISTIQUES -->
@@ -870,6 +912,24 @@ const publishedMessage =
   document.getElementById('publishedMessage');
 
 
+// ELEMENTS ANCIENNES VIDEOS
+
+const oldVideoForm =
+  document.getElementById('oldVideoForm');
+
+const oldVideoDate =
+  document.getElementById('oldVideoDate');
+
+const oldVideoViews =
+  document.getElementById('oldVideoViews');
+
+const saveOldVideoBtn =
+  document.getElementById('saveOldVideoBtn');
+
+const oldVideoMessage =
+  document.getElementById('oldVideoMessage');
+
+
 // DATE ET HEURE DE COTE D'IVOIRE
 
 function getLocalDateString() {
@@ -890,6 +950,9 @@ function getAbidjanDateTime(date, time) {
 }
 
 publicationDateInput.min = getLocalDateString();
+
+// Une ancienne vidéo ne peut pas avoir une date future.
+oldVideoDate.max = getLocalDateString();
 
 
 // MESSAGES
@@ -1422,45 +1485,42 @@ async function loadPublications() {
 
       const date = document.createElement('p');
 
-      const scheduledDate = new Date(publication.scheduled_at);
+      if (publication.status === 'publiée' && publication.published_at) {
 
-      if (!Number.isNaN(scheduledDate.getTime())) {
+        const realDate = new Date(publication.published_at);
 
         date.textContent =
-          'Date programmée : ' +
-          scheduledDate.toLocaleString('fr-FR', {
+          'Date réelle de publication : ' +
+          realDate.toLocaleDateString('fr-FR', {
             timeZone: 'Africa/Abidjan',
-            dateStyle: 'long',
-            timeStyle: 'short'
+            dateStyle: 'long'
           });
 
       } else {
 
-        date.textContent = 'Date non disponible';
+        const scheduledDate = new Date(publication.scheduled_at);
+
+        if (!Number.isNaN(scheduledDate.getTime())) {
+
+          date.textContent =
+            'Date programmée : ' +
+            scheduledDate.toLocaleString('fr-FR', {
+              timeZone: 'Africa/Abidjan',
+              dateStyle: 'long',
+              timeStyle: 'short'
+            });
+
+        } else {
+
+          date.textContent = 'Date non disponible';
+
+        }
 
       }
 
       const status = document.createElement('p');
       status.textContent =
         'Statut : ' + (publication.status || 'Non précisé');
-
-      if (publication.published_at) {
-
-        const realDate = new Date(publication.published_at);
-
-        const publishedInfo = document.createElement('p');
-
-        publishedInfo.textContent =
-          'Date réelle de publication : ' +
-          realDate.toLocaleString('fr-FR', {
-            timeZone: 'Africa/Abidjan',
-            dateStyle: 'long',
-            timeStyle: 'short'
-          });
-
-        item.appendChild(publishedInfo);
-
-      }
 
       item.appendChild(title);
       item.appendChild(description);
@@ -1571,7 +1631,7 @@ async function loadPerformanceData() {
       performancePublication.appendChild(option);
 
       performanceList.textContent =
-        'Programme d’abord une publication dans ton calendrier.';
+        'Ajoute une ancienne vidéo ou programme une publication dans ton calendrier.';
 
       totalViews.textContent = '0';
       totalLikes.textContent = '0';
@@ -1745,6 +1805,139 @@ async function loadPerformanceData() {
   }
 
 }
+
+
+// ======================================
+// AJOUTER UNE ANCIENNE VIDEO TIKTOK
+// ======================================
+
+oldVideoForm.addEventListener('submit', async (event) => {
+
+  event.preventDefault();
+
+  oldVideoMessage.classList.add('hidden');
+
+  const date = oldVideoDate.value;
+  const views = Number(oldVideoViews.value);
+
+  saveOldVideoBtn.disabled = true;
+  saveOldVideoBtn.textContent = 'Enregistrement...';
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Tu dois être connecté.');
+    }
+
+    if (!date) {
+      throw new Error('Choisis la date réelle de publication.');
+    }
+
+    if (date > getLocalDateString()) {
+      throw new Error('La date de publication ne peut pas être dans le futur.');
+    }
+
+    if (!Number.isSafeInteger(views) || views < 0) {
+      throw new Error('Entre un nombre de vues valide.');
+    }
+
+    // La date seule est enregistrée à minuit,
+    // en heure de Côte d'Ivoire (UTC+0).
+
+    const publicationDate = new Date(date + 'T00:00:00+00:00');
+
+    if (Number.isNaN(publicationDate.getTime())) {
+      throw new Error('La date choisie est invalide.');
+    }
+
+    // CREER UNE PUBLICATION DEJA PUBLIEE
+
+    const { data: publication, error: publicationError } =
+      await supabase
+        .from('publications')
+        .insert({
+
+          user_id: user.id,
+          title: 'Ancienne vidéo TikTok',
+          description: 'Vidéo ajoutée directement dans Performances.',
+          content_type: 'Vidéo',
+          scheduled_at: publicationDate.toISOString(),
+          published_at: publicationDate.toISOString(),
+          status: 'publiée'
+
+        })
+        .select('id')
+        .single();
+
+    if (publicationError) throw publicationError;
+
+    // ENREGISTRER LE NOMBRE DE VUES
+
+    const { error: performanceError } =
+      await supabase
+        .from('publication_performance')
+        .insert({
+
+          publication_id: publication.id,
+          user_id: user.id,
+          views: views,
+          likes: 0,
+          comments: 0,
+          shares: 0,
+          updated_at: new Date().toISOString()
+
+        });
+
+    if (performanceError) {
+
+      throw new Error(
+        'La vidéo a été créée, mais les vues n’ont pas été enregistrées. Ne soumets pas une deuxième fois cette vidéo. Erreur : ' +
+        performanceError.message
+      );
+
+    }
+
+    // REINITIALISER LE FORMULAIRE
+
+    oldVideoForm.reset();
+    oldVideoDate.max = getLocalDateString();
+
+    // ACTUALISER LES DONNEES
+
+    await loadPerformanceData();
+    await loadPublications();
+
+    oldVideoMessage.textContent =
+      'Ancienne vidéo et nombre de vues enregistrés avec succès !';
+
+    oldVideoMessage.classList.remove('hidden');
+
+  } catch (error) {
+
+    console.error('Erreur ancienne vidéo :', error);
+
+    oldVideoMessage.textContent =
+      'Erreur : ' + error.message;
+
+    oldVideoMessage.classList.remove('hidden');
+
+  } finally {
+
+    saveOldVideoBtn.disabled = false;
+
+    saveOldVideoBtn.textContent =
+      'Enregistrer cette vidéo';
+
+  }
+
+});
 
 
 // ======================================
