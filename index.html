@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#17132c">
 <title>ViralTime</title>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#100e1b;color:white;font-family:Arial,sans-serif}
@@ -41,23 +40,17 @@ small{color:#b9b1d2}
 .hours-result{border-left:3px solid #9b83ff;padding:10px 12px;margin:12px 0;background:#282143;border-radius:0 10px 10px 0}
 </style>
 </head>
-
 <body>
 <main>
-
 <header>
   <div class="logo">◷</div>
-  <div>
-    <strong>ViralTime</strong><br>
-    <small>Publie au bon moment.</small>
-  </div>
+  <div><strong>ViralTime</strong><br><small>Publie au bon moment.</small></div>
 </header>
 
 <section id="authSection" class="card">
   <h1 id="formTitle">Créer ton compte</h1>
   <p>Rejoins ViralTime et prépare tes publications.</p>
   <p>Le mot de passe demandé sert uniquement à ton compte ViralTime. Ne communique jamais ton mot de passe TikTok.</p>
-
   <form id="authForm">
     <div id="registrationNameFields">
       <input id="firstName" type="text" placeholder="Ton prénom" autocomplete="given-name" required>
@@ -67,49 +60,24 @@ small{color:#b9b1d2}
     <input id="password" type="password" placeholder="Mot de passe (6 caractères minimum)" minlength="6" autocomplete="current-password" required>
     <button id="submitBtn" type="submit">Créer mon compte</button>
   </form>
-
   <button id="switchBtn" class="secondary" type="button">J'ai déjà un compte : me connecter</button>
   <div id="message" class="message hidden" role="status"></div>
 </section>
 
 <section id="dashboard" class="hidden">
-
   <div id="homePage">
     <h1 id="welcomeTitle">Bienvenue, Créateur 👋</h1>
-
     <div class="card">
       <h2>🔔 Notifications</h2>
       <p>Reçois un rappel lorsqu'il est temps de publier.</p>
       <button id="enableNotificationsBtn" type="button">Activer les notifications</button>
       <div id="notificationMessage" class="message hidden"></div>
     </div>
-
     <p>Ton espace pour mieux planifier tes publications.</p>
-
-    <div class="card">
-      <h2>🕒 Meilleurs horaires</h2>
-      <p>Trouve tes heures de publication.</p>
-      <button id="openHoursBtn" type="button" class="secondary">Découvrir</button>
-    </div>
-
-    <div class="card">
-      <h2>📅 Calendrier</h2>
-      <p>Organise tes prochaines publications.</p>
-      <button id="openCalendarBtn" type="button" class="secondary">Ouvrir</button>
-    </div>
-
-    <div class="card">
-      <h2>📊 Performances</h2>
-      <p>Suis tes résultats.</p>
-      <button id="openPerformanceBtn" type="button" class="secondary">Voir mes résultats</button>
-    </div>
-
-    <div class="card">
-      <h2>👤 Mon profil</h2>
-      <p>Personnalise ton espace.</p>
-      <button id="openProfileBtn" type="button">Mon profil</button>
-    </div>
-
+    <div class="card"><h2>🕒 Meilleurs horaires</h2><p>Trouve tes heures de publication.</p><button id="openHoursBtn" type="button" class="secondary">Découvrir</button></div>
+    <div class="card"><h2>📅 Calendrier</h2><p>Organise tes prochaines publications.</p><button id="openCalendarBtn" type="button" class="secondary">Ouvrir</button></div>
+    <div class="card"><h2>📊 Performances</h2><p>Suis tes résultats.</p><button id="openPerformanceBtn" type="button" class="secondary">Voir mes résultats</button></div>
+    <div class="card"><h2>👤 Mon profil</h2><p>Personnalise ton espace.</p><button id="openProfileBtn" type="button">Mon profil</button></div>
     <p>Aperçu du futur tableau de bord — les fonctions restent à développer.</p>
   </div>
 
@@ -118,33 +86,21 @@ small{color:#b9b1d2}
       <h2>📅 Mon calendrier</h2>
       <p>Organise et planifie tes prochaines publications TikTok.</p>
       <h3>➕ Programmer une publication</h3>
-
       <form id="publicationForm">
         <input id="publicationTitle" type="text" placeholder="Titre de ta publication" required>
         <input id="publicationDescription" type="text" placeholder="Description de la publication">
         <select id="publicationType" required>
-          <option value="Vidéo">Vidéo</option>
-          <option value="Photo">Photo</option>
-          <option value="Texte">Texte</option>
-          <option value="Live">Live</option>
+          <option value="Vidéo">Vidéo</option><option value="Photo">Photo</option><option value="Texte">Texte</option><option value="Live">Live</option>
         </select>
         <input id="publicationDate" type="date" required>
         <input id="publicationTime" type="time" required>
         <button id="publicationSubmitBtn" type="submit">Programmer</button>
       </form>
-
       <div id="publicationMessage" class="message hidden"></div>
     </div>
-
-    <div class="card">
-      <h3>📋 Mes publications</h3>
-      <div id="publicationsList"><p>Aucune publication affichée pour le moment.</p></div>
-    </div>
-
+    <div class="card"><h3>📋 Mes publications</h3><div id="publicationsList"><p>Aucune publication affichée pour le moment.</p></div></div>
     <button id="backCalendarBtn" class="secondary" type="button">Retour à l'accueil</button>
   </div>
-
-  <!-- MEILLEURS HORAIRES AMELIORES -->
 
   <div id="hoursPage" class="hidden">
     <div class="card">
@@ -152,50 +108,39 @@ small{color:#b9b1d2}
       <p>ViralTime combine des repères internationaux à tester et les résultats de tes propres publications.</p>
 
       <h3>🌍 Repères internationaux</h3>
-      <p class="hours-note">Ces créneaux sont des plages indicatives de test, exprimées dans l'heure locale de chaque région. Ils ne représentent pas des statistiques officielles de TikTok et ne garantissent pas des vues.</p>
+      <p class="hours-note">Ces plages sont des hypothèses de test, exprimées dans l'heure locale de chaque région. Elles ne sont pas des statistiques officielles de TikTok et ne garantissent pas des vues.</p>
 
       <div class="hours-card">
         <h3>🌍 Afrique de l'Ouest</h3>
-        <span class="hours-tag">12h00 – 14h00</span>
-        <span class="hours-tag">18h00 – 21h00</span>
+        <span class="hours-tag">12h00 – 14h00</span><span class="hours-tag">18h00 – 21h00</span>
         <p class="hours-note">À tester selon les habitudes de ton audience dans cette région.</p>
       </div>
-
       <div class="hours-card">
         <h3>🇪🇺 Europe</h3>
-        <span class="hours-tag">12h00 – 14h00</span>
-        <span class="hours-tag">18h00 – 21h00</span>
+        <span class="hours-tag">12h00 – 14h00</span><span class="hours-tag">18h00 – 21h00</span>
         <p class="hours-note">Heures locales des pays européens ciblés.</p>
       </div>
-
       <div class="hours-card">
         <h3>🌎 Amérique du Nord</h3>
-        <span class="hours-tag">12h00 – 14h00</span>
-        <span class="hours-tag">18h00 – 21h00</span>
-        <p class="hours-note">Heures locales du pays ou de la zone que tu souhaites toucher.</p>
+        <span class="hours-tag">12h00 – 14h00</span><span class="hours-tag">18h00 – 21h00</span>
+        <p class="hours-note">Heures locales du pays ou de la zone ciblée.</p>
       </div>
-
       <div class="hours-card">
         <h3>🌏 Asie</h3>
-        <span class="hours-tag">12h00 – 14h00</span>
-        <span class="hours-tag">18h00 – 21h00</span>
+        <span class="hours-tag">12h00 – 14h00</span><span class="hours-tag">18h00 – 21h00</span>
         <p class="hours-note">Heures locales du marché visé.</p>
       </div>
 
       <div class="hours-card">
-        <h3>⚠️ Important pour une audience mondiale</h3>
-        <p class="hours-note">Une même heure ne correspond pas au même moment dans tous les pays. Pour toucher plusieurs régions, il faudra tenir compte des fuseaux horaires et, à terme, des pays réels de ton audience.</p>
+        <h3>🌐 Comprendre les fuseaux horaires</h3>
+        <p class="hours-note">Une même heure ne correspond pas au même moment dans tous les pays. Les horaires ciblés ci-dessous sont convertis en heure de Côte d'Ivoire lorsque le fuseau du pays est connu.</p>
+        <div id="audienceHoursAnalysis"><p class="hours-note">Chargement du pays d'audience...</p></div>
       </div>
 
       <h3>🎯 Analyse de tes performances</h3>
-      <p>ViralTime étudie les publications dont tu as enregistré les statistiques pour repérer les jours et heures qui ont obtenu les meilleurs résultats.</p>
-
-      <div id="personalHoursAnalysis">
-        <div class="message">Chargement de ton analyse personnalisée...</div>
-      </div>
-
+      <p>ViralTime étudie les publications dont tu as enregistré les statistiques. Pour éviter les conclusions trop rapides, un créneau doit avoir au moins deux publications pour être classé.</p>
+      <div id="personalHoursAnalysis"><div class="message">Chargement de ton analyse personnalisée...</div></div>
       <button id="refreshHoursBtn" type="button">Actualiser mon analyse</button>
-
       <button id="backHoursBtn" class="secondary" type="button">Retour à l'accueil</button>
     </div>
   </div>
@@ -204,91 +149,53 @@ small{color:#b9b1d2}
     <div class="card">
       <h2>📊 Mes performances</h2>
       <p>Enregistre les résultats de tes publications TikTok.</p>
-
       <h3>📌 Confirmer une publication</h3>
       <form id="publishedForm">
         <label class="performance-label" for="publishedPublication">Choisir la publication</label>
-        <select id="publishedPublication" required>
-          <option value="">Chargement des publications...</option>
-        </select>
-
+        <select id="publishedPublication" required><option value="">Chargement des publications...</option></select>
         <label class="performance-label" for="publishedDate">Date réelle de publication</label>
         <input id="publishedDate" type="date" required>
-
         <label class="performance-label" for="publishedTime">Heure réelle de publication</label>
         <input id="publishedTime" type="time" required>
-
         <button id="confirmPublishedBtn" type="submit">Confirmer comme publiée</button>
       </form>
-
       <div id="publishedMessage" class="message hidden" role="status"></div>
 
       <h3>➕ Ajouter une ancienne vidéo TikTok</h3>
       <p>Tu peux enregistrer une vidéo déjà publiée sur TikTok, même si elle n'a jamais été programmée dans ViralTime.</p>
-
       <form id="oldVideoForm">
         <label class="performance-label" for="oldVideoDate">📅 Date réelle de publication</label>
         <input id="oldVideoDate" type="date" required>
-
         <label class="performance-label" for="oldVideoViews">👁️ Nombre de vues</label>
         <input id="oldVideoViews" type="number" min="0" step="1" placeholder="Exemple : 1500" required>
-
         <button id="saveOldVideoBtn" type="submit">Enregistrer cette vidéo</button>
       </form>
-
       <div id="oldVideoMessage" class="message hidden" role="status"></div>
 
       <h3>➕ Ajouter ou actualiser des statistiques</h3>
       <form id="performanceForm">
         <label class="performance-label" for="performancePublication">Choisir une publication</label>
-        <select id="performancePublication" required>
-          <option value="">Chargement des publications...</option>
-        </select>
-
+        <select id="performancePublication" required><option value="">Chargement des publications...</option></select>
         <label class="performance-label" for="performanceViews">👁️ Nombre de vues</label>
         <input id="performanceViews" type="number" min="0" step="1" value="0" required>
-
         <label class="performance-label" for="performanceLikes">❤️ Mentions J'aime</label>
         <input id="performanceLikes" type="number" min="0" step="1" value="0" required>
-
         <label class="performance-label" for="performanceComments">💬 Commentaires</label>
         <input id="performanceComments" type="number" min="0" step="1" value="0" required>
-
         <label class="performance-label" for="performanceShares">🔄 Partages</label>
         <input id="performanceShares" type="number" min="0" step="1" value="0" required>
-
         <button id="savePerformanceBtn" type="submit">Enregistrer les statistiques</button>
       </form>
-
       <div id="performanceMessage" class="message hidden"></div>
     </div>
-
     <div class="card">
       <h3>📈 Résultats enregistrés</h3>
-
-      <div class="performance-item">
-        <h3>👁️ Total des vues</h3>
-        <div id="totalViews" class="performance-value">0</div>
-      </div>
-
-      <div class="performance-item">
-        <h3>❤️ Total des likes</h3>
-        <div id="totalLikes" class="performance-value">0</div>
-      </div>
-
-      <div class="performance-item">
-        <h3>💬 Total des commentaires</h3>
-        <div id="totalComments" class="performance-value">0</div>
-      </div>
-
-      <div class="performance-item">
-        <h3>🔄 Total des partages</h3>
-        <div id="totalShares" class="performance-value">0</div>
-      </div>
-
+      <div class="performance-item"><h3>👁️ Total des vues</h3><div id="totalViews" class="performance-value">0</div></div>
+      <div class="performance-item"><h3>❤️ Total des likes</h3><div id="totalLikes" class="performance-value">0</div></div>
+      <div class="performance-item"><h3>💬 Total des commentaires</h3><div id="totalComments" class="performance-value">0</div></div>
+      <div class="performance-item"><h3>🔄 Total des partages</h3><div id="totalShares" class="performance-value">0</div></div>
       <h3>Mes publications suivies</h3>
       <div id="performanceList"><p>Aucune statistique enregistrée pour le moment.</p></div>
-
       <button id="backPerformanceBtn" class="secondary" type="button">Retour à l'accueil</button>
     </div>
   </div>
@@ -297,7 +204,6 @@ small{color:#b9b1d2}
     <div class="card">
       <h2>🎵 Mon profil TikTok</h2>
       <p>Renseigne les informations de ton compte.</p>
-
       <form id="tiktokProfileForm">
         <input id="tiktokUsername" type="text" placeholder="Nom d'utilisateur TikTok" required>
         <input id="tiktokFollowers" type="number" min="0" placeholder="Nombre d'abonnés" required>
@@ -306,1649 +212,843 @@ small{color:#b9b1d2}
         <input id="tiktokCountry" type="text" placeholder="Pays de ton audience">
         <button type="submit">Enregistrer mon profil</button>
       </form>
-
       <div id="tiktokMessage" class="message hidden"></div>
       <button id="backHomeBtn" class="secondary" type="button">Retour à l'accueil</button>
     </div>
   </div>
 
   <div class="card">
-    <h2>Ton compte</h2>
-    <p id="userEmail"></p>
-    <p>Tu es connecté à ViralTime.</p>
+    <h2>Ton compte</h2><p id="userEmail"></p><p>Tu es connecté à ViralTime.</p>
     <button id="logoutBtn" class="secondary" type="button">Se déconnecter</button>
     <div id="dashboardMessage" class="message hidden"></div>
   </div>
-
 </section>
 
 <p style="text-align:center;font-size:12px">ViralTime · Version de développement</p>
-<p style="text-align:center;font-size:13px">
-  <a href="./confidentialite.html" style="color:#c4a7ff;text-decoration:underline">Politique de confidentialité</a>
-</p>
-
+<p style="text-align:center;font-size:13px"><a href="./confidentialite.html" style="color:#c4a7ff;text-decoration:underline">Politique de confidentialité</a></p>
 </main>
 
 <script type="module">
-
-import { createClient } from
-'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-// ======================================
-// SERVICE WORKER
-// ======================================
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
-    try {
-      await navigator.serviceWorker.register('./sw.js');
-      console.log('Service Worker enregistré avec succès');
-    } catch (error) {
-      console.error('Erreur Service Worker :', error);
-    }
+    try { await navigator.serviceWorker.register('./sw.js'); }
+    catch (error) { console.error('Erreur Service Worker :', error); }
   });
 }
 
-// ======================================
-// CONFIGURATION SUPABASE
-// ======================================
+const SUPABASE_URL='https://ncgdofbgazkvvazljhbn.supabase.co';
+const SUPABASE_KEY='sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+});
 
-const SUPABASE_URL =
-  'https://ncgdofbgazkvvazljhbn.supabase.co';
+const $=id=>document.getElementById(id);
+const authSection=$('authSection'),dashboard=$('dashboard');
+const authForm=$('authForm'),formTitle=$('formTitle'),submitBtn=$('submitBtn');
+const switchBtn=$('switchBtn'),message=$('message');
+const userEmail=$('userEmail'),dashboardMessage=$('dashboardMessage');
+const logoutBtn=$('logoutBtn');
+const homePage=$('homePage'),profilePage=$('profilePage');
+const hoursPage=$('hoursPage'),calendarPage=$('calendarPage');
+const performancePage=$('performancePage');
+const registrationNameFields=$('registrationNameFields');
+const firstNameInput=$('firstName'),lastNameInput=$('lastName');
+const welcomeTitle=$('welcomeTitle');
+let isLogin=false;
 
-const SUPABASE_KEY =
-  'sb_publishable_TS4oSDHFG0nz9PxfR-dQdg_mzUKqViA';
+const publicationForm=$('publicationForm');
+const publicationMessage=$('publicationMessage');
+const publicationsList=$('publicationsList');
+const publicationSubmitBtn=$('publicationSubmitBtn');
+const publicationDateInput=$('publicationDate');
 
-const supabase = createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
-  }
-);
+const performanceForm=$('performanceForm');
+const performancePublication=$('performancePublication');
+const performanceViews=$('performanceViews');
+const performanceLikes=$('performanceLikes');
+const performanceComments=$('performanceComments');
+const performanceShares=$('performanceShares');
+const savePerformanceBtn=$('savePerformanceBtn');
+const performanceMessage=$('performanceMessage');
+const performanceList=$('performanceList');
+const totalViews=$('totalViews'),totalLikes=$('totalLikes');
+const totalComments=$('totalComments'),totalShares=$('totalShares');
 
-// ======================================
-// ELEMENTS HTML
-// ======================================
+const publishedForm=$('publishedForm');
+const publishedPublication=$('publishedPublication');
+const publishedDate=$('publishedDate'),publishedTime=$('publishedTime');
+const confirmPublishedBtn=$('confirmPublishedBtn');
+const publishedMessage=$('publishedMessage');
 
-const authSection = document.getElementById('authSection');
-const dashboard = document.getElementById('dashboard');
-const authForm = document.getElementById('authForm');
-const formTitle = document.getElementById('formTitle');
-const submitBtn = document.getElementById('submitBtn');
-const switchBtn = document.getElementById('switchBtn');
-const message = document.getElementById('message');
-const userEmail = document.getElementById('userEmail');
-const dashboardMessage = document.getElementById('dashboardMessage');
-const logoutBtn = document.getElementById('logoutBtn');
+const oldVideoForm=$('oldVideoForm'),oldVideoDate=$('oldVideoDate');
+const oldVideoViews=$('oldVideoViews'),saveOldVideoBtn=$('saveOldVideoBtn');
+const oldVideoMessage=$('oldVideoMessage');
 
-const homePage = document.getElementById('homePage');
-const profilePage = document.getElementById('profilePage');
-const hoursPage = document.getElementById('hoursPage');
-const calendarPage = document.getElementById('calendarPage');
-const performancePage = document.getElementById('performancePage');
+const personalHoursAnalysis=$('personalHoursAnalysis');
+const audienceHoursAnalysis=$('audienceHoursAnalysis');
+const refreshHoursBtn=$('refreshHoursBtn');
 
-const registrationNameFields =
-  document.getElementById('registrationNameFields');
-
-const firstNameInput = document.getElementById('firstName');
-const lastNameInput = document.getElementById('lastName');
-const welcomeTitle = document.getElementById('welcomeTitle');
-
-let isLogin = false;
-
-// ======================================
-// ELEMENTS CALENDRIER
-// ======================================
-
-const publicationForm = document.getElementById('publicationForm');
-const publicationMessage = document.getElementById('publicationMessage');
-const publicationsList = document.getElementById('publicationsList');
-const publicationSubmitBtn = document.getElementById('publicationSubmitBtn');
-const publicationDateInput = document.getElementById('publicationDate');
-
-// ======================================
-// ELEMENTS PERFORMANCES
-// ======================================
-
-const performanceForm = document.getElementById('performanceForm');
-const performancePublication = document.getElementById('performancePublication');
-const performanceViews = document.getElementById('performanceViews');
-const performanceLikes = document.getElementById('performanceLikes');
-const performanceComments = document.getElementById('performanceComments');
-const performanceShares = document.getElementById('performanceShares');
-const savePerformanceBtn = document.getElementById('savePerformanceBtn');
-const performanceMessage = document.getElementById('performanceMessage');
-const performanceList = document.getElementById('performanceList');
-
-const totalViews = document.getElementById('totalViews');
-const totalLikes = document.getElementById('totalLikes');
-const totalComments = document.getElementById('totalComments');
-const totalShares = document.getElementById('totalShares');
-
-// ======================================
-// ELEMENTS CONFIRMATION PUBLICATION
-// ======================================
-
-const publishedForm = document.getElementById('publishedForm');
-const publishedPublication = document.getElementById('publishedPublication');
-const publishedDate = document.getElementById('publishedDate');
-const publishedTime = document.getElementById('publishedTime');
-const confirmPublishedBtn = document.getElementById('confirmPublishedBtn');
-const publishedMessage = document.getElementById('publishedMessage');
-
-// ======================================
-// ELEMENTS ANCIENNES VIDEOS
-// ======================================
-
-const oldVideoForm = document.getElementById('oldVideoForm');
-const oldVideoDate = document.getElementById('oldVideoDate');
-const oldVideoViews = document.getElementById('oldVideoViews');
-const saveOldVideoBtn = document.getElementById('saveOldVideoBtn');
-const oldVideoMessage = document.getElementById('oldVideoMessage');
-
-// ======================================
-// ELEMENTS MEILLEURS HORAIRES
-// ======================================
-
-const personalHoursAnalysis =
-  document.getElementById('personalHoursAnalysis');
-
-const refreshHoursBtn =
-  document.getElementById('refreshHoursBtn');
-
-// ======================================
-// DATE ET HEURE DE COTE D'IVOIRE
-// ======================================
-
-function getLocalDateString() {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Africa/Abidjan',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
+function getLocalDateString(){
+  return new Intl.DateTimeFormat('en-CA',{
+    timeZone:'Africa/Abidjan',year:'numeric',month:'2-digit',day:'2-digit'
   }).format(new Date());
 }
+function getAbidjanDateTime(date,time){return new Date(`${date}T${time}:00+00:00`);}
+publicationDateInput.min=getLocalDateString();
+oldVideoDate.max=getLocalDateString();
 
-function getAbidjanDateTime(date, time) {
-  return new Date(`${date}T${time}:00+00:00`);
-}
+function showMessage(text){message.textContent=text;message.classList.remove('hidden');}
+function showDashboardMessage(text){dashboardMessage.textContent=text;dashboardMessage.classList.remove('hidden');}
+function showPublicationMessage(text){publicationMessage.textContent=text;publicationMessage.classList.remove('hidden');}
+function showPerformanceMessage(text){performanceMessage.textContent=text;performanceMessage.classList.remove('hidden');}
 
-publicationDateInput.min = getLocalDateString();
-oldVideoDate.max = getLocalDateString();
-
-// ======================================
-// MESSAGES
-// ======================================
-
-function showMessage(text) {
-  message.textContent = text;
-  message.classList.remove('hidden');
-}
-
-function showDashboardMessage(text) {
-  dashboardMessage.textContent = text;
-  dashboardMessage.classList.remove('hidden');
-}
-
-function showPublicationMessage(text) {
-  publicationMessage.textContent = text;
-  publicationMessage.classList.remove('hidden');
-}
-
-function showPerformanceMessage(text) {
-  performanceMessage.textContent = text;
-  performanceMessage.classList.remove('hidden');
-}
-
-// ======================================
-// NAVIGATION
-// ======================================
-
-function showPage(page) {
-  homePage.classList.add('hidden');
-  profilePage.classList.add('hidden');
-  hoursPage.classList.add('hidden');
-  calendarPage.classList.add('hidden');
-  performancePage.classList.add('hidden');
-
+function showPage(page){
+  [homePage,profilePage,hoursPage,calendarPage,performancePage].forEach(p=>p.classList.add('hidden'));
   page.classList.remove('hidden');
-
-  if (page === calendarPage) {
-    loadPublications();
-  }
-
-  if (page === performancePage) {
-    loadPerformanceData();
-  }
-
-  if (page === hoursPage) {
-    loadPersonalHoursAnalysis();
-  }
+  if(page===calendarPage)loadPublications();
+  if(page===performancePage)loadPerformanceData();
+  if(page===hoursPage)loadPersonalHoursAnalysis();
 }
-
-// ======================================
-// AFFICHER LE TABLEAU DE BORD
-// ======================================
-
-function showDashboard(user) {
-  authSection.classList.add('hidden');
-  dashboard.classList.remove('hidden');
-
-  showPage(homePage);
-  userEmail.textContent = user.email || '';
-
-  const firstName = user.user_metadata?.first_name || '';
-
-  welcomeTitle.textContent = firstName
-    ? 'Bienvenue, ' + firstName + ' 👋'
-    : 'Bienvenue, Créateur 👋';
-
-  loadTikTokProfile();
-  loadPublications();
+function showDashboard(user){
+  authSection.classList.add('hidden');dashboard.classList.remove('hidden');
+  showPage(homePage);userEmail.textContent=user.email||'';
+  const firstName=user.user_metadata?.first_name||'';
+  welcomeTitle.textContent=firstName?'Bienvenue, '+firstName+' 👋':'Bienvenue, Créateur 👋';
+  loadTikTokProfile();loadPublications();
 }
+function showAuth(){dashboard.classList.add('hidden');authSection.classList.remove('hidden');}
 
-// ======================================
-// AFFICHER LE FORMULAIRE
-// ======================================
-
-function showAuth() {
-  dashboard.classList.add('hidden');
-  authSection.classList.remove('hidden');
-}
-
-// ======================================
-// CHANGER ENTRE INSCRIPTION ET CONNEXION
-// ======================================
-
-switchBtn.addEventListener('click', () => {
-  isLogin = !isLogin;
-
-  registrationNameFields.classList.toggle('hidden', isLogin);
-  firstNameInput.required = !isLogin;
-  lastNameInput.required = !isLogin;
-
-  formTitle.textContent = isLogin
-    ? 'Se connecter'
-    : 'Créer ton compte';
-
-  submitBtn.textContent = isLogin
-    ? 'Me connecter'
-    : 'Créer mon compte';
-
-  switchBtn.textContent = isLogin
-    ? 'Créer un nouveau compte'
-    : "J'ai déjà un compte : me connecter";
-
+switchBtn.addEventListener('click',()=>{
+  isLogin=!isLogin;
+  registrationNameFields.classList.toggle('hidden',isLogin);
+  firstNameInput.required=!isLogin;lastNameInput.required=!isLogin;
+  formTitle.textContent=isLogin?'Se connecter':'Créer ton compte';
+  submitBtn.textContent=isLogin?'Me connecter':'Créer mon compte';
+  switchBtn.textContent=isLogin?'Créer un nouveau compte':"J'ai déjà un compte : me connecter";
   message.classList.add('hidden');
 });
 
-// ======================================
-// INSCRIPTION ET CONNEXION
-// ======================================
-
-authForm.addEventListener('submit', async (event) => {
+authForm.addEventListener('submit',async event=>{
   event.preventDefault();
-
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const firstName = firstNameInput.value.trim();
-  const lastName = lastNameInput.value.trim();
-
-  submitBtn.disabled = true;
-  switchBtn.disabled = true;
-  submitBtn.textContent = 'Patiente...';
+  const email=$('email').value.trim(),password=$('password').value;
+  const firstName=firstNameInput.value.trim(),lastName=lastNameInput.value.trim();
+  submitBtn.disabled=true;switchBtn.disabled=true;submitBtn.textContent='Patiente...';
   message.classList.add('hidden');
-
-  try {
-    if (isLogin) {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
+  try{
+    if(isLogin){
+      const {data,error}=await supabase.auth.signInWithPassword({email,password});
+      if(error)throw error;showDashboard(data.user);
+    }else{
+      if(!firstName||!lastName)throw new Error('Entre ton prénom et ton nom.');
+      const fullName=firstName+' '+lastName;
+      const {data,error}=await supabase.auth.signUp({
+        email,password,options:{emailRedirectTo:window.location.href,
+          data:{first_name:firstName,last_name:lastName,name:fullName,display_name:fullName}}
       });
+      if(error)throw error;
+      if(data.session)showDashboard(data.user);
+      else showMessage("Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter.");
+    }
+  }catch(error){showMessage('Erreur : '+error.message);}
+  finally{
+    submitBtn.disabled=false;switchBtn.disabled=false;
+    submitBtn.textContent=isLogin?'Me connecter':'Créer mon compte';
+  }
+});
 
-      if (error) throw error;
-      showDashboard(data.user);
-
-    } else {
-      if (!firstName || !lastName) {
-        throw new Error('Entre ton prénom et ton nom.');
-      }
-
-      const fullName = firstName + ' ' + lastName;
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.href,
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            name: fullName,
-            display_name: fullName
-          }
-        }
+// Notifications
+const enableNotificationsBtn=$('enableNotificationsBtn');
+const notificationMessage=$('notificationMessage');
+enableNotificationsBtn.addEventListener('click',async()=>{
+  if(!('Notification'in window)){
+    notificationMessage.textContent='Ton navigateur ne prend pas en charge les notifications.';
+    notificationMessage.classList.remove('hidden');return;
+  }
+  if(!('serviceWorker'in navigator)){
+    notificationMessage.textContent='Les notifications ne sont pas prises en charge.';
+    notificationMessage.classList.remove('hidden');return;
+  }
+  try{
+    enableNotificationsBtn.disabled=true;enableNotificationsBtn.textContent='Activation...';
+    const permission=await Notification.requestPermission();
+    if(permission==='granted'){
+      const registration=await navigator.serviceWorker.ready;
+      await registration.showNotification('ViralTime 🔔',{
+        body:'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
       });
-
-      if (error) throw error;
-
-      if (data.session) {
-        showDashboard(data.user);
-      } else {
-        showMessage(
-          "Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter."
-        );
-      }
-    }
-
-  } catch (error) {
-    showMessage('Erreur : ' + error.message);
-  } finally {
-    submitBtn.disabled = false;
-    switchBtn.disabled = false;
-    submitBtn.textContent = isLogin
-      ? 'Me connecter'
-      : 'Créer mon compte';
+      notificationMessage.textContent='Notifications autorisées avec succès !';
+    }else if(permission==='denied'){
+      notificationMessage.textContent='Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';
+    }else notificationMessage.textContent='Tu n’as pas encore autorisé les notifications.';
+    notificationMessage.classList.remove('hidden');
+  }catch(error){
+    notificationMessage.textContent='Erreur : '+error.message;
+    notificationMessage.classList.remove('hidden');
+  }finally{
+    enableNotificationsBtn.disabled=false;enableNotificationsBtn.textContent='Activer les notifications';
   }
 });
 
-// ======================================
-// NOTIFICATIONS
-// ======================================
+// Navigation
+$('openHoursBtn').addEventListener('click',()=>showPage(hoursPage));
+$('backHoursBtn').addEventListener('click',()=>showPage(homePage));
+refreshHoursBtn.addEventListener('click',loadPersonalHoursAnalysis);
+$('openCalendarBtn').addEventListener('click',()=>showPage(calendarPage));
+$('backCalendarBtn').addEventListener('click',()=>showPage(homePage));
+$('openPerformanceBtn').addEventListener('click',()=>showPage(performancePage));
+$('backPerformanceBtn').addEventListener('click',()=>showPage(homePage));
+$('openProfileBtn').addEventListener('click',()=>showPage(profilePage));
+$('backHomeBtn').addEventListener('click',()=>showPage(homePage));
 
-const enableNotificationsBtn =
-  document.getElementById('enableNotificationsBtn');
-
-const notificationMessage =
-  document.getElementById('notificationMessage');
-
-enableNotificationsBtn.addEventListener('click', async () => {
-  if (!('Notification' in window)) {
-    notificationMessage.textContent =
-      'Ton navigateur ne prend pas en charge les notifications.';
-    notificationMessage.classList.remove('hidden');
-    return;
-  }
-
-  if (!('serviceWorker' in navigator)) {
-    notificationMessage.textContent =
-      'Les notifications ne sont pas prises en charge.';
-    notificationMessage.classList.remove('hidden');
-    return;
-  }
-
-  try {
-    enableNotificationsBtn.disabled = true;
-    enableNotificationsBtn.textContent = 'Activation...';
-
-    const permission = await Notification.requestPermission();
-
-    if (permission === 'granted') {
-      const registration = await navigator.serviceWorker.ready;
-
-      await registration.showNotification('ViralTime 🔔', {
-        body: 'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
-      });
-
-      notificationMessage.textContent =
-        'Notifications autorisées avec succès !';
-
-    } else if (permission === 'denied') {
-      notificationMessage.textContent =
-        'Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';
-    } else {
-      notificationMessage.textContent =
-        'Tu n’as pas encore autorisé les notifications.';
-    }
-
-    notificationMessage.classList.remove('hidden');
-
-  } catch (error) {
-    notificationMessage.textContent = 'Erreur : ' + error.message;
-    notificationMessage.classList.remove('hidden');
-  } finally {
-    enableNotificationsBtn.disabled = false;
-    enableNotificationsBtn.textContent = 'Activer les notifications';
-  }
-});
-
-// ======================================
-// NAVIGATION MEILLEURS HORAIRES
-// ======================================
-
-document.getElementById('openHoursBtn')
-.addEventListener('click', () => {
-  showPage(hoursPage);
-});
-
-document.getElementById('backHoursBtn')
-.addEventListener('click', () => {
-  showPage(homePage);
-});
-
-refreshHoursBtn.addEventListener('click', () => {
-  loadPersonalHoursAnalysis();
-});
-
-// ======================================
-// NAVIGATION CALENDRIER
-// ======================================
-
-document.getElementById('openCalendarBtn')
-.addEventListener('click', () => {
-  showPage(calendarPage);
-});
-
-document.getElementById('backCalendarBtn')
-.addEventListener('click', () => {
-  showPage(homePage);
-});
-
-// ======================================
-// NAVIGATION PERFORMANCES
-// ======================================
-
-document.getElementById('openPerformanceBtn')
-.addEventListener('click', () => {
-  showPage(performancePage);
-});
-
-document.getElementById('backPerformanceBtn')
-.addEventListener('click', () => {
-  showPage(homePage);
-});
-
-// ======================================
-// NAVIGATION PROFIL
-// ======================================
-
-document.getElementById('openProfileBtn')
-.addEventListener('click', () => {
-  showPage(profilePage);
-});
-
-document.getElementById('backHomeBtn')
-.addEventListener('click', () => {
-  showPage(homePage);
-});
-
-// ======================================
-// PROGRAMMER UNE PUBLICATION
-// ======================================
-
-publicationForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  publicationMessage.classList.add('hidden');
-
-  const title = document.getElementById('publicationTitle').value.trim();
-  const description = document.getElementById('publicationDescription').value.trim();
-  const contentType = document.getElementById('publicationType').value;
-  const date = publicationDateInput.value;
-  const time = document.getElementById('publicationTime').value;
-
-  publicationSubmitBtn.disabled = true;
-  publicationSubmitBtn.textContent = 'Enregistrement...';
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-    if (!user) throw new Error('Tu dois être connecté pour programmer une publication.');
-    if (!title) throw new Error('Entre un titre pour ta publication.');
-    if (!date || !time) throw new Error('Choisis une date et une heure.');
-
-    const scheduledDate = getAbidjanDateTime(date, time);
-
-    if (Number.isNaN(scheduledDate.getTime())) {
-      throw new Error('La date ou l’heure choisie est invalide.');
-    }
-
-    if (scheduledDate.getTime() <= Date.now()) {
-      throw new Error('Choisis une date et une heure dans le futur.');
-    }
-
-    const publication = {
-      user_id: user.id,
-      title: title,
-      description: description,
-      content_type: contentType,
-      scheduled_at: scheduledDate.toISOString(),
-      status: 'programmée'
-    };
-
-    const { error } = await supabase
-      .from('publications')
-      .insert(publication);
-
-    if (error) throw error;
-
+// Programmer une publication
+publicationForm.addEventListener('submit',async event=>{
+  event.preventDefault();publicationMessage.classList.add('hidden');
+  const title=$('publicationTitle').value.trim();
+  const description=$('publicationDescription').value.trim();
+  const contentType=$('publicationType').value;
+  const date=publicationDateInput.value,time=$('publicationTime').value;
+  publicationSubmitBtn.disabled=true;publicationSubmitBtn.textContent='Enregistrement...';
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Tu dois être connecté pour programmer une publication.');
+    if(!title)throw new Error('Entre un titre pour ta publication.');
+    if(!date||!time)throw new Error('Choisis une date et une heure.');
+    const scheduledDate=getAbidjanDateTime(date,time);
+    if(Number.isNaN(scheduledDate.getTime()))throw new Error('La date ou l’heure choisie est invalide.');
+    if(scheduledDate.getTime()<=Date.now())throw new Error('Choisis une date et une heure dans le futur.');
+    const {error}=await supabase.from('publications').insert({
+      user_id:user.id,title,description,content_type:contentType,
+      scheduled_at:scheduledDate.toISOString(),status:'programmée'
+    });
+    if(error)throw error;
     showPublicationMessage('Publication programmée avec succès !');
-    publicationForm.reset();
-    publicationDateInput.min = getLocalDateString();
+    publicationForm.reset();publicationDateInput.min=getLocalDateString();
     await loadPublications();
-
-  } catch (error) {
-    console.error('Erreur de programmation :', error);
-    showPublicationMessage('Erreur : ' + error.message);
-  } finally {
-    publicationSubmitBtn.disabled = false;
-    publicationSubmitBtn.textContent = 'Programmer';
-  }
+  }catch(error){
+    console.error('Erreur de programmation :',error);
+    showPublicationMessage('Erreur : '+error.message);
+  }finally{publicationSubmitBtn.disabled=false;publicationSubmitBtn.textContent='Programmer';}
 });
 
-// ======================================
-// SUPPRIMER UNE PUBLICATION PROGRAMMEE
-// ======================================
-
-async function deleteScheduledPublication(publicationId, deleteButton) {
-  const confirmed = window.confirm(
-    'Veux-tu vraiment supprimer cette publication programmée ? Cette action est définitive.'
-  );
-
-  if (!confirmed) return;
-
-  deleteButton.disabled = true;
-  deleteButton.textContent = 'Suppression...';
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-
-    if (!user) {
-      throw new Error('Tu dois être connecté pour supprimer une publication.');
-    }
-
-    const { data, error } = await supabase
-      .from('publications')
-      .delete()
-      .eq('id', publicationId)
-      .eq('user_id', user.id)
-      .eq('status', 'programmée')
-      .select('id')
-      .maybeSingle();
-
-    if (error) throw error;
-
-    if (!data) {
-      throw new Error(
-        'La publication est introuvable, n’est plus programmée ou ne peut pas être supprimée.'
-      );
-    }
-
+// Supprimer une publication programmée
+async function deleteScheduledPublication(publicationId,deleteButton){
+  const confirmed=window.confirm('Veux-tu vraiment supprimer cette publication programmée ? Cette action est définitive.');
+  if(!confirmed)return;
+  deleteButton.disabled=true;deleteButton.textContent='Suppression...';
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Tu dois être connecté pour supprimer une publication.');
+    const {data,error}=await supabase.from('publications').delete()
+      .eq('id',publicationId).eq('user_id',user.id).eq('status','programmée')
+      .select('id').maybeSingle();
+    if(error)throw error;
+    if(!data)throw new Error('La publication est introuvable, n’est plus programmée ou ne peut pas être supprimée.');
     showPublicationMessage('Publication programmée supprimée avec succès !');
-
     await loadPublications();
-
-  } catch (error) {
-    console.error('Erreur de suppression :', error);
-
-    showPublicationMessage(
-      'Impossible de supprimer cette publication : ' + error.message
-    );
-
-    deleteButton.disabled = false;
-    deleteButton.textContent = '🗑️ Supprimer';
+  }catch(error){
+    console.error('Erreur de suppression :',error);
+    showPublicationMessage('Impossible de supprimer cette publication : '+error.message);
+    deleteButton.disabled=false;deleteButton.textContent='🗑️ Supprimer';
   }
 }
 
-// ======================================
-// CHARGER LES PUBLICATIONS
-// ======================================
-
-async function loadPublications() {
-  publicationsList.textContent = 'Chargement des publications...';
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-
-    if (!user) {
-      publicationsList.textContent = 'Connecte-toi pour voir tes publications.';
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from('publications')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('scheduled_at', { ascending: true });
-
-    if (error) throw error;
-
+// Charger les publications
+async function loadPublications(){
+  publicationsList.textContent='Chargement des publications...';
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user){publicationsList.textContent='Connecte-toi pour voir tes publications.';return;}
+    const {data,error}=await supabase.from('publications').select('*')
+      .eq('user_id',user.id).order('scheduled_at',{ascending:true});
+    if(error)throw error;
     publicationsList.replaceChildren();
-
-    if (!data || data.length === 0) {
-      const emptyMessage = document.createElement('p');
-      emptyMessage.textContent = 'Aucune publication programmée pour le moment.';
-      publicationsList.appendChild(emptyMessage);
-      return;
+    if(!data||data.length===0){
+      const empty=document.createElement('p');empty.textContent='Aucune publication programmée pour le moment.';
+      publicationsList.appendChild(empty);return;
     }
-
-    data.forEach((publication) => {
-      const item = document.createElement('div');
-      item.className = 'publication-item';
-
-      const title = document.createElement('h4');
-      title.textContent = publication.title || 'Sans titre';
-
-      const description = document.createElement('p');
-      description.textContent = publication.description || 'Aucune description';
-
-      const type = document.createElement('p');
-      type.textContent = 'Type : ' + (publication.content_type || 'Non précisé');
-
-      const date = document.createElement('p');
-
-      if (publication.status === 'publiée' && publication.published_at) {
-        const realDate = new Date(publication.published_at);
-
-        date.textContent =
-          'Date réelle de publication : ' +
-          realDate.toLocaleDateString('fr-FR', {
-            timeZone: 'Africa/Abidjan',
-            dateStyle: 'long'
-          });
-      } else {
-        const scheduledDate = new Date(publication.scheduled_at);
-
-        if (!Number.isNaN(scheduledDate.getTime())) {
-          date.textContent =
-            'Date programmée : ' +
-            scheduledDate.toLocaleString('fr-FR', {
-              timeZone: 'Africa/Abidjan',
-              dateStyle: 'long',
-              timeStyle: 'short'
-            });
-        } else {
-          date.textContent = 'Date non disponible';
-        }
+    data.forEach(publication=>{
+      const item=document.createElement('div');item.className='publication-item';
+      const title=document.createElement('h4');title.textContent=publication.title||'Sans titre';
+      const description=document.createElement('p');description.textContent=publication.description||'Aucune description';
+      const type=document.createElement('p');type.textContent='Type : '+(publication.content_type||'Non précisé');
+      const date=document.createElement('p');
+      if(publication.status==='publiée'&&publication.published_at){
+        date.textContent='Date réelle de publication : '+new Date(publication.published_at).toLocaleDateString('fr-FR',{timeZone:'Africa/Abidjan',dateStyle:'long'});
+      }else{
+        const scheduledDate=new Date(publication.scheduled_at);
+        date.textContent=!Number.isNaN(scheduledDate.getTime())
+          ?'Date programmée : '+scheduledDate.toLocaleString('fr-FR',{timeZone:'Africa/Abidjan',dateStyle:'long',timeStyle:'short'})
+          :'Date non disponible';
       }
-
-      const status = document.createElement('p');
-      status.textContent = 'Statut : ' + (publication.status || 'Non précisé');
-
-      item.appendChild(title);
-      item.appendChild(description);
-      item.appendChild(type);
-      item.appendChild(date);
-      item.appendChild(status);
-
-      // Le bouton est affiché uniquement pour les publications programmées.
-      if (publication.status === 'programmée') {
-        const deleteButton = document.createElement('button');
-
-        deleteButton.type = 'button';
-        deleteButton.className = 'delete-btn';
-        deleteButton.textContent = '🗑️ Supprimer';
-
-        deleteButton.addEventListener('click', () => {
-          deleteScheduledPublication(publication.id, deleteButton);
-        });
-
+      const status=document.createElement('p');status.textContent='Statut : '+(publication.status||'Non précisé');
+      item.append(title,description,type,date,status);
+      if(publication.status==='programmée'){
+        const deleteButton=document.createElement('button');
+        deleteButton.type='button';deleteButton.className='delete-btn';deleteButton.textContent='🗑️ Supprimer';
+        deleteButton.addEventListener('click',()=>deleteScheduledPublication(publication.id,deleteButton));
         item.appendChild(deleteButton);
       }
-
       publicationsList.appendChild(item);
     });
-
-  } catch (error) {
-    console.error('Erreur de chargement des publications :', error);
-    publicationsList.textContent =
-      'Impossible de charger les publications : ' + error.message;
+  }catch(error){
+    console.error('Erreur de chargement des publications :',error);
+    publicationsList.textContent='Impossible de charger les publications : '+error.message;
   }
 }
 
-// ======================================
-// SYSTEME DE PERFORMANCES
-// ======================================
-
-async function loadPerformanceData() {
+// Performances
+async function loadPerformanceData(){
   performanceMessage.classList.add('hidden');
+  performancePublication.innerHTML='<option value="">Chargement des publications...</option>';
+  publishedPublication.innerHTML='<option value="">Chargement des publications...</option>';
+  performanceList.textContent='Chargement des statistiques...';
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Connecte-toi pour consulter tes performances.');
+    const {data:publications,error:publicationsError}=await supabase.from('publications')
+      .select('id,title,scheduled_at,status,published_at').eq('user_id',user.id)
+      .order('scheduled_at',{ascending:false});
+    if(publicationsError)throw publicationsError;
 
-  performancePublication.innerHTML =
-    '<option value="">Chargement des publications...</option>';
-
-  publishedPublication.innerHTML =
-    '<option value="">Chargement des publications...</option>';
-
-  performanceList.textContent = 'Chargement des statistiques...';
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-    if (!user) throw new Error('Connecte-toi pour consulter tes performances.');
-
-    const { data: publications, error: publicationsError } = await supabase
-      .from('publications')
-      .select('id,title,scheduled_at,status,published_at')
-      .eq('user_id', user.id)
-      .order('scheduled_at', { ascending: false });
-
-    if (publicationsError) throw publicationsError;
-
-    // FORMULAIRE DE CONFIRMATION
-
-    publishedPublication.innerHTML = '';
-
-    const publishedOption = document.createElement('option');
-    publishedOption.value = '';
-    publishedOption.textContent = 'Choisir une publication';
+    publishedPublication.innerHTML='';
+    const publishedOption=document.createElement('option');
+    publishedOption.value='';publishedOption.textContent='Choisir une publication';
     publishedPublication.appendChild(publishedOption);
-
-    (publications || []).forEach((publication) => {
-      const option = document.createElement('option');
-      option.value = publication.id;
-      option.textContent =
-        (publication.title || 'Publication sans titre') +
-        (publication.status === 'publiée' ? ' — Déjà publiée' : '');
+    (publications||[]).forEach(publication=>{
+      const option=document.createElement('option');option.value=publication.id;
+      option.textContent=(publication.title||'Publication sans titre')+(publication.status==='publiée'?' — Déjà publiée':'');
       publishedPublication.appendChild(option);
     });
 
-    // FORMULAIRE DES STATISTIQUES
-
-    performancePublication.innerHTML = '';
-
-    if (!publications || publications.length === 0) {
-      const option = document.createElement('option');
-      option.value = '';
-      option.textContent = 'Aucune publication disponible';
+    performancePublication.innerHTML='';
+    if(!publications||publications.length===0){
+      const option=document.createElement('option');option.value='';option.textContent='Aucune publication disponible';
       performancePublication.appendChild(option);
-
-      performanceList.textContent =
-        'Ajoute une ancienne vidéo ou programme une publication dans ton calendrier.';
-
-      totalViews.textContent = '0';
-      totalLikes.textContent = '0';
-      totalComments.textContent = '0';
-      totalShares.textContent = '0';
+      performanceList.textContent='Ajoute une ancienne vidéo ou programme une publication dans ton calendrier.';
+      totalViews.textContent='0';totalLikes.textContent='0';totalComments.textContent='0';totalShares.textContent='0';
       return;
     }
-
-    publications.forEach((publication) => {
-      const option = document.createElement('option');
-      option.value = publication.id;
-      option.textContent = publication.title || 'Publication sans titre';
+    publications.forEach(publication=>{
+      const option=document.createElement('option');option.value=publication.id;
+      option.textContent=publication.title||'Publication sans titre';
       performancePublication.appendChild(option);
     });
 
-    // CHARGER LES STATISTIQUES
-
-    const { data: performances, error: performanceError } = await supabase
-      .from('publication_performance')
-      .select('*')
-      .eq('user_id', user.id);
-
-    if (performanceError) throw performanceError;
-
-    const safePerformances = performances || [];
-
-    // CALCULER LES TOTAUX
-
-    const totals = safePerformances.reduce((result, item) => {
-      result.views += Number(item.views || 0);
-      result.likes += Number(item.likes || 0);
-      result.comments += Number(item.comments || 0);
-      result.shares += Number(item.shares || 0);
+    const {data:performances,error:performanceError}=await supabase.from('publication_performance')
+      .select('*').eq('user_id',user.id);
+    if(performanceError)throw performanceError;
+    const safePerformances=performances||[];
+    const totals=safePerformances.reduce((result,item)=>{
+      result.views+=Number(item.views||0);result.likes+=Number(item.likes||0);
+      result.comments+=Number(item.comments||0);result.shares+=Number(item.shares||0);
       return result;
-    }, {
-      views: 0,
-      likes: 0,
-      comments: 0,
-      shares: 0
-    });
-
-    totalViews.textContent = totals.views.toLocaleString('fr-FR');
-    totalLikes.textContent = totals.likes.toLocaleString('fr-FR');
-    totalComments.textContent = totals.comments.toLocaleString('fr-FR');
-    totalShares.textContent = totals.shares.toLocaleString('fr-FR');
-
-    // AFFICHER LES PUBLICATIONS SUIVIES
+    },{views:0,likes:0,comments:0,shares:0});
+    totalViews.textContent=totals.views.toLocaleString('fr-FR');
+    totalLikes.textContent=totals.likes.toLocaleString('fr-FR');
+    totalComments.textContent=totals.comments.toLocaleString('fr-FR');
+    totalShares.textContent=totals.shares.toLocaleString('fr-FR');
 
     performanceList.replaceChildren();
-
-    const performanceMap = new Map(
-      safePerformances.map(item => [item.publication_id, item])
-    );
-
-    let numberOfTracked = 0;
-
-    publications.forEach((publication) => {
-      const performance = performanceMap.get(publication.id);
-      if (!performance) return;
-
+    const performanceMap=new Map(safePerformances.map(item=>[item.publication_id,item]));
+    let numberOfTracked=0;
+    publications.forEach(publication=>{
+      const performance=performanceMap.get(publication.id);if(!performance)return;
       numberOfTracked++;
-
-      const item = document.createElement('div');
-      item.className = 'performance-publication';
-
-      const title = document.createElement('h4');
-      title.textContent = publication.title || 'Sans titre';
-
-      const views = document.createElement('p');
-      views.textContent =
-        '👁️ Vues : ' + Number(performance.views).toLocaleString('fr-FR');
-
-      const likes = document.createElement('p');
-      likes.textContent =
-        '❤️ Likes : ' + Number(performance.likes).toLocaleString('fr-FR');
-
-      const comments = document.createElement('p');
-      comments.textContent =
-        '💬 Commentaires : ' + Number(performance.comments).toLocaleString('fr-FR');
-
-      const shares = document.createElement('p');
-      shares.textContent =
-        '🔄 Partages : ' + Number(performance.shares).toLocaleString('fr-FR');
-
-      const editButton = document.createElement('button');
-      editButton.type = 'button';
-      editButton.className = 'secondary';
-      editButton.textContent = 'Modifier les statistiques';
-
-      editButton.addEventListener('click', () => {
-        performancePublication.value = publication.id;
-        performanceViews.value = performance.views;
-        performanceLikes.value = performance.likes;
-        performanceComments.value = performance.comments;
-        performanceShares.value = performance.shares;
-
-        performanceForm.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+      const item=document.createElement('div');item.className='performance-publication';
+      const title=document.createElement('h4');title.textContent=publication.title||'Sans titre';
+      const views=document.createElement('p');views.textContent='👁️ Vues : '+Number(performance.views).toLocaleString('fr-FR');
+      const likes=document.createElement('p');likes.textContent='❤️ Likes : '+Number(performance.likes).toLocaleString('fr-FR');
+      const comments=document.createElement('p');comments.textContent='💬 Commentaires : '+Number(performance.comments).toLocaleString('fr-FR');
+      const shares=document.createElement('p');shares.textContent='🔄 Partages : '+Number(performance.shares).toLocaleString('fr-FR');
+      const editButton=document.createElement('button');editButton.type='button';editButton.className='secondary';editButton.textContent='Modifier les statistiques';
+      editButton.addEventListener('click',()=>{
+        performancePublication.value=publication.id;
+        performanceViews.value=performance.views;performanceLikes.value=performance.likes;
+        performanceComments.value=performance.comments;performanceShares.value=performance.shares;
+        performanceForm.scrollIntoView({behavior:'smooth',block:'start'});
       });
-
-      item.appendChild(title);
-      item.appendChild(views);
-      item.appendChild(likes);
-      item.appendChild(comments);
-      item.appendChild(shares);
-      item.appendChild(editButton);
-
-      performanceList.appendChild(item);
+      item.append(title,views,likes,comments,shares,editButton);performanceList.appendChild(item);
     });
-
-    if (numberOfTracked === 0) {
-      performanceList.textContent =
-        'Aucune statistique enregistrée pour le moment.';
-    }
-
+    if(numberOfTracked===0)performanceList.textContent='Aucune statistique enregistrée pour le moment.';
     await loadSelectedPerformance();
-
-  } catch (error) {
-    console.error('Erreur de chargement des performances :', error);
-
-    performanceList.textContent =
-      'Impossible de charger les performances : ' + error.message;
-
-    showPerformanceMessage('Erreur : ' + error.message);
+  }catch(error){
+    console.error('Erreur de chargement des performances :',error);
+    performanceList.textContent='Impossible de charger les performances : '+error.message;
+    showPerformanceMessage('Erreur : '+error.message);
   }
 }
 
-// ======================================
-// ANALYSE PERSONNALISEE DES MEILLEURS HORAIRES
-// ======================================
-
-async function loadPersonalHoursAnalysis() {
-  personalHoursAnalysis.replaceChildren();
-
-  const loading = document.createElement('div');
-  loading.className = 'message';
-  loading.textContent = 'Analyse de tes publications en cours...';
-  personalHoursAnalysis.appendChild(loading);
-
-  refreshHoursBtn.disabled = true;
-  refreshHoursBtn.textContent = 'Analyse en cours...';
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-
-    if (!user) {
-      throw new Error('Connecte-toi pour consulter ton analyse personnalisée.');
+// Pays et fuseaux horaires
+function normalizeCountry(value){
+  return String(value||'').trim().toLocaleLowerCase('fr-FR')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+const countryTimeZones={
+  "cote d'ivoire":'Africa/Abidjan',"côte d'ivoire":'Africa/Abidjan',
+  'ivory coast':'Africa/Abidjan','senegal':'Africa/Dakar','mali':'Africa/Bamako',
+  'burkina faso':'Africa/Ouagadougou','guinee':'Africa/Conakry','guinea':'Africa/Conakry',
+  'niger':'Africa/Niamey','togo':'Africa/Lome','benin':'Africa/Porto-Novo',
+  'ghana':'Africa/Accra','gambie':'Africa/Banjul','gambia':'Africa/Banjul',
+  'mauritanie':'Africa/Nouakchott','cameroun':'Africa/Douala','cameroon':'Africa/Douala',
+  'nigeria':'Africa/Lagos','afrique du sud':'Africa/Johannesburg',
+  'south africa':'Africa/Johannesburg','maroc':'Africa/Casablanca','morocco':'Africa/Casablanca',
+  'algerie':'Africa/Algiers','algeria':'Africa/Algiers','tunisie':'Africa/Tunis',
+  'tunisia':'Africa/Tunis','france':'Europe/Paris','belgique':'Europe/Brussels',
+  'belgium':'Europe/Brussels','suisse':'Europe/Zurich','switzerland':'Europe/Zurich',
+  'royaume-uni':'Europe/London','royaume uni':'Europe/London','united kingdom':'Europe/London',
+  'uk':'Europe/London','allemagne':'Europe/Berlin','germany':'Europe/Berlin',
+  'espagne':'Europe/Madrid','spain':'Europe/Madrid','italie':'Europe/Rome','italy':'Europe/Rome',
+  'portugal':'Europe/Lisbon','inde':'Asia/Kolkata','india':'Asia/Kolkata',
+  'chine':'Asia/Shanghai','china':'Asia/Shanghai','japon':'Asia/Tokyo','japan':'Asia/Tokyo',
+  'coree du sud':'Asia/Seoul','south korea':'Asia/Seoul','indonesie':'Asia/Jakarta',
+  'indonesia':'Asia/Jakarta','thailande':'Asia/Bangkok','thailand':'Asia/Bangkok',
+  'singapour':'Asia/Singapore','singapore':'Asia/Singapore',
+  'emirats arabes unis':'Asia/Dubai','uae':'Asia/Dubai',
+  'nouvelle-zelande':'Pacific/Auckland','new zealand':'Pacific/Auckland'
+};
+function getCountryTimeZone(country){
+  const normalized=normalizeCountry(country);
+  if(!normalized)return null;
+  if(['canada','etats-unis','états-unis','united states','usa','australie','australia'].includes(normalized))return 'ambiguous';
+  return countryTimeZones[normalized]||null;
+}
+function getZonedParts(date,timeZone){
+  const parts=new Intl.DateTimeFormat('en-GB',{
+    timeZone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'
+  }).formatToParts(date);
+  return {
+    hour:Number(parts.find(p=>p.type==='hour').value),
+    minute:Number(parts.find(p=>p.type==='minute').value)
+  };
+}
+function convertAudienceTimeToAbidjan(hour,timeZone){
+  // Recherche du moment UTC correspondant à l'heure locale cible.
+  const now=new Date();
+  let candidate=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),hour,0));
+  for(let i=0;i<4;i++){
+    const parts=getZonedParts(candidate,timeZone);
+    let difference=(hour-parts.hour)*60-parts.minute;
+    if(difference>720)difference-=1440;
+    if(difference< -720)difference+=1440;
+    candidate=new Date(candidate.getTime()+difference*60000);
+    if(difference===0)break;
+  }
+  return getZonedParts(candidate,'Africa/Abidjan');
+}
+function formatHour(hour){
+  return String(hour).padStart(2,'0')+'h00';
+}
+function createTextElement(tag,text,className){
+  const element=document.createElement(tag);
+  element.textContent=text;
+  if(className)element.className=className;
+  return element;
+}
+async function loadAudienceHours(){
+  audienceHoursAnalysis.replaceChildren();
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Connecte-toi pour consulter ton profil.');
+    const {data,error}=await supabase.from('tiktok_profiles')
+      .select('audience_country').eq('user_id',user.id).maybeSingle();
+    if(error)throw error;
+    const country=data?.audience_country?.trim();
+    if(!country){
+      audienceHoursAnalysis.appendChild(createTextElement('p',
+        'Renseigne le pays de ton audience dans Mon profil pour afficher des horaires adaptés.','hours-note'));
+      return;
     }
+    audienceHoursAnalysis.appendChild(createTextElement('p','Pays d’audience renseigné : '+country,'hours-note'));
+    const zone=getCountryTimeZone(country);
+    if(zone==='ambiguous'){
+      audienceHoursAnalysis.appendChild(createTextElement('p',
+        'Ce pays possède plusieurs fuseaux horaires. Le pays seul ne suffit pas pour calculer une heure locale précise. Il faudra choisir la région ou la ville de ton audience.','hours-note'));
+      return;
+    }
+    if(!zone){
+      audienceHoursAnalysis.appendChild(createTextElement('p',
+        'Le fuseau horaire de ce pays n’est pas encore configuré dans ViralTime. Les repères internationaux restent disponibles.','hours-note'));
+      return;
+    }
+    audienceHoursAnalysis.appendChild(createTextElement('p',
+      'Fuseau utilisé : '+zone+'. Les heures ci-dessous sont des plages de test, pas des données officielles TikTok.','hours-note'));
+    const ranges=[[12,14],[18,21]];
+    ranges.forEach(([start,end])=>{
+      const startCI=convertAudienceTimeToAbidjan(start,zone);
+      const endCI=convertAudienceTimeToAbidjan(end,zone);
+      const card=document.createElement('div');card.className='hours-result';
+      card.appendChild(createTextElement('strong',
+        formatHour(start)+' – '+formatHour(end)+' (heure locale de '+country+')'));
+      card.appendChild(createTextElement('p',
+        'Équivalent indicatif en Côte d’Ivoire : '+formatHour(startCI.hour)+
+        ' – '+formatHour(endCI.hour),'hours-note'));
+      audienceHoursAnalysis.appendChild(card);
+    });
+    audienceHoursAnalysis.appendChild(createTextElement('p',
+      'Le calcul utilise le fuseau horaire du pays et tient compte de son décalage saisonnier lorsque celui-ci est applicable.','hours-note'));
+  }catch(error){
+    console.error('Erreur pays d’audience :',error);
+    audienceHoursAnalysis.appendChild(createTextElement('p',
+      'Impossible de charger les informations du pays : '+error.message,'hours-note'));
+  }
+}
 
-    const { data: publications, error: publicationsError } = await supabase
-      .from('publications')
-      .select('id,title,status,published_at')
-      .eq('user_id', user.id)
-      .eq('status', 'publiée')
-      .not('published_at', 'is', null);
+// Analyse personnalisée des meilleurs horaires
+async function loadPersonalHoursAnalysis(){
+  personalHoursAnalysis.replaceChildren();
+  personalHoursAnalysis.appendChild(createTextElement('div',
+    'Analyse de tes publications en cours...','message'));
+  refreshHoursBtn.disabled=true;refreshHoursBtn.textContent='Analyse en cours...';
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Connecte-toi pour consulter ton analyse personnalisée.');
 
-    if (publicationsError) throw publicationsError;
+    const {data:publications,error:publicationsError}=await supabase.from('publications')
+      .select('id,title,status,published_at').eq('user_id',user.id)
+      .eq('status','publiée').not('published_at','is',null);
+    if(publicationsError)throw publicationsError;
 
-    const { data: performances, error: performancesError } = await supabase
-      .from('publication_performance')
-      .select('publication_id,views,likes,comments,shares')
-      .eq('user_id', user.id);
+    const {data:performances,error:performancesError}=await supabase.from('publication_performance')
+      .select('publication_id,views,likes,comments,shares').eq('user_id',user.id);
+    if(performancesError)throw performancesError;
 
-    if (performancesError) throw performancesError;
+    const performanceMap=new Map((performances||[]).map(item=>[item.publication_id,item]));
+    const dayNames=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+    const hourGroups=new Map();
+    let analyzedCount=0,excludedUnknownTime=0,withoutStats=0;
 
-    const performanceMap = new Map(
-      (performances || []).map(item => [item.publication_id, item])
-    );
+    (publications||[]).forEach(publication=>{
+      const stats=performanceMap.get(publication.id);
+      if(!stats){withoutStats++;return;}
+      const publishedAt=new Date(publication.published_at);
+      if(Number.isNaN(publishedAt.getTime()))return;
 
-    const dayNames = [
-      'dimanche',
-      'lundi',
-      'mardi',
-      'mercredi',
-      'jeudi',
-      'vendredi',
-      'samedi'
-    ];
-
-    const hourGroups = new Map();
-    let analyzedCount = 0;
-    let excludedUnknownTime = 0;
-
-    (publications || []).forEach(publication => {
-      const stats = performanceMap.get(publication.id);
-
-      if (!stats) return;
-
-      const publishedAt = new Date(publication.published_at);
-
-      if (Number.isNaN(publishedAt.getTime())) return;
-
-      // Les anciennes vidéos ajoutées sans heure réelle sont enregistrées
-      // à minuit. On ne les utilise pas pour deviner une heure de publication.
-      if (
-        publishedAt.getUTCHours() === 0 &&
-        publishedAt.getUTCMinutes() === 0 &&
-        publishedAt.getUTCSeconds() === 0
-      ) {
-        excludedUnknownTime++;
-        return;
+      // Les anciennes vidéos enregistrées à minuit n'ont pas d'heure réelle connue.
+      if(publishedAt.getUTCHours()===0&&publishedAt.getUTCMinutes()===0&&publishedAt.getUTCSeconds()===0){
+        excludedUnknownTime++;return;
       }
-
-      const day = publishedAt.getUTCDay();
-      const hour = publishedAt.getUTCHours();
-      const key = day + '-' + hour;
-
-      if (!hourGroups.has(key)) {
-        hourGroups.set(key, {
-          day,
-          hour,
-          count: 0,
-          views: 0,
-          likes: 0,
-          comments: 0,
-          shares: 0
-        });
+      const day=publishedAt.getUTCDay(),hour=publishedAt.getUTCHours();
+      const key=day+'-'+hour;
+      if(!hourGroups.has(key)){
+        hourGroups.set(key,{day,hour,count:0,views:0,likes:0,comments:0,shares:0});
       }
-
-      const group = hourGroups.get(key);
-
+      const group=hourGroups.get(key);
       group.count++;
-      group.views += Number(stats.views || 0);
-      group.likes += Number(stats.likes || 0);
-      group.comments += Number(stats.comments || 0);
-      group.shares += Number(stats.shares || 0);
-
+      group.views+=Number(stats.views||0);
+      group.likes+=Number(stats.likes||0);
+      group.comments+=Number(stats.comments||0);
+      group.shares+=Number(stats.shares||0);
       analyzedCount++;
     });
 
     personalHoursAnalysis.replaceChildren();
+    const summary=document.createElement('div');summary.className='hours-result';
+    summary.appendChild(createTextElement('h3','📊 Résumé de ton analyse'));
+    summary.appendChild(createTextElement('p',
+      'Publications utilisables : '+analyzedCount+
+      ' · Heure de Côte d’Ivoire (UTC+0)'));
+    summary.appendChild(createTextElement('p',
+      'Seuil de classement : au moins 2 publications sur un même jour et une même heure.','hours-note'));
+    if(excludedUnknownTime>0)summary.appendChild(createTextElement('p',
+      excludedUnknownTime+' ancienne(s) vidéo(s) écartée(s), car leur heure réelle est inconnue.','hours-note'));
+    if(withoutStats>0)summary.appendChild(createTextElement('p',
+      withoutStats+' publication(s) publiée(s) sans statistiques enregistrées.','hours-note'));
+    personalHoursAnalysis.appendChild(summary);
 
-    if (analyzedCount < 3) {
-      const info = document.createElement('div');
-      info.className = 'hours-result';
-
-      const heading = document.createElement('h3');
-      heading.textContent = '📊 Tes données sont encore insuffisantes';
-
-      const paragraph = document.createElement('p');
-      paragraph.textContent =
-        'Pour commencer à identifier les créneaux qui fonctionnent le mieux, enregistre les statistiques d’au moins 3 publications avec leur date et leur heure réelles de publication.';
-
-      info.appendChild(heading);
-      info.appendChild(paragraph);
-
-      if (excludedUnknownTime > 0) {
-        const note = document.createElement('p');
-        note.className = 'hours-note';
-        note.textContent =
-          excludedUnknownTime +
-          ' ancienne(s) vidéo(s) n’ont pas été utilisées pour l’analyse horaire, car leur heure réelle n’est pas connue.';
-        info.appendChild(note);
-      }
-
-      personalHoursAnalysis.appendChild(info);
-
-      const count = document.createElement('p');
-      count.className = 'hours-note';
-      count.textContent =
-        'Publications utilisables actuellement : ' + analyzedCount;
-
-      personalHoursAnalysis.appendChild(count);
+    if(analyzedCount<3){
+      personalHoursAnalysis.appendChild(createTextElement('p',
+        'Tes données sont encore en apprentissage. Enregistre les statistiques d’au moins 3 publications avec leur date et leur heure réelles pour commencer à observer des tendances.','hours-note'));
       return;
     }
 
-    const rankedGroups = Array.from(hourGroups.values())
-      .filter(group => group.count >= 1)
-      .map(group => ({
+    const repeatedGroups=Array.from(hourGroups.values())
+      .filter(group=>group.count>=2)
+      .map(group=>({
         ...group,
-        averageViews: group.views / group.count,
-        averageLikes: group.likes / group.count
+        averageViews:group.views/group.count,
+        averageLikes:group.likes/group.count,
+        averageInteractions:(group.likes+group.comments+group.shares)/group.count
       }))
-      .sort((a, b) => {
-        if (b.averageViews !== a.averageViews) {
-          return b.averageViews - a.averageViews;
-        }
-        return b.count - a.count;
-      });
+      .sort((a,b)=>b.averageViews-a.averageViews||b.count-a.count);
 
-    const intro = document.createElement('div');
-    intro.className = 'hours-result';
+    if(repeatedGroups.length===0){
+      personalHoursAnalysis.appendChild(createTextElement('div',
+        'Tes publications sont encore réparties sur des créneaux différents. Aucun créneau ne possède au moins deux publications : ViralTime préfère ne pas désigner artificiellement un meilleur horaire. Continue à enregistrer tes résultats.','hours-result'));
+      const exploratory=Array.from(hourGroups.values()).sort((a,b)=>b.views-a.views).slice(0,3);
+      if(exploratory.length){
+        personalHoursAnalysis.appendChild(createTextElement('h3','🔎 Créneaux à tester'));
+        exploratory.forEach(group=>{
+          const card=document.createElement('div');card.className='hours-card';
+          card.appendChild(createTextElement('strong',
+            dayNames[group.day].charAt(0).toUpperCase()+dayNames[group.day].slice(1)+' à '+formatHour(group.hour)));
+          card.appendChild(createTextElement('p',
+            Math.round(group.views/group.count).toLocaleString('fr-FR')+' vues en moyenne, sur une seule publication.','hours-note'));
+          card.appendChild(createTextElement('p',
+            'Piste exploratoire uniquement — pas un meilleur horaire confirmé.','hours-note'));
+          personalHoursAnalysis.appendChild(card);
+        });
+      }
+      return;
+    }
 
-    const introTitle = document.createElement('h3');
-    introTitle.textContent = '✅ Analyse de ton compte';
-
-    const introText = document.createElement('p');
-    introText.textContent =
-      analyzedCount +
-      ' publication(s) avec statistiques et heure connue ont été prises en compte.';
-
-    intro.appendChild(introTitle);
-    intro.appendChild(introText);
-    personalHoursAnalysis.appendChild(intro);
-
-    const topGroups = rankedGroups.slice(0, 3);
-
-    topGroups.forEach((group, index) => {
-      const card = document.createElement('div');
-      card.className = 'hours-card';
-
-      const heading = document.createElement('h3');
-      heading.textContent =
-        (index + 1) + '. ' +
-        dayNames[group.day].charAt(0).toUpperCase() +
-        dayNames[group.day].slice(1) +
-        ' à ' +
-        String(group.hour).padStart(2, '0') +
-        'h00';
-
-      const average = document.createElement('p');
-      average.textContent =
-        'Moyenne : ' +
-        Math.round(group.averageViews).toLocaleString('fr-FR') +
-        ' vues par publication';
-
-      const number = document.createElement('p');
-      number.className = 'hours-note';
-      number.textContent =
-        'Basé sur ' + group.count +
-        ' publication(s) · Heure de Côte d’Ivoire (UTC+0)';
-
-      card.appendChild(heading);
-      card.appendChild(average);
-      card.appendChild(number);
-
+    personalHoursAnalysis.appendChild(createTextElement('h3','🏆 Créneaux les plus performants'));
+    repeatedGroups.slice(0,3).forEach((group,index)=>{
+      const card=document.createElement('div');card.className='hours-card';
+      const day=dayNames[group.day];
+      card.appendChild(createTextElement('h3',
+        (index+1)+'. '+day.charAt(0).toUpperCase()+day.slice(1)+' à '+formatHour(group.hour)));
+      card.appendChild(createTextElement('p',
+        'Moyenne : '+Math.round(group.averageViews).toLocaleString('fr-FR')+' vues par publication'));
+      card.appendChild(createTextElement('p',
+        'Likes moyens : '+Math.round(group.averageLikes).toLocaleString('fr-FR')+
+        ' · Interactions moyennes : '+Math.round(group.averageInteractions).toLocaleString('fr-FR'),
+        'hours-note'));
+      card.appendChild(createTextElement('p',
+        'Basé sur '+group.count+' publication(s) · Heure de Côte d’Ivoire (UTC+0)',
+        'hours-note'));
+      card.appendChild(createTextElement('p',
+        group.count>=3?'Tendance observée sur plusieurs publications.':'Début de tendance : ajoute d’autres publications pour la confirmer.',
+        'hours-note'));
       personalHoursAnalysis.appendChild(card);
     });
 
-    const caution = document.createElement('p');
-    caution.className = 'hours-note';
-    caution.textContent =
-      'Ces résultats décrivent uniquement les publications enregistrées dans ton compte. Ils indiquent des tendances observées, pas une garantie de visibilité. Plus tu ajoutes de publications, plus l’analyse pourra devenir utile.';
+    personalHoursAnalysis.appendChild(createTextElement('p',
+      'Le classement utilise la moyenne des vues et le nombre de publications. Il décrit les résultats de ton compte, ne prouve pas qu’un horaire provoque davantage de vues et ne garantit pas la visibilité future.','hours-note'));
 
-    personalHoursAnalysis.appendChild(caution);
-
-    if (excludedUnknownTime > 0) {
-      const excluded = document.createElement('p');
-      excluded.className = 'hours-note';
-      excluded.textContent =
-        excludedUnknownTime +
-        ' ancienne(s) vidéo(s) sans heure réelle connue ont été écartées de l’analyse horaire.';
-      personalHoursAnalysis.appendChild(excluded);
+    const exploratory=Array.from(hourGroups.values()).filter(g=>g.count===1);
+    if(exploratory.length){
+      personalHoursAnalysis.appendChild(createTextElement('p',
+        exploratory.length+' autre(s) créneau(x) avec une seule publication ne sont pas classés parmi les meilleurs horaires.','hours-note'));
     }
-
-  } catch (error) {
-    console.error('Erreur analyse des horaires :', error);
-
+  }catch(error){
+    console.error('Erreur analyse des horaires :',error);
     personalHoursAnalysis.replaceChildren();
-
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'message';
-    errorMessage.textContent =
-      'Impossible de réaliser ton analyse : ' + error.message;
-
-    personalHoursAnalysis.appendChild(errorMessage);
-
-  } finally {
-    refreshHoursBtn.disabled = false;
-    refreshHoursBtn.textContent = 'Actualiser mon analyse';
+    personalHoursAnalysis.appendChild(createTextElement('div',
+      'Impossible de réaliser ton analyse : '+error.message,'message'));
+  }finally{
+    refreshHoursBtn.disabled=false;
+    refreshHoursBtn.textContent='Actualiser mon analyse';
   }
 }
 
-// ======================================
-// AJOUTER UNE ANCIENNE VIDEO TIKTOK
-// ======================================
-
-oldVideoForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  oldVideoMessage.classList.add('hidden');
-
-  const date = oldVideoDate.value;
-  const views = Number(oldVideoViews.value);
-
-  saveOldVideoBtn.disabled = true;
-  saveOldVideoBtn.textContent = 'Enregistrement...';
-
-  let createdPublicationId = null;
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-    if (!user) throw new Error('Tu dois être connecté.');
-
-    if (!date) {
-      throw new Error('Choisis la date réelle de publication.');
-    }
-
-    if (date > getLocalDateString()) {
-      throw new Error('La date de publication ne peut pas être dans le futur.');
-    }
-
-    const parsedDate = new Date(date + 'T00:00:00+00:00');
-
-    if (
-      Number.isNaN(parsedDate.getTime()) ||
-      parsedDate.toISOString().slice(0, 10) !== date
-    ) {
+// Ancienne vidéo
+oldVideoForm.addEventListener('submit',async event=>{
+  event.preventDefault();oldVideoMessage.classList.add('hidden');
+  const date=oldVideoDate.value,views=Number(oldVideoViews.value);
+  saveOldVideoBtn.disabled=true;saveOldVideoBtn.textContent='Enregistrement...';
+  let createdPublicationId=null;
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Tu dois être connecté.');
+    if(!date)throw new Error('Choisis la date réelle de publication.');
+    if(date>getLocalDateString())throw new Error('La date de publication ne peut pas être dans le futur.');
+    const parsedDate=new Date(date+'T00:00:00+00:00');
+    if(Number.isNaN(parsedDate.getTime())||parsedDate.toISOString().slice(0,10)!==date)
       throw new Error('La date choisie est invalide.');
-    }
-
-    if (!Number.isSafeInteger(views) || views < 0) {
-      throw new Error('Entre un nombre de vues valide.');
-    }
-
-    const publicationDate = parsedDate.toISOString();
-
-    const { data: publication, error: publicationError } =
-      await supabase
-        .from('publications')
-        .insert({
-          user_id: user.id,
-          title: 'Ancienne vidéo TikTok',
-          description: 'Vidéo ajoutée directement dans Performances.',
-          content_type: 'Vidéo',
-          scheduled_at: publicationDate,
-          published_at: publicationDate,
-          status: 'publiée'
-        })
-        .select('id')
-        .single();
-
-    if (publicationError) throw publicationError;
-
-    if (!publication || !publication.id) {
-      throw new Error('La publication n’a pas pu être créée correctement.');
-    }
-
-    createdPublicationId = publication.id;
-
-    const { error: performanceError } = await supabase
-      .from('publication_performance')
-      .insert({
-        publication_id: publication.id,
-        user_id: user.id,
-        views: views,
-        likes: 0,
-        comments: 0,
-        shares: 0,
-        updated_at: new Date().toISOString()
-      });
-
-    if (performanceError) {
-      const { data: deletedPublication, error: rollbackError } =
-        await supabase
-          .from('publications')
-          .delete()
-          .eq('id', createdPublicationId)
-          .eq('user_id', user.id)
-          .select('id')
-          .maybeSingle();
-
-      if (rollbackError || !deletedPublication) {
-        throw new Error(
-          'Les vues n’ont pas été enregistrées et la suppression automatique de la publication n’a pas été confirmée. Vérifie dans Supabase avant de recommencer. Détail : ' +
-          performanceError.message +
-          (rollbackError ? ' | Suppression : ' + rollbackError.message : '')
-        );
+    if(!Number.isSafeInteger(views)||views<0)throw new Error('Entre un nombre de vues valide.');
+    const publicationDate=parsedDate.toISOString();
+    const {data:publication,error:publicationError}=await supabase.from('publications').insert({
+      user_id:user.id,title:'Ancienne vidéo TikTok',
+      description:'Vidéo ajoutée directement dans Performances.',
+      content_type:'Vidéo',scheduled_at:publicationDate,published_at:publicationDate,status:'publiée'
+    }).select('id').single();
+    if(publicationError)throw publicationError;
+    if(!publication?.id)throw new Error('La publication n’a pas pu être créée correctement.');
+    createdPublicationId=publication.id;
+    const {error:performanceError}=await supabase.from('publication_performance').insert({
+      publication_id:publication.id,user_id:user.id,views,likes:0,comments:0,shares:0,
+      updated_at:new Date().toISOString()
+    });
+    if(performanceError){
+      const {data:deletedPublication,error:rollbackError}=await supabase.from('publications')
+        .delete().eq('id',createdPublicationId).eq('user_id',user.id).select('id').maybeSingle();
+      if(rollbackError||!deletedPublication){
+        throw new Error('Les vues n’ont pas été enregistrées et la suppression automatique de la publication n’a pas été confirmée. Vérifie dans Supabase avant de recommencer. Détail : '+performanceError.message+(rollbackError?' | Suppression : '+rollbackError.message:''));
       }
-
-      createdPublicationId = null;
-
-      throw new Error(
-        'L’enregistrement des vues a échoué. La publication incomplète a été supprimée. Détail : ' +
-        performanceError.message
-      );
+      createdPublicationId=null;
+      throw new Error('L’enregistrement des vues a échoué. La publication incomplète a été supprimée. Détail : '+performanceError.message);
     }
-
-    oldVideoForm.reset();
-    oldVideoDate.max = getLocalDateString();
-
-    oldVideoMessage.textContent =
-      'Ancienne vidéo et nombre de vues enregistrés avec succès !';
-
+    oldVideoForm.reset();oldVideoDate.max=getLocalDateString();
+    oldVideoMessage.textContent='Ancienne vidéo et nombre de vues enregistrés avec succès !';
     oldVideoMessage.classList.remove('hidden');
-
-    await loadPerformanceData();
-    await loadPublications();
-
-  } catch (error) {
-    console.error('Erreur ancienne vidéo :', error);
-    oldVideoMessage.textContent = 'Erreur : ' + error.message;
+    await loadPerformanceData();await loadPublications();
+    if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
+  }catch(error){
+    console.error('Erreur ancienne vidéo :',error);
+    oldVideoMessage.textContent='Erreur : '+error.message;
     oldVideoMessage.classList.remove('hidden');
-  } finally {
-    saveOldVideoBtn.disabled = false;
-    saveOldVideoBtn.textContent = 'Enregistrer cette vidéo';
-  }
+  }finally{saveOldVideoBtn.disabled=false;saveOldVideoBtn.textContent='Enregistrer cette vidéo';}
 });
 
-// ======================================
-// CONFIRMER UNE PUBLICATION COMME PUBLIEE
-// ======================================
-
-publishedForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  publishedMessage.classList.add('hidden');
-
-  const publicationId = publishedPublication.value;
-  const date = publishedDate.value;
-  const time = publishedTime.value;
-
-  confirmPublishedBtn.disabled = true;
-  confirmPublishedBtn.textContent = 'Enregistrement...';
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-    if (!user) throw new Error('Tu dois être connecté.');
-
-    if (!publicationId || !date || !time) {
-      throw new Error('Choisis une publication, une date et une heure.');
-    }
-
-    const publishedDateTime = getAbidjanDateTime(date, time);
-
-    if (Number.isNaN(publishedDateTime.getTime())) {
-      throw new Error('La date ou l’heure est invalide.');
-    }
-
-    if (publishedDateTime.getTime() > Date.now()) {
-      throw new Error(
-        'La date et l’heure de publication ne peuvent pas être dans le futur.'
-      );
-    }
-
-    const { data, error } = await supabase
-      .from('publications')
-      .update({
-        status: 'publiée',
-        published_at: publishedDateTime.toISOString()
-      })
-      .eq('id', publicationId)
-      .eq('user_id', user.id)
-      .eq('status', 'programmée')
-      .select('id')
-      .maybeSingle();
-
-    if (error) throw error;
-
-    if (!data) {
-      throw new Error(
-        'Publication introuvable, déjà publiée ou modification non autorisée.'
-      );
-    }
-
-    await loadPerformanceData();
-    await loadPublications();
-
+// Confirmer une publication
+publishedForm.addEventListener('submit',async event=>{
+  event.preventDefault();publishedMessage.classList.add('hidden');
+  const publicationId=publishedPublication.value,date=publishedDate.value,time=publishedTime.value;
+  confirmPublishedBtn.disabled=true;confirmPublishedBtn.textContent='Enregistrement...';
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Tu dois être connecté.');
+    if(!publicationId||!date||!time)throw new Error('Choisis une publication, une date et une heure.');
+    const publishedDateTime=getAbidjanDateTime(date,time);
+    if(Number.isNaN(publishedDateTime.getTime()))throw new Error('La date ou l’heure est invalide.');
+    if(publishedDateTime.getTime()>Date.now())throw new Error('La date et l’heure de publication ne peuvent pas être dans le futur.');
+    const {data,error}=await supabase.from('publications').update({
+      status:'publiée',published_at:publishedDateTime.toISOString()
+    }).eq('id',publicationId).eq('user_id',user.id).eq('status','programmée').select('id').maybeSingle();
+    if(error)throw error;
+    if(!data)throw new Error('Publication introuvable, déjà publiée ou modification non autorisée.');
+    await loadPerformanceData();await loadPublications();
     publishedForm.reset();
-
-    publishedMessage.textContent =
-      'Publication confirmée avec succès !';
-
+    publishedMessage.textContent='Publication confirmée avec succès !';
     publishedMessage.classList.remove('hidden');
-
-  } catch (error) {
-    console.error('Erreur de confirmation :', error);
-    publishedMessage.textContent = 'Erreur : ' + error.message;
+    if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
+  }catch(error){
+    console.error('Erreur de confirmation :',error);
+    publishedMessage.textContent='Erreur : '+error.message;
     publishedMessage.classList.remove('hidden');
-  } finally {
-    confirmPublishedBtn.disabled = false;
-    confirmPublishedBtn.textContent = 'Confirmer comme publiée';
-  }
+  }finally{confirmPublishedBtn.disabled=false;confirmPublishedBtn.textContent='Confirmer comme publiée';}
 });
 
-// ======================================
-// CHARGER LES STATISTIQUES SELECTIONNEES
-// ======================================
-
-async function loadSelectedPerformance() {
-  const publicationId = performancePublication.value;
-  if (!publicationId) return;
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-    if (!user) return;
-
-    const { data, error } = await supabase
-      .from('publication_performance')
-      .select('*')
-      .eq('publication_id', publicationId)
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (error) throw error;
-
-    if (data) {
-      performanceViews.value = data.views;
-      performanceLikes.value = data.likes;
-      performanceComments.value = data.comments;
-      performanceShares.value = data.shares;
-    } else {
-      performanceViews.value = 0;
-      performanceLikes.value = 0;
-      performanceComments.value = 0;
-      performanceShares.value = 0;
+// Charger les statistiques sélectionnées
+async function loadSelectedPerformance(){
+  const publicationId=performancePublication.value;if(!publicationId)return;
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;if(!user)return;
+    const {data,error}=await supabase.from('publication_performance').select('*')
+      .eq('publication_id',publicationId).eq('user_id',user.id).maybeSingle();
+    if(error)throw error;
+    if(data){
+      performanceViews.value=data.views;performanceLikes.value=data.likes;
+      performanceComments.value=data.comments;performanceShares.value=data.shares;
+    }else{
+      performanceViews.value=0;performanceLikes.value=0;
+      performanceComments.value=0;performanceShares.value=0;
     }
-
     performanceMessage.classList.add('hidden');
-
-  } catch (error) {
-    console.error('Erreur de lecture des statistiques :', error);
-    showPerformanceMessage(
-      'Impossible de charger ces statistiques : ' + error.message
-    );
+  }catch(error){
+    console.error('Erreur de lecture des statistiques :',error);
+    showPerformanceMessage('Impossible de charger ces statistiques : '+error.message);
   }
 }
+performancePublication.addEventListener('change',loadSelectedPerformance);
 
-// ======================================
-// CHANGER DE PUBLICATION
-// ======================================
-
-performancePublication.addEventListener('change', () => {
-  loadSelectedPerformance();
-});
-
-// ======================================
-// ENREGISTRER OU ACTUALISER LES STATISTIQUES
-// ======================================
-
-performanceForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  performanceMessage.classList.add('hidden');
-
-  const publicationId = performancePublication.value;
-  const views = Number(performanceViews.value);
-  const likes = Number(performanceLikes.value);
-  const comments = Number(performanceComments.value);
-  const shares = Number(performanceShares.value);
-
-  savePerformanceBtn.disabled = true;
-  savePerformanceBtn.textContent = 'Enregistrement...';
-
-  try {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-
-    if (!user) {
-      throw new Error(
-        'Tu dois être connecté pour enregistrer les statistiques.'
-      );
-    }
-
-    if (!publicationId) throw new Error('Choisis une publication.');
-
-    const values = [views, likes, comments, shares];
-
-    if (values.some(value =>
-      !Number.isSafeInteger(value) || value < 0
-    )) {
-      throw new Error(
-        'Entre des nombres entiers positifs ou égaux à zéro.'
-      );
-    }
-
-    const performance = {
-      publication_id: publicationId,
-      user_id: user.id,
-      views: views,
-      likes: likes,
-      comments: comments,
-      shares: shares,
-      updated_at: new Date().toISOString()
+// Enregistrer les statistiques
+performanceForm.addEventListener('submit',async event=>{
+  event.preventDefault();performanceMessage.classList.add('hidden');
+  const publicationId=performancePublication.value;
+  const views=Number(performanceViews.value),likes=Number(performanceLikes.value);
+  const comments=Number(performanceComments.value),shares=Number(performanceShares.value);
+  savePerformanceBtn.disabled=true;savePerformanceBtn.textContent='Enregistrement...';
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Tu dois être connecté pour enregistrer les statistiques.');
+    if(!publicationId)throw new Error('Choisis une publication.');
+    const values=[views,likes,comments,shares];
+    if(values.some(value=>!Number.isSafeInteger(value)||value<0))
+      throw new Error('Entre des nombres entiers positifs ou égaux à zéro.');
+    const performance={
+      publication_id:publicationId,user_id:user.id,views,likes,comments,shares,
+      updated_at:new Date().toISOString()
     };
-
-    const { error } = await supabase
-      .from('publication_performance')
-      .upsert(performance, {
-        onConflict: 'publication_id'
-      });
-
-    if (error) throw error;
-
+    const {error}=await supabase.from('publication_performance')
+      .upsert(performance,{onConflict:'publication_id'});
+    if(error)throw error;
     await loadPerformanceData();
-
-    showPerformanceMessage(
-      'Statistiques enregistrées avec succès !'
-    );
-
-  } catch (error) {
-    console.error('Erreur d’enregistrement des performances :', error);
-    showPerformanceMessage('Erreur : ' + error.message);
-  } finally {
-    savePerformanceBtn.disabled = false;
-    savePerformanceBtn.textContent = 'Enregistrer les statistiques';
-  }
+    showPerformanceMessage('Statistiques enregistrées avec succès !');
+    if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
+  }catch(error){
+    console.error('Erreur d’enregistrement des performances :',error);
+    showPerformanceMessage('Erreur : '+error.message);
+  }finally{savePerformanceBtn.disabled=false;savePerformanceBtn.textContent='Enregistrer les statistiques';}
 });
 
-// ======================================
-// ENREGISTRER LE PROFIL TIKTOK
-// ======================================
-
-const tiktokProfileForm = document.getElementById('tiktokProfileForm');
-
-tiktokProfileForm.addEventListener('submit', async (event) => {
+// Enregistrer le profil TikTok
+const tiktokProfileForm=$('tiktokProfileForm');
+tiktokProfileForm.addEventListener('submit',async event=>{
   event.preventDefault();
-
-  const tiktokMessage = document.getElementById('tiktokMessage');
-  const saveButton = tiktokProfileForm.querySelector('button[type="submit"]');
-
-  saveButton.disabled = true;
-  saveButton.textContent = 'Enregistrement...';
-
-  tiktokMessage.classList.add('hidden');
-  dashboardMessage.classList.add('hidden');
-
-  try {
-    const { data: { user }, error: userError } =
-      await supabase.auth.getUser();
-
-    if (userError) throw userError;
-    if (!user) throw new Error('Connecte-toi pour enregistrer ton profil.');
-
-    const profile = {
-      user_id: user.id,
-      username: document.getElementById('tiktokUsername').value.trim(),
-      follower_count: Number(document.getElementById('tiktokFollowers').value),
-      post_count: Number(document.getElementById('tiktokPosts').value),
-      niche: document.getElementById('tiktokNiche').value.trim(),
-      audience_country: document.getElementById('tiktokCountry').value.trim(),
-      updated_at: new Date().toISOString()
+  const tiktokMessage=$('tiktokMessage');
+  const saveButton=tiktokProfileForm.querySelector('button[type="submit"]');
+  saveButton.disabled=true;saveButton.textContent='Enregistrement...';
+  tiktokMessage.classList.add('hidden');dashboardMessage.classList.add('hidden');
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+    if(userError)throw userError;
+    if(!user)throw new Error('Connecte-toi pour enregistrer ton profil.');
+    const profile={
+      user_id:user.id,username:$('tiktokUsername').value.trim(),
+      follower_count:Number($('tiktokFollowers').value),
+      post_count:Number($('tiktokPosts').value),
+      niche:$('tiktokNiche').value.trim(),
+      audience_country:$('tiktokCountry').value.trim(),
+      updated_at:new Date().toISOString()
     };
-
-    const { error } = await supabase
-      .from('tiktok_profiles')
-      .upsert(profile, { onConflict: 'user_id' });
-
-    if (error) throw error;
-
-    tiktokMessage.textContent =
-      'Ton profil TikTok a été enregistré avec succès !';
-
+    const {error}=await supabase.from('tiktok_profiles').upsert(profile,{onConflict:'user_id'});
+    if(error)throw error;
+    tiktokMessage.textContent='Ton profil TikTok a été enregistré avec succès !';
     tiktokMessage.classList.remove('hidden');
-
-    showDashboardMessage(
-      'Ton profil TikTok a été enregistré avec succès !'
-    );
-
-    setTimeout(() => {
-      showPage(homePage);
-    }, 1000);
-
-  } catch (error) {
-    tiktokMessage.textContent = 'Erreur : ' + error.message;
-    tiktokMessage.classList.remove('hidden');
-  } finally {
-    saveButton.disabled = false;
-    saveButton.textContent = 'Enregistrer mon profil';
-  }
+    showDashboardMessage('Ton profil TikTok a été enregistré avec succès !');
+    setTimeout(()=>showPage(homePage),1000);
+  }catch(error){
+    tiktokMessage.textContent='Erreur : '+error.message;tiktokMessage.classList.remove('hidden');
+  }finally{saveButton.disabled=false;saveButton.textContent='Enregistrer mon profil';}
 });
 
-// ======================================
-// CHARGER LE PROFIL TIKTOK
-// ======================================
-
-async function loadTikTokProfile() {
-  const { data: { user }, error: userError } =
-    await supabase.auth.getUser();
-
-  if (userError || !user) return;
-
-  const { data, error } = await supabase
-    .from('tiktok_profiles')
-    .select('*')
-    .eq('user_id', user.id)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Erreur de chargement :', error.message);
-    return;
-  }
-
-  if (!data) return;
-
-  document.getElementById('tiktokUsername').value = data.username || '';
-  document.getElementById('tiktokFollowers').value = data.follower_count ?? 0;
-  document.getElementById('tiktokPosts').value = data.post_count ?? 0;
-  document.getElementById('tiktokNiche').value = data.niche || '';
-  document.getElementById('tiktokCountry').value = data.audience_country || '';
+// Charger le profil TikTok
+async function loadTikTokProfile(){
+  const {data:{user},error:userError}=await supabase.auth.getUser();
+  if(userError||!user)return;
+  const {data,error}=await supabase.from('tiktok_profiles').select('*')
+    .eq('user_id',user.id).maybeSingle();
+  if(error){console.error('Erreur de chargement :',error.message);return;}
+  if(!data)return;
+  $('tiktokUsername').value=data.username||'';
+  $('tiktokFollowers').value=data.follower_count??0;
+  $('tiktokPosts').value=data.post_count??0;
+  $('tiktokNiche').value=data.niche||'';
+  $('tiktokCountry').value=data.audience_country||'';
 }
 
-// ======================================
-// DECONNEXION
-// ======================================
-
-logoutBtn.addEventListener('click', async () => {
-  logoutBtn.disabled = true;
-  logoutBtn.textContent = 'Déconnexion...';
-
-  try {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
-
-    authForm.reset();
-    isLogin = true;
-
+// Déconnexion
+logoutBtn.addEventListener('click',async()=>{
+  logoutBtn.disabled=true;logoutBtn.textContent='Déconnexion...';
+  try{
+    const {error}=await supabase.auth.signOut();if(error)throw error;
+    authForm.reset();isLogin=true;
     registrationNameFields.classList.add('hidden');
-    firstNameInput.required = false;
-    lastNameInput.required = false;
-
-    formTitle.textContent = 'Se connecter';
-    submitBtn.textContent = 'Me connecter';
-    switchBtn.textContent = 'Créer un nouveau compte';
-
+    firstNameInput.required=false;lastNameInput.required=false;
+    formTitle.textContent='Se connecter';submitBtn.textContent='Me connecter';
+    switchBtn.textContent='Créer un nouveau compte';
     showAuth();
-
-  } catch (error) {
-    showDashboardMessage('Erreur : ' + error.message);
-  } finally {
-    logoutBtn.disabled = false;
-    logoutBtn.textContent = 'Se déconnecter';
-  }
+  }catch(error){showDashboardMessage('Erreur : '+error.message);}
+  finally{logoutBtn.disabled=false;logoutBtn.textContent='Se déconnecter';}
 });
 
-// ======================================
-// VERIFIER LA SESSION EXISTANTE
-// ======================================
-
-async function checkSession() {
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error) {
-    showAuth();
-    return;
-  }
-
-  if (data.session) {
-    showDashboard(data.session.user);
-  } else {
-    showAuth();
-  }
+// Vérifier la session
+async function checkSession(){
+  const {data,error}=await supabase.auth.getSession();
+  if(error){showAuth();return;}
+  if(data.session)showDashboard(data.session.user);
+  else showAuth();
 }
-
 checkSession();
 
-// ======================================
-// SURVEILLER LES CHANGEMENTS DE CONNEXION
-// ======================================
-
-supabase.auth.onAuthStateChange((event, session) => {
-  if (session) {
-    Promise.resolve().then(() => {
-      showDashboard(session.user);
-    });
-  } else if (event === 'SIGNED_OUT') {
-    showAuth();
-  }
+supabase.auth.onAuthStateChange((event,session)=>{
+  if(session){
+    Promise.resolve().then(()=>showDashboard(session.user));
+  }else if(event==='SIGNED_OUT')showAuth();
 });
-
 </script>
 </body>
 </html>
