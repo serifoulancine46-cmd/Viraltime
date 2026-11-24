@@ -19,6 +19,7 @@ input,select{width:100%;padding:14px;margin:9px 0;border-radius:10px;border:1px 
 button{width:100%;padding:14px;background:#9b83ff;border:0;border-radius:12px;font-weight:bold;margin-top:12px;font-size:15px;cursor:pointer}
 button:disabled{opacity:.6;cursor:wait}
 .secondary{background:#332a50;color:white}
+.delete-btn{background:#8f354c;color:white}
 .message{padding:12px;border-radius:10px;background:#282143;margin-top:12px;font-size:13px;overflow-wrap:anywhere}
 .hidden{display:none}
 .time{font-size:40px;color:#9b83ff;font-weight:bold}
@@ -844,6 +845,65 @@ publicationForm.addEventListener('submit', async (event) => {
 });
 
 // ======================================
+// SUPPRIMER UNE PUBLICATION PROGRAMMEE
+// ======================================
+
+async function deleteScheduledPublication(publicationId, deleteButton) {
+  const confirmed = window.confirm(
+    'Veux-tu vraiment supprimer cette publication programmée ? Cette action est définitive.'
+  );
+
+  if (!confirmed) return;
+
+  deleteButton.disabled = true;
+  deleteButton.textContent = 'Suppression...';
+
+  try {
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error('Tu dois être connecté pour supprimer une publication.');
+    }
+
+    const { data, error } = await supabase
+      .from('publications')
+      .delete()
+      .eq('id', publicationId)
+      .eq('user_id', user.id)
+      .eq('status', 'programmée')
+      .select('id')
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      throw new Error(
+        'La publication est introuvable, n’est plus programmée ou ne peut pas être supprimée.'
+      );
+    }
+
+    showPublicationMessage('Publication programmée supprimée avec succès !');
+
+    await loadPublications();
+
+  } catch (error) {
+    console.error('Erreur de suppression :', error);
+
+    showPublicationMessage(
+      'Impossible de supprimer cette publication : ' + error.message
+    );
+
+    deleteButton.disabled = false;
+    deleteButton.textContent = '🗑️ Supprimer';
+  }
+}
+
+// ======================================
 // CHARGER LES PUBLICATIONS
 // ======================================
 
@@ -928,6 +988,21 @@ async function loadPublications() {
       item.appendChild(type);
       item.appendChild(date);
       item.appendChild(status);
+
+      // Le bouton est affiché uniquement pour les publications programmées.
+      if (publication.status === 'programmée') {
+        const deleteButton = document.createElement('button');
+
+        deleteButton.type = 'button';
+        deleteButton.className = 'delete-btn';
+        deleteButton.textContent = '🗑️ Supprimer';
+
+        deleteButton.addEventListener('click', () => {
+          deleteScheduledPublication(publication.id, deleteButton);
+        });
+
+        item.appendChild(deleteButton);
+      }
 
       publicationsList.appendChild(item);
     });
