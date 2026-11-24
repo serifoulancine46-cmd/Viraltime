@@ -451,7 +451,7 @@ async function loadAvatar(user){
       return;
     }
 
-    const {data}=supabase.storage.from('avatars').getPublicUrl(path);
+    const {data}=supabase.storage.from('Avatars').getPublicUrl(path);
     displayAvatar(data.publicUrl+'?t='+Date.now());
 
   }catch(error){
@@ -516,7 +516,7 @@ avatarFile.addEventListener('change',async()=>{
     const newPath=user.id+'/'+Date.now()+'.'+extension;
 
     const {error:uploadError}=await supabase.storage
-      .from('avatars')
+      .from('Avatars')
       .upload(newPath,file,{
         contentType:file.type,
         cacheControl:'3600',
@@ -540,7 +540,7 @@ avatarFile.addEventListener('change',async()=>{
 
     if(oldPath){
       const {error:deleteError}=await supabase.storage
-        .from('avatars')
+        .from('Avatars')
         .remove([oldPath]);
 
       if(deleteError){
@@ -557,7 +557,7 @@ avatarFile.addEventListener('change',async()=>{
       const {data:{user}}=await supabase.auth.getUser();
 
       if(user?.user_metadata?.avatar_path!==uploadedPath){
-        await supabase.storage.from('avatars').remove([uploadedPath]);
+        await supabase.storage.from('Avatars').remove([uploadedPath]);
       }
     }
 
