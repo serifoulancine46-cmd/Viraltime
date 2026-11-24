@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -85,6 +86,60 @@ small{color:#b9b1d2}
 .setting-row input[type=checkbox]{width:22px;height:22px;accent-color:#9b83ff}
 .setting-row select{max-width:160px;margin:0}
 .account-email{overflow-wrap:anywhere;color:#c4a7ff}
+
+/* PAGE MON PROFIL VIRALTIME */
+.profile-overview{text-align:center;padding-top:25px}
+.profile-photo-button{
+  width:150px;
+  height:150px;
+  margin:10px auto 15px;
+  padding:0;
+  border-radius:50%;
+  border:3px solid #9b83ff;
+  background:#332a50;
+  color:#c4a7ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  font-size:55px;
+  cursor:pointer;
+}
+.profile-photo-button img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+}
+.profile-photo-hint{
+  font-size:13px;
+  color:#b9b1d2;
+  margin:0 0 25px;
+}
+.profile-detail{
+  text-align:left;
+  background:#282143;
+  padding:15px;
+  border-radius:12px;
+  margin:12px 0;
+  overflow-wrap:anywhere;
+}
+.profile-detail span{
+  display:block;
+  color:#b9b1d2;
+  font-size:13px;
+  margin-bottom:7px;
+}
+.profile-detail strong{
+  color:#fff;
+  font-size:15px;
+  overflow-wrap:anywhere;
+}
+.profile-name{
+  color:#c4a7ff;
+  margin:10px 0 5px;
+  font-size:21px;
+}
 </style>
 </head>
 <body>
@@ -92,8 +147,8 @@ small{color:#b9b1d2}
 
 <header>
   <button id="avatarButton" class="brand-avatar" type="button"
-    aria-label="Ajouter ou modifier ma photo de profil"
-    title="Ajouter ou modifier ma photo de profil">
+    aria-label="Voir mon profil"
+    title="Voir mon profil">
     <span id="avatarFallback">◷</span>
     <img id="avatarImage" class="hidden" alt="Ma photo de profil">
   </button>
@@ -141,6 +196,49 @@ small{color:#b9b1d2}
     <div class="card"><h2>📅 Calendrier</h2><p>Organise tes prochaines publications.</p><button id="openCalendarBtn" type="button" class="secondary">Ouvrir</button></div>
     <div class="card"><h2>📊 Performances</h2><p>Suis tes résultats.</p><button id="openPerformanceBtn" type="button" class="secondary">Voir mes résultats</button></div>
     <div class="card"><h2>🎵 Profil TikTok</h2><p>Personnalise les informations de ton compte TikTok.</p><button id="openProfileBtn" type="button" class="secondary">Ajouter mon profil</button></div>
+  </div>
+
+  <!-- PAGE MON PROFIL VIRALTIME -->
+  <div id="profileOverviewPage" class="hidden">
+    <div class="card profile-overview">
+      <h1>👤 Mon profil</h1>
+      <p>Voici les informations de ton compte ViralTime.</p>
+
+      <button id="profileAvatarButton" class="profile-photo-button" type="button"
+        aria-label="Modifier ma photo de profil"
+        title="Appuie pour changer ta photo">
+        <span id="profileAvatarFallback">◷</span>
+        <img id="profileAvatarImage" class="hidden" alt="Ma photo de profil">
+      </button>
+
+      <p class="profile-photo-hint">Appuie sur ta photo pour la modifier.</p>
+
+      <h2 id="profileDisplayName" class="profile-name">Mon profil</h2>
+
+      <div class="profile-detail">
+        <span>Prénom</span>
+        <strong id="profileFirstName">Chargement...</strong>
+      </div>
+
+      <div class="profile-detail">
+        <span>Nom</span>
+        <strong id="profileLastName">Chargement...</strong>
+      </div>
+
+      <div class="profile-detail">
+        <span>Adresse e-mail</span>
+        <strong id="profileEmail">Chargement...</strong>
+      </div>
+
+      <div class="profile-detail">
+        <span>Date d'inscription</span>
+        <strong id="profileCreatedAt">Chargement...</strong>
+      </div>
+
+      <button id="editMyProfileBtn" type="button">Modifier mon profil</button>
+      <button id="backProfileOverviewBtn" class="secondary" type="button">Retour à l'accueil</button>
+      <div id="profileOverviewMessage" class="message hidden" role="status"></div>
+    </div>
   </div>
 
   <!-- MON COMPTE -->
@@ -414,6 +512,7 @@ const switchBtn=$('switchBtn'),message=$('message');
 const dashboardMessage=$('dashboardMessage');
 const logoutBtn=$('logoutBtn');
 const homePage=$('homePage'),profilePage=$('profilePage');
+const profileOverviewPage=$('profileOverviewPage');
 const hoursPage=$('hoursPage'),calendarPage=$('calendarPage');
 const performancePage=$('performancePage');
 const accountPage=$('accountPage'),settingsPage=$('settingsPage');
@@ -430,15 +529,28 @@ const avatarFile=$('avatarFile');
 const avatarImage=$('avatarImage');
 const avatarFallback=$('avatarFallback');
 
+const profileAvatarButton=$('profileAvatarButton');
+const profileAvatarImage=$('profileAvatarImage');
+const profileAvatarFallback=$('profileAvatarFallback');
+
 function displayAvatar(url){
   if(url){
     avatarImage.src=url;
     avatarImage.classList.remove('hidden');
     avatarFallback.classList.add('hidden');
+
+    profileAvatarImage.src=url;
+    profileAvatarImage.classList.remove('hidden');
+    profileAvatarFallback.classList.add('hidden');
+
   }else{
     avatarImage.removeAttribute('src');
     avatarImage.classList.add('hidden');
     avatarFallback.classList.remove('hidden');
+
+    profileAvatarImage.removeAttribute('src');
+    profileAvatarImage.classList.add('hidden');
+    profileAvatarFallback.classList.remove('hidden');
   }
 }
 
@@ -460,7 +572,7 @@ async function loadAvatar(user){
   }
 }
 
-// Ouvrir la galerie après vérification de la connexion
+// Ouvrir la page Mon profil depuis la photo de l'en-tête
 avatarButton.addEventListener('click',async()=>{
   try{
     const {data:{user},error}=await supabase.auth.getUser();
@@ -468,7 +580,26 @@ avatarButton.addEventListener('click',async()=>{
     if(error)throw error;
 
     if(!user){
-      alert('Connecte-toi pour ajouter une photo de profil.');
+      alert('Connecte-toi pour consulter ton profil.');
+      return;
+    }
+
+    showPage(profileOverviewPage);
+
+  }catch(error){
+    alert('Impossible de vérifier ton compte : '+error.message);
+  }
+});
+
+// Ouvrir la galerie depuis la photo de la page Mon profil
+profileAvatarButton.addEventListener('click',async()=>{
+  try{
+    const {data:{user},error}=await supabase.auth.getUser();
+
+    if(error)throw error;
+
+    if(!user){
+      alert('Connecte-toi pour modifier ta photo de profil.');
       return;
     }
 
@@ -504,7 +635,9 @@ avatarFile.addEventListener('change',async()=>{
     }
 
     avatarButton.disabled=true;
+    profileAvatarButton.disabled=true;
     avatarFallback.textContent='…';
+    profileAvatarFallback.textContent='…';
 
     const extension={
       'image/jpeg':'jpg',
@@ -573,9 +706,55 @@ avatarFile.addEventListener('change',async()=>{
 
   }finally{
     avatarButton.disabled=false;
+    profileAvatarButton.disabled=false;
     avatarFile.value='';
   }
 });
+
+// Charger les informations de la page Mon profil
+async function loadProfileOverview(){
+  const profileOverviewMessage=$('profileOverviewMessage');
+
+  profileOverviewMessage.classList.add('hidden');
+
+  try{
+    const {data:{user},error}=await supabase.auth.getUser();
+
+    if(error)throw error;
+    if(!user)throw new Error('Aucun utilisateur connecté.');
+
+    const metadata=user.user_metadata||{};
+
+    const firstName=metadata.first_name||'Non renseigné';
+    const lastName=metadata.last_name||'Non renseigné';
+    const fullName=[metadata.first_name,metadata.last_name].filter(Boolean).join(' ');
+
+    $('profileFirstName').textContent=firstName;
+    $('profileLastName').textContent=lastName;
+    $('profileEmail').textContent=user.email||'Adresse e-mail non disponible';
+    $('profileDisplayName').textContent=fullName||'Mon profil';
+
+    if(user.created_at){
+      const createdDate=new Date(user.created_at);
+
+      $('profileCreatedAt').textContent=createdDate.toLocaleDateString('fr-FR',{
+        day:'2-digit',
+        month:'long',
+        year:'numeric'
+      });
+    }else{
+      $('profileCreatedAt').textContent='Non disponible';
+    }
+
+    await loadAvatar(user);
+
+  }catch(error){
+    console.error('Erreur de chargement du profil :',error);
+
+    profileOverviewMessage.textContent='Impossible de charger les informations du profil : '+error.message;
+    profileOverviewMessage.classList.remove('hidden');
+  }
+}
 
 const publicationForm=$('publicationForm');
 const publicationMessage=$('publicationMessage');
@@ -630,8 +809,16 @@ function showPublicationMessage(text){publicationMessage.textContent=text;public
 function showPerformanceMessage(text){performanceMessage.textContent=text;performanceMessage.classList.remove('hidden');}
 
 function showPage(page){
-  [homePage,profilePage,hoursPage,calendarPage,performancePage,accountPage,settingsPage]
-    .forEach(p=>p.classList.add('hidden'));
+  [
+    homePage,
+    profilePage,
+    profileOverviewPage,
+    hoursPage,
+    calendarPage,
+    performancePage,
+    accountPage,
+    settingsPage
+  ].forEach(p=>p.classList.add('hidden'));
 
   page.classList.remove('hidden');
 
@@ -645,6 +832,7 @@ function showPage(page){
 
   if(page===accountPage)loadAccountInformation();
   if(page===settingsPage)loadSettings();
+  if(page===profileOverviewPage)loadProfileOverview();
 }
 
 function showDashboard(user){
@@ -802,6 +990,9 @@ accountForm.addEventListener('submit',async event=>{
 
     $('currentAccountEmail').textContent=data.user?.email||user.email;
     accountMessage.classList.remove('hidden');
+
+    // Actualiser aussi les informations de la page Mon profil
+    await loadProfileOverview();
 
   }catch(error){
     accountMessage.textContent='Erreur : '+error.message;
@@ -972,6 +1163,10 @@ $('backAccountBtn').addEventListener('click',()=>showPage(homePage));
 
 $('openSettingsBtn').addEventListener('click',()=>showPage(settingsPage));
 $('backSettingsBtn').addEventListener('click',()=>showPage(homePage));
+
+// Navigation de la page Mon profil
+$('editMyProfileBtn').addEventListener('click',()=>showPage(accountPage));
+$('backProfileOverviewBtn').addEventListener('click',()=>showPage(homePage));
 
 // Programmer une publication
 publicationForm.addEventListener('submit',async event=>{
