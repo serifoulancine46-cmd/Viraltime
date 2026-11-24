@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,8 +9,44 @@
 *{box-sizing:border-box}
 body{margin:0;background:#100e1b;color:white;font-family:Arial,sans-serif}
 main{max-width:520px;margin:auto;padding:22px 16px}
-header{display:flex;align-items:center;gap:12px;margin-bottom:25px}
-.logo{background:#9b83ff;padding:13px;border-radius:14px;font-size:24px}
+
+header{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin-bottom:28px;
+  padding:12px;
+  background:linear-gradient(135deg,#211b3a,#17132c);
+  border:1px solid #40345f;
+  border-radius:18px;
+}
+.brand-avatar{
+  flex-shrink:0;
+  width:58px;
+  height:58px;
+  margin:0;
+  padding:0;
+  border-radius:50%;
+  border:2px solid #9b83ff;
+  background:#332a50;
+  color:#c4a7ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  font-size:27px;
+  cursor:pointer;
+}
+.brand-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+}
+.brand-info{min-width:0}
+.brand-info strong{font-size:21px;color:white}
+.brand-info small{display:inline-block;margin-top:5px;font-size:12px}
+
 h1{font-size:25px}
 p{color:#b9b1d2;line-height:1.6}
 .card{background:#1b1730;padding:20px;border-radius:18px;margin:15px 0}
@@ -56,8 +91,17 @@ small{color:#b9b1d2}
 <main>
 
 <header>
-  <div class="logo">◷</div>
-  <div><strong>ViralTime</strong><br><small>Publie au bon moment.</small></div>
+  <button id="avatarButton" class="brand-avatar" type="button"
+    aria-label="Ajouter ou modifier ma photo de profil"
+    title="Ajouter ou modifier ma photo de profil">
+    <span id="avatarFallback">◷</span>
+    <img id="avatarImage" class="hidden" alt="Ma photo de profil">
+  </button>
+  <input id="avatarFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden">
+  <div class="brand-info">
+    <strong>ViralTime</strong><br>
+    <small>Publie au bon moment.</small>
+  </div>
 </header>
 
 <section id="authSection" class="card">
@@ -378,6 +422,161 @@ const firstNameInput=$('firstName'),lastNameInput=$('lastName');
 const welcomeTitle=$('welcomeTitle');
 let isLogin=false;
 
+// ======================================
+// PHOTO DE PROFIL VIRALTIME
+// ======================================
+const avatarButton=$('avatarButton');
+const avatarFile=$('avatarFile');
+const avatarImage=$('avatarImage');
+const avatarFallback=$('avatarFallback');
+
+function displayAvatar(url){
+  if(url){
+    avatarImage.src=url;
+    avatarImage.classList.remove('hidden');
+    avatarFallback.classList.add('hidden');
+  }else{
+    avatarImage.removeAttribute('src');
+    avatarImage.classList.add('hidden');
+    avatarFallback.classList.remove('hidden');
+  }
+}
+
+async function loadAvatar(user){
+  try{
+    const path=user.user_metadata?.avatar_path;
+
+    if(!path){
+      displayAvatar(null);
+      return;
+    }
+
+    const {data}=supabase.storage.from('avatars').getPublicUrl(path);
+    displayAvatar(data.publicUrl+'?t='+Date.now());
+
+  }catch(error){
+    console.error('Erreur de chargement de la photo :',error);
+    displayAvatar(null);
+  }
+}
+
+// Ouvrir la galerie après vérification de la connexion
+avatarButton.addEventListener('click',async()=>{
+  try{
+    const {data:{user},error}=await supabase.auth.getUser();
+
+    if(error)throw error;
+
+    if(!user){
+      alert('Connecte-toi pour ajouter une photo de profil.');
+      return;
+    }
+
+    avatarFile.click();
+
+  }catch(error){
+    alert('Impossible de vérifier ton compte : '+error.message);
+  }
+});
+
+// Sélectionner et enregistrer la photo
+avatarFile.addEventListener('change',async()=>{
+  const file=avatarFile.files?.[0];
+
+  if(!file)return;
+
+  let uploadedPath=null;
+
+  try{
+    const {data:{user},error:userError}=await supabase.auth.getUser();
+
+    if(userError)throw userError;
+    if(!user)throw new Error('Tu dois être connecté.');
+
+    const allowedTypes=['image/jpeg','image/png','image/webp'];
+
+    if(!allowedTypes.includes(file.type)){
+      throw new Error('Choisis une image JPG, PNG ou WEBP.');
+    }
+
+    if(file.size>5*1024*1024){
+      throw new Error('Ta photo ne doit pas dépasser 5 Mo.');
+    }
+
+    avatarButton.disabled=true;
+    avatarFallback.textContent='…';
+
+    const extension={
+      'image/jpeg':'jpg',
+      'image/png':'png',
+      'image/webp':'webp'
+    }[file.type];
+
+    const oldPath=user.user_metadata?.avatar_path;
+    const newPath=user.id+'/'+Date.now()+'.'+extension;
+
+    const {error:uploadError}=await supabase.storage
+      .from('avatars')
+      .upload(newPath,file,{
+        contentType:file.type,
+        cacheControl:'3600',
+        upsert:false
+      });
+
+    if(uploadError)throw uploadError;
+
+    uploadedPath=newPath;
+
+    const {data,error:updateError}=await supabase.auth.updateUser({
+      data:{
+        ...user.user_metadata,
+        avatar_path:newPath
+      }
+    });
+
+    if(updateError)throw updateError;
+
+    await loadAvatar(data.user);
+
+    if(oldPath){
+      const {error:deleteError}=await supabase.storage
+        .from('avatars')
+        .remove([oldPath]);
+
+      if(deleteError){
+        console.warn('Ancienne photo non supprimée :',deleteError);
+      }
+    }
+
+    alert('Ta photo de profil a été enregistrée avec succès !');
+
+  }catch(error){
+    console.error('Erreur photo de profil :',error);
+
+    if(uploadedPath){
+      const {data:{user}}=await supabase.auth.getUser();
+
+      if(user?.user_metadata?.avatar_path!==uploadedPath){
+        await supabase.storage.from('avatars').remove([uploadedPath]);
+      }
+    }
+
+    const {data:{user}}=await supabase.auth.getUser();
+
+    if(user){
+      await loadAvatar(user);
+    }else{
+      displayAvatar(null);
+    }
+
+    alert('Impossible d’enregistrer la photo : '+error.message);
+
+  }finally{
+    avatarButton.disabled=false;
+    avatarFile.value='';
+  }
+});
+
 const publicationForm=$('publicationForm');
 const publicationMessage=$('publicationMessage');
 const publicationsList=$('publicationsList');
@@ -433,14 +632,17 @@ function showPerformanceMessage(text){performanceMessage.textContent=text;perfor
 function showPage(page){
   [homePage,profilePage,hoursPage,calendarPage,performancePage,accountPage,settingsPage]
     .forEach(p=>p.classList.add('hidden'));
+
   page.classList.remove('hidden');
 
   if(page===calendarPage)loadPublications();
   if(page===performancePage)loadPerformanceData();
+
   if(page===hoursPage){
     loadAudienceHours();
     loadPersonalHoursAnalysis();
   }
+
   if(page===accountPage)loadAccountInformation();
   if(page===settingsPage)loadSettings();
 }
@@ -450,8 +652,12 @@ function showDashboard(user){
   dashboard.classList.remove('hidden');
   showPage(homePage);
 
+  // Charger la photo de profil du compte connecté
+  loadAvatar(user);
+
   const firstName=user.user_metadata?.first_name||'';
   welcomeTitle.textContent=firstName?'Bienvenue, '+firstName+' 👋':'Bienvenue, Créateur 👋';
+
   loadTikTokProfile();
   loadPublications();
 }
@@ -474,6 +680,7 @@ switchBtn.addEventListener('click',()=>{
 
 authForm.addEventListener('submit',async event=>{
   event.preventDefault();
+
   const email=$('email').value.trim(),password=$('password').value;
   const firstName=firstNameInput.value.trim(),lastName=lastNameInput.value.trim();
 
@@ -485,11 +692,16 @@ authForm.addEventListener('submit',async event=>{
   try{
     if(isLogin){
       const {data,error}=await supabase.auth.signInWithPassword({email,password});
+
       if(error)throw error;
+
       showDashboard(data.user);
+
     }else{
       if(!firstName||!lastName)throw new Error('Entre ton prénom et ton nom.');
+
       const fullName=firstName+' '+lastName;
+
       const {data,error}=await supabase.auth.signUp({
         email,password,
         options:{
@@ -497,12 +709,16 @@ authForm.addEventListener('submit',async event=>{
           data:{first_name:firstName,last_name:lastName,name:fullName,display_name:fullName}
         }
       });
+
       if(error)throw error;
+
       if(data.session)showDashboard(data.user);
       else showMessage("Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter.");
     }
+
   }catch(error){
     showMessage('Erreur : '+error.message);
+
   }finally{
     submitBtn.disabled=false;
     switchBtn.disabled=false;
@@ -517,14 +733,17 @@ async function loadAccountInformation(){
 
   try{
     const {data:{user},error}=await supabase.auth.getUser();
+
     if(error)throw error;
     if(!user)throw new Error('Aucun utilisateur connecté.');
 
     const metadata=user.user_metadata||{};
+
     $('currentAccountEmail').textContent=user.email||'Adresse e-mail non disponible';
     $('accountEmail').value=user.email||'';
     $('accountFirstName').value=metadata.first_name||'';
     $('accountLastName').value=metadata.last_name||'';
+
   }catch(error){
     accountMessage.textContent='Impossible de charger ton compte : '+error.message;
     accountMessage.classList.remove('hidden');
@@ -540,6 +759,7 @@ accountForm.addEventListener('submit',async event=>{
   const newEmail=$('accountEmail').value.trim();
 
   const saveButton=$('saveAccountBtn');
+
   saveButton.disabled=true;
   saveButton.textContent='Enregistrement...';
   accountMessage.classList.add('hidden');
@@ -549,6 +769,7 @@ accountForm.addEventListener('submit',async event=>{
       throw new Error('Remplis ton prénom, ton nom et ton adresse e-mail.');
 
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
 
@@ -568,6 +789,7 @@ accountForm.addEventListener('submit',async event=>{
     if(emailChanged)updateData.email=newEmail;
 
     const {data,error}=await supabase.auth.updateUser(updateData);
+
     if(error)throw error;
 
     welcomeTitle.textContent='Bienvenue, '+firstName+' 👋';
@@ -580,9 +802,11 @@ accountForm.addEventListener('submit',async event=>{
 
     $('currentAccountEmail').textContent=data.user?.email||user.email;
     accountMessage.classList.remove('hidden');
+
   }catch(error){
     accountMessage.textContent='Erreur : '+error.message;
     accountMessage.classList.remove('hidden');
+
   }finally{
     saveButton.disabled=false;
     saveButton.textContent='Enregistrer mes informations';
@@ -616,18 +840,22 @@ passwordForm.addEventListener('submit',async event=>{
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
 
     const {error}=await supabase.auth.updateUser({password:newPassword});
+
     if(error)throw error;
 
     passwordForm.reset();
     passwordMessage.textContent='Ton mot de passe a été modifié avec succès !';
     passwordMessage.classList.remove('hidden');
+
   }catch(error){
     passwordMessage.textContent='Erreur : '+error.message;
     passwordMessage.classList.remove('hidden');
+
   }finally{
     saveButton.disabled=false;
     saveButton.textContent='Modifier mon mot de passe';
@@ -637,6 +865,7 @@ passwordForm.addEventListener('submit',async event=>{
 // PARAMÈTRES : sauvegarde locale des préférences
 function loadSettings(){
   const reminderEnabled=localStorage.getItem('viraltime_reminders');
+
   $('reminderSetting').checked=reminderEnabled!=='false';
   $('timezoneSetting').value='Africa/Abidjan';
   $('languageSetting').value='fr';
@@ -645,6 +874,7 @@ function loadSettings(){
     $('notificationPermissionStatus').textContent='Non disponible';
   }else{
     const permission=Notification.permission;
+
     $('notificationPermissionStatus').textContent=
       permission==='granted'?'Autorisées':
       permission==='denied'?'Refusées':'Non autorisées';
@@ -660,6 +890,7 @@ $('saveSettingsBtn').addEventListener('click',()=>{
 
     settingsMessage.textContent='Tes paramètres ont été enregistrés sur cet appareil.';
     settingsMessage.classList.remove('hidden');
+
   }catch(error){
     settingsMessage.textContent='Impossible d’enregistrer les paramètres : '+error.message;
     settingsMessage.classList.remove('hidden');
@@ -697,20 +928,26 @@ enableNotificationsBtn.addEventListener('click',async()=>{
 
     if(permission==='granted'){
       const registration=await navigator.serviceWorker.ready;
+
       await registration.showNotification('ViralTime 🔔',{
         body:'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
       });
+
       notificationMessage.textContent='Notifications autorisées avec succès !';
+
     }else if(permission==='denied'){
       notificationMessage.textContent='Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';
+
     }else{
       notificationMessage.textContent='Tu n’as pas encore autorisé les notifications.';
     }
 
     notificationMessage.classList.remove('hidden');
+
   }catch(error){
     notificationMessage.textContent='Erreur : '+error.message;
     notificationMessage.classList.remove('hidden');
+
   }finally{
     enableNotificationsBtn.disabled=false;
     enableNotificationsBtn.textContent='Activer les notifications';
@@ -751,12 +988,14 @@ publicationForm.addEventListener('submit',async event=>{
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour programmer une publication.');
     if(!title)throw new Error('Entre un titre pour ta publication.');
     if(!date||!time)throw new Error('Choisis une date et une heure.');
 
     const scheduledDate=getAbidjanDateTime(date,time);
+
     if(Number.isNaN(scheduledDate.getTime()))throw new Error('La date ou l’heure choisie est invalide.');
     if(scheduledDate.getTime()<=Date.now())throw new Error('Choisis une date et une heure dans le futur.');
 
@@ -764,15 +1003,20 @@ publicationForm.addEventListener('submit',async event=>{
       user_id:user.id,title,description,content_type:contentType,
       scheduled_at:scheduledDate.toISOString(),status:'programmée'
     });
+
     if(error)throw error;
 
     showPublicationMessage('Publication programmée avec succès !');
+
     publicationForm.reset();
     publicationDateInput.min=getLocalDateString();
+
     await loadPublications();
+
   }catch(error){
     console.error('Erreur de programmation :',error);
     showPublicationMessage('Erreur : '+error.message);
+
   }finally{
     publicationSubmitBtn.disabled=false;
     publicationSubmitBtn.textContent='Programmer';
@@ -782,6 +1026,7 @@ publicationForm.addEventListener('submit',async event=>{
 // Supprimer une publication programmée
 async function deleteScheduledPublication(publicationId,deleteButton){
   const confirmed=window.confirm('Veux-tu vraiment supprimer cette publication programmée ? Cette action est définitive.');
+
   if(!confirmed)return;
 
   deleteButton.disabled=true;
@@ -789,6 +1034,7 @@ async function deleteScheduledPublication(publicationId,deleteButton){
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour supprimer une publication.');
 
@@ -800,10 +1046,14 @@ async function deleteScheduledPublication(publicationId,deleteButton){
     if(!data)throw new Error('La publication est introuvable, n’est plus programmée ou ne peut pas être supprimée.');
 
     showPublicationMessage('Publication programmée supprimée avec succès !');
+
     await loadPublications();
+
   }catch(error){
     console.error('Erreur de suppression :',error);
+
     showPublicationMessage('Impossible de supprimer cette publication : '+error.message);
+
     deleteButton.disabled=false;
     deleteButton.textContent='🗑️ Supprimer';
   }
@@ -815,7 +1065,9 @@ async function loadPublications(){
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
+
     if(!user){
       publicationsList.textContent='Connecte-toi pour voir tes publications.';
       return;
@@ -854,8 +1106,10 @@ async function loadPublications(){
         date.textContent='Date réelle de publication : '+new Date(publication.published_at).toLocaleDateString('fr-FR',{
           timeZone:'Africa/Abidjan',dateStyle:'long'
         });
+
       }else{
         const scheduledDate=new Date(publication.scheduled_at);
+
         date.textContent=!Number.isNaN(scheduledDate.getTime())
           ?'Date programmée : '+scheduledDate.toLocaleString('fr-FR',{
             timeZone:'Africa/Abidjan',dateStyle:'long',timeStyle:'short'
@@ -870,15 +1124,19 @@ async function loadPublications(){
 
       if(publication.status==='programmée'){
         const deleteButton=document.createElement('button');
+
         deleteButton.type='button';
         deleteButton.className='delete-btn';
         deleteButton.textContent='🗑️ Supprimer';
+
         deleteButton.addEventListener('click',()=>deleteScheduledPublication(publication.id,deleteButton));
+
         item.appendChild(deleteButton);
       }
 
       publicationsList.appendChild(item);
     });
+
   }catch(error){
     console.error('Erreur de chargement des publications :',error);
     publicationsList.textContent='Impossible de charger les publications : '+error.message;
@@ -894,6 +1152,7 @@ async function loadPerformanceData(){
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour consulter tes performances.');
 
@@ -904,16 +1163,20 @@ async function loadPerformanceData(){
     if(publicationsError)throw publicationsError;
 
     publishedPublication.innerHTML='';
+
     const publishedOption=document.createElement('option');
     publishedOption.value='';
     publishedOption.textContent='Choisir une publication';
+
     publishedPublication.appendChild(publishedOption);
 
     (publications||[]).forEach(publication=>{
       const option=document.createElement('option');
+
       option.value=publication.id;
       option.textContent=(publication.title||'Publication sans titre')+
         (publication.status==='publiée'?' — Déjà publiée':'');
+
       publishedPublication.appendChild(option);
     });
 
@@ -921,21 +1184,28 @@ async function loadPerformanceData(){
 
     if(!publications||publications.length===0){
       const option=document.createElement('option');
+
       option.value='';
       option.textContent='Aucune publication disponible';
+
       performancePublication.appendChild(option);
+
       performanceList.textContent='Ajoute une ancienne vidéo ou programme une publication dans ton calendrier.';
+
       totalViews.textContent='0';
       totalLikes.textContent='0';
       totalComments.textContent='0';
       totalShares.textContent='0';
+
       return;
     }
 
     publications.forEach(publication=>{
       const option=document.createElement('option');
+
       option.value=publication.id;
       option.textContent=publication.title||'Publication sans titre';
+
       performancePublication.appendChild(option);
     });
 
@@ -945,11 +1215,13 @@ async function loadPerformanceData(){
     if(performanceError)throw performanceError;
 
     const safePerformances=performances||[];
+
     const totals=safePerformances.reduce((result,item)=>{
       result.views+=Number(item.views||0);
       result.likes+=Number(item.likes||0);
       result.comments+=Number(item.comments||0);
       result.shares+=Number(item.shares||0);
+
       return result;
     },{views:0,likes:0,comments:0,shares:0});
 
@@ -965,6 +1237,7 @@ async function loadPerformanceData(){
 
     publications.forEach(publication=>{
       const performance=performanceMap.get(publication.id);
+
       if(!performance)return;
 
       numberOfTracked++;
@@ -988,6 +1261,7 @@ async function loadPerformanceData(){
       shares.textContent='🔄 Partages : '+Number(performance.shares).toLocaleString('fr-FR');
 
       const editButton=document.createElement('button');
+
       editButton.type='button';
       editButton.className='secondary';
       editButton.textContent='Modifier les statistiques';
@@ -998,10 +1272,12 @@ async function loadPerformanceData(){
         performanceLikes.value=performance.likes;
         performanceComments.value=performance.comments;
         performanceShares.value=performance.shares;
+
         performanceForm.scrollIntoView({behavior:'smooth',block:'start'});
       });
 
       item.append(title,views,likes,comments,shares,editButton);
+
       performanceList.appendChild(item);
     });
 
@@ -1010,17 +1286,24 @@ async function loadPerformanceData(){
     }
 
     await loadSelectedPerformance();
+
   }catch(error){
     console.error('Erreur de chargement des performances :',error);
+
     performanceList.textContent='Impossible de charger les performances : '+error.message;
+
     showPerformanceMessage('Erreur : '+error.message);
   }
 }
 
 // Pays et fuseaux horaires
 function normalizeCountry(value){
-  return String(value||'').trim().toLocaleLowerCase('fr-FR')
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  return String(value || '')
+    .trim()
+    .toLocaleLowerCase('fr-FR')
+    .replace(/[’‘`´]/g, "'")
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 }
 
 const countryTimeZones={
@@ -1049,9 +1332,12 @@ const countryTimeZones={
 
 function getCountryTimeZone(country){
   const normalized=normalizeCountry(country);
+
   if(!normalized)return null;
+
   if(['canada','etats-unis','united states','usa','australie','australia'].includes(normalized))
     return 'ambiguous';
+
   return countryTimeZones[normalized]||null;
 }
 
@@ -1068,14 +1354,19 @@ function getZonedParts(date,timeZone){
 
 function convertAudienceTimeToAbidjan(hour,timeZone){
   const now=new Date();
+
   let candidate=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),hour,0));
 
   for(let i=0;i<4;i++){
     const parts=getZonedParts(candidate,timeZone);
+
     let difference=(hour-parts.hour)*60-parts.minute;
+
     if(difference>720)difference-=1440;
     if(difference< -720)difference+=1440;
+
     candidate=new Date(candidate.getTime()+difference*60000);
+
     if(difference===0)break;
   }
 
@@ -1088,8 +1379,11 @@ function formatHour(hour){
 
 function createTextElement(tag,text,className){
   const element=document.createElement(tag);
+
   element.textContent=text;
+
   if(className)element.className=className;
+
   return element;
 }
 
@@ -1098,6 +1392,7 @@ async function loadAudienceHours(){
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour consulter ton profil.');
 
@@ -1111,6 +1406,7 @@ async function loadAudienceHours(){
     if(!country){
       audienceHoursAnalysis.appendChild(createTextElement('p',
         'Renseigne le pays de ton audience dans Mon profil TikTok pour afficher des horaires adaptés.','hours-note'));
+
       return;
     }
 
@@ -1122,12 +1418,14 @@ async function loadAudienceHours(){
     if(zone==='ambiguous'){
       audienceHoursAnalysis.appendChild(createTextElement('p',
         'Ce pays possède plusieurs fuseaux horaires. Le pays seul ne suffit pas pour calculer une heure locale précise. Il faudra choisir la région ou la ville de ton audience.','hours-note'));
+
       return;
     }
 
     if(!zone){
       audienceHoursAnalysis.appendChild(createTextElement('p',
         'Le fuseau horaire de ce pays n’est pas encore configuré dans ViralTime. Les repères internationaux restent disponibles.','hours-note'));
+
       return;
     }
 
@@ -1155,8 +1453,10 @@ async function loadAudienceHours(){
 
     audienceHoursAnalysis.appendChild(createTextElement('p',
       'Le calcul utilise le fuseau horaire du pays et tient compte de son décalage saisonnier lorsque celui-ci est applicable.','hours-note'));
+
   }catch(error){
     console.error('Erreur pays d’audience :',error);
+
     audienceHoursAnalysis.appendChild(createTextElement('p',
       'Impossible de charger les informations du pays : '+error.message,'hours-note'));
   }
@@ -1165,6 +1465,7 @@ async function loadAudienceHours(){
 // Analyse personnalisée des meilleurs horaires
 async function loadPersonalHoursAnalysis(){
   personalHoursAnalysis.replaceChildren();
+
   personalHoursAnalysis.appendChild(createTextElement('div',
     'Analyse de tes publications en cours...','message'));
 
@@ -1173,6 +1474,7 @@ async function loadPersonalHoursAnalysis(){
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour consulter ton analyse personnalisée.');
 
@@ -1293,6 +1595,7 @@ async function loadPersonalHoursAnalysis(){
       personalHoursAnalysis.appendChild(createTextElement('p',
         'Tes données sont encore insuffisantes. Enregistre les statistiques d’au moins deux publications avec leur date et leur heure réelles pour commencer à observer des tendances.',
         'hours-note'));
+
       return;
     }
 
@@ -1476,10 +1779,13 @@ async function loadPersonalHoursAnalysis(){
 
   }catch(error){
     console.error('Erreur analyse des horaires :',error);
+
     personalHoursAnalysis.replaceChildren();
+
     personalHoursAnalysis.appendChild(createTextElement('div',
       'Impossible de réaliser ton analyse : '+error.message,
       'message'));
+
   }finally{
     refreshHoursBtn.disabled=false;
     refreshHoursBtn.textContent='Actualiser mon analyse';
@@ -1492,6 +1798,7 @@ oldVideoForm.addEventListener('submit',async event=>{
   oldVideoMessage.classList.add('hidden');
 
   const date=oldVideoDate.value,views=Number(oldVideoViews.value);
+
   saveOldVideoBtn.disabled=true;
   saveOldVideoBtn.textContent='Enregistrement...';
 
@@ -1499,12 +1806,14 @@ oldVideoForm.addEventListener('submit',async event=>{
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
     if(!date)throw new Error('Choisis la date réelle de publication.');
     if(date>getLocalDateString())throw new Error('La date de publication ne peut pas être dans le futur.');
 
     const parsedDate=new Date(date+'T00:00:00+00:00');
+
     if(Number.isNaN(parsedDate.getTime())||parsedDate.toISOString().slice(0,10)!==date)
       throw new Error('La date choisie est invalide.');
 
@@ -1548,11 +1857,13 @@ oldVideoForm.addEventListener('submit',async event=>{
       }
 
       createdPublicationId=null;
+
       throw new Error('L’enregistrement des vues a échoué. La publication incomplète a été supprimée. Détail : '+performanceError.message);
     }
 
     oldVideoForm.reset();
     oldVideoDate.max=getLocalDateString();
+
     oldVideoMessage.textContent='Ancienne vidéo et nombre de vues enregistrés avec succès !';
     oldVideoMessage.classList.remove('hidden');
 
@@ -1560,10 +1871,13 @@ oldVideoForm.addEventListener('submit',async event=>{
     await loadPublications();
 
     if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
+
   }catch(error){
     console.error('Erreur ancienne vidéo :',error);
+
     oldVideoMessage.textContent='Erreur : '+error.message;
     oldVideoMessage.classList.remove('hidden');
+
   }finally{
     saveOldVideoBtn.disabled=false;
     saveOldVideoBtn.textContent='Enregistrer cette vidéo';
@@ -1583,8 +1897,10 @@ publishedForm.addEventListener('submit',async event=>{
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
+
     if(!publicationId||!date||!time)
       throw new Error('Choisis une publication, une date et une heure.');
 
@@ -1609,14 +1925,18 @@ publishedForm.addEventListener('submit',async event=>{
     await loadPublications();
 
     publishedForm.reset();
+
     publishedMessage.textContent='Publication confirmée avec succès !';
     publishedMessage.classList.remove('hidden');
 
     if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
+
   }catch(error){
     console.error('Erreur de confirmation :',error);
+
     publishedMessage.textContent='Erreur : '+error.message;
     publishedMessage.classList.remove('hidden');
+
   }finally{
     confirmPublishedBtn.disabled=false;
     confirmPublishedBtn.textContent='Confirmer comme publiée';
@@ -1626,10 +1946,12 @@ publishedForm.addEventListener('submit',async event=>{
 // Charger les statistiques sélectionnées
 async function loadSelectedPerformance(){
   const publicationId=performancePublication.value;
+
   if(!publicationId)return;
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)return;
 
@@ -1643,6 +1965,7 @@ async function loadSelectedPerformance(){
       performanceLikes.value=data.likes;
       performanceComments.value=data.comments;
       performanceShares.value=data.shares;
+
     }else{
       performanceViews.value=0;
       performanceLikes.value=0;
@@ -1651,8 +1974,10 @@ async function loadSelectedPerformance(){
     }
 
     performanceMessage.classList.add('hidden');
+
   }catch(error){
     console.error('Erreur de lecture des statistiques :',error);
+
     showPerformanceMessage('Impossible de charger ces statistiques : '+error.message);
   }
 }
@@ -1675,11 +2000,13 @@ performanceForm.addEventListener('submit',async event=>{
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour enregistrer les statistiques.');
     if(!publicationId)throw new Error('Choisis une publication.');
 
     const values=[views,likes,comments,shares];
+
     if(values.some(value=>!Number.isSafeInteger(value)||value<0))
       throw new Error('Entre des nombres entiers positifs ou égaux à zéro.');
 
@@ -1696,12 +2023,16 @@ performanceForm.addEventListener('submit',async event=>{
     if(error)throw error;
 
     await loadPerformanceData();
+
     showPerformanceMessage('Statistiques enregistrées avec succès !');
 
     if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
+
   }catch(error){
     console.error('Erreur d’enregistrement des performances :',error);
+
     showPerformanceMessage('Erreur : '+error.message);
+
   }finally{
     savePerformanceBtn.disabled=false;
     savePerformanceBtn.textContent='Enregistrer les statistiques';
@@ -1713,6 +2044,7 @@ const tiktokProfileForm=$('tiktokProfileForm');
 const openProfileBtn=$('openProfileBtn');
 const saveTikTokProfileBtn=$('saveTikTokProfileBtn');
 const tiktokMessage=$('tiktokMessage');
+
 let hasTikTokProfile=false;
 
 function updateTikTokProfileInterface(){
@@ -1720,6 +2052,7 @@ function updateTikTokProfileInterface(){
     openProfileBtn.textContent='Modifier mon profil';
     $('profilePageTitle').textContent='🎵 Modifier mon profil TikTok';
     saveTikTokProfileBtn.textContent='Enregistrer les modifications';
+
   }else{
     openProfileBtn.textContent='Ajouter mon profil';
     $('profilePageTitle').textContent='🎵 Ajouter mon profil TikTok';
@@ -1730,7 +2063,9 @@ function updateTikTokProfileInterface(){
 // Ouvrir la page du profil et charger les données existantes
 openProfileBtn.addEventListener('click',async()=>{
   tiktokMessage.classList.add('hidden');
+
   showPage(profilePage);
+
   await loadTikTokProfile();
 });
 
@@ -1740,10 +2075,12 @@ tiktokProfileForm.addEventListener('submit',async event=>{
 
   saveTikTokProfileBtn.disabled=true;
   saveTikTokProfileBtn.textContent='Enregistrement...';
+
   tiktokMessage.classList.add('hidden');
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour enregistrer ton profil.');
 
@@ -1752,8 +2089,10 @@ tiktokProfileForm.addEventListener('submit',async event=>{
     const posts=Number($('tiktokPosts').value);
 
     if(!username)throw new Error('Entre ton nom d’utilisateur TikTok.');
+
     if(!Number.isSafeInteger(followers)||followers<0)
       throw new Error('Entre un nombre d’abonnés valide.');
+
     if(!Number.isSafeInteger(posts)||posts<0)
       throw new Error('Entre un nombre de publications valide.');
 
@@ -1773,6 +2112,7 @@ tiktokProfileForm.addEventListener('submit',async event=>{
     if(error)throw error;
 
     hasTikTokProfile=true;
+
     updateTikTokProfileInterface();
 
     tiktokMessage.textContent='Ton profil TikTok a été enregistré avec succès !';
@@ -1787,8 +2127,10 @@ tiktokProfileForm.addEventListener('submit',async event=>{
 
   }catch(error){
     console.error('Erreur profil TikTok :',error);
+
     tiktokMessage.textContent='Erreur : '+error.message;
     tiktokMessage.classList.remove('hidden');
+
   }finally{
     saveTikTokProfileBtn.disabled=false;
     updateTikTokProfileInterface();
@@ -1799,6 +2141,7 @@ tiktokProfileForm.addEventListener('submit',async event=>{
 async function loadTikTokProfile(){
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
+
     if(userError)throw userError;
     if(!user)return;
 
@@ -1811,8 +2154,10 @@ async function loadTikTokProfile(){
 
     if(!data){
       hasTikTokProfile=false;
+
       tiktokProfileForm.reset();
       updateTikTokProfileInterface();
+
       return;
     }
 
@@ -1828,6 +2173,7 @@ async function loadTikTokProfile(){
 
   }catch(error){
     console.error('Erreur de chargement du profil TikTok :',error);
+
     tiktokMessage.textContent='Impossible de charger ton profil : '+error.message;
     tiktokMessage.classList.remove('hidden');
   }
@@ -1840,12 +2186,14 @@ logoutBtn.addEventListener('click',async()=>{
 
   try{
     const {error}=await supabase.auth.signOut();
+
     if(error)throw error;
 
     authForm.reset();
     isLogin=true;
 
     registrationNameFields.classList.add('hidden');
+
     firstNameInput.required=false;
     lastNameInput.required=false;
 
@@ -1854,8 +2202,13 @@ logoutBtn.addEventListener('click',async()=>{
     switchBtn.textContent='Créer un nouveau compte';
 
     showAuth();
+
+    // Réinitialiser la photo à la déconnexion
+    displayAvatar(null);
+
   }catch(error){
     showDashboardMessage('Erreur : '+error.message);
+
   }finally{
     logoutBtn.disabled=false;
     logoutBtn.textContent='Se déconnecter';
@@ -1865,10 +2218,12 @@ logoutBtn.addEventListener('click',async()=>{
 // Vérifier la session
 async function checkSession(){
   const {data,error}=await supabase.auth.getSession();
+
   if(error){
     showAuth();
     return;
   }
+
   if(data.session)showDashboard(data.session.user);
   else showAuth();
 }
@@ -1878,8 +2233,10 @@ checkSession();
 supabase.auth.onAuthStateChange((event,session)=>{
   if(session){
     Promise.resolve().then(()=>showDashboard(session.user));
+
   }else if(event==='SIGNED_OUT'){
     showAuth();
+    displayAvatar(null);
   }
 });
 </script>
