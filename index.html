@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -262,7 +263,7 @@ small{color:#b9b1d2}
         <div id="audienceHoursAnalysis"><p class="hours-note">Chargement du pays d'audience...</p></div>
       </div>
       <h3>🎯 Analyse de tes performances</h3>
-      <p>ViralTime étudie les publications dont tu as enregistré les statistiques. Pour éviter les conclusions trop rapides, un créneau doit avoir au moins deux publications pour être classé.</p>
+      <p>ViralTime étudie les publications dont tu as enregistré les statistiques. Les créneaux sont regroupés par plages de deux heures afin de mieux repérer les tendances.</p>
       <div id="personalHoursAnalysis"><div class="message">Chargement de ton analyse personnalisée...</div></div>
       <button id="refreshHoursBtn" type="button">Actualiser mon analyse</button>
       <button id="backHoursBtn" class="secondary" type="button">Retour à l'accueil</button>
@@ -1176,46 +1177,84 @@ async function loadPersonalHoursAnalysis(){
     if(!user)throw new Error('Connecte-toi pour consulter ton analyse personnalisée.');
 
     const {data:publications,error:publicationsError}=await supabase.from('publications')
-      .select('id,title,status,published_at').eq('user_id',user.id)
-      .eq('status','publiée').not('published_at','is',null);
+      .select('id,title,status,published_at')
+      .eq('user_id',user.id)
+      .eq('status','publiée')
+      .not('published_at','is',null);
 
     if(publicationsError)throw publicationsError;
 
     const {data:performances,error:performancesError}=await supabase.from('publication_performance')
-      .select('publication_id,views,likes,comments,shares').eq('user_id',user.id);
+      .select('publication_id,views,likes,comments,shares')
+      .eq('user_id',user.id);
 
     if(performancesError)throw performancesError;
 
-    const performanceMap=new Map((performances||[]).map(item=>[item.publication_id,item]));
-    const dayNames=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+    const performanceMap=new Map(
+      (performances||[]).map(item=>[item.publication_id,item])
+    );
+
+    const dayNames=[
+      'dimanche','lundi','mardi','mercredi',
+      'jeudi','vendredi','samedi'
+    ];
+
     const hourGroups=new Map();
-    let analyzedCount=0,excludedUnknownTime=0,withoutStats=0;
+
+    let analyzedCount=0;
+    let excludedUnknownTime=0;
+    let withoutStats=0;
 
     (publications||[]).forEach(publication=>{
       const stats=performanceMap.get(publication.id);
-      if(!stats){withoutStats++;return;}
+
+      if(!stats){
+        withoutStats++;
+        return;
+      }
 
       const publishedAt=new Date(publication.published_at);
+
       if(Number.isNaN(publishedAt.getTime()))return;
 
-      if(publishedAt.getUTCHours()===0&&publishedAt.getUTCMinutes()===0&&publishedAt.getUTCSeconds()===0){
+      // Les anciennes vidéos enregistrées à minuit n'ont pas d'heure réelle connue.
+      if(
+        publishedAt.getUTCHours()===0&&
+        publishedAt.getUTCMinutes()===0&&
+        publishedAt.getUTCSeconds()===0
+      ){
         excludedUnknownTime++;
         return;
       }
 
-      const day=publishedAt.getUTCDay(),hour=publishedAt.getUTCHours();
-      const key=day+'-'+hour;
+      const day=publishedAt.getUTCDay();
+      const hour=publishedAt.getUTCHours();
+
+      // Regroupement par tranches de deux heures :
+      // 00h-01h, 02h-03h, 04h-05h, etc.
+      const startHour=Math.floor(hour/2)*2;
+      const key=day+'-'+startHour;
 
       if(!hourGroups.has(key)){
-        hourGroups.set(key,{day,hour,count:0,views:0,likes:0,comments:0,shares:0});
+        hourGroups.set(key,{
+          day,
+          startHour,
+          count:0,
+          views:0,
+          likes:0,
+          comments:0,
+          shares:0
+        });
       }
 
       const group=hourGroups.get(key);
+
       group.count++;
       group.views+=Number(stats.views||0);
       group.likes+=Number(stats.likes||0);
       group.comments+=Number(stats.comments||0);
       group.shares+=Number(stats.shares||0);
+
       analyzedCount++;
     });
 
@@ -1223,49 +1262,81 @@ async function loadPersonalHoursAnalysis(){
 
     const summary=document.createElement('div');
     summary.className='hours-result';
+
     summary.appendChild(createTextElement('h3','📊 Résumé de ton analyse'));
+
     summary.appendChild(createTextElement('p',
-      'Publications utilisables : '+analyzedCount+' · Heure de Côte d’Ivoire (UTC+0)'));
+      'Publications utilisables : '+analyzedCount+
+      ' · Heure de Côte d’Ivoire (UTC+0)'));
+
     summary.appendChild(createTextElement('p',
-      'Seuil de classement : au moins 2 publications sur un même jour et une même heure.','hours-note'));
+      'Les créneaux sont regroupés par tranches de deux heures. Un créneau doit avoir au moins deux publications pour être classé.',
+      'hours-note'));
 
     if(excludedUnknownTime>0){
       summary.appendChild(createTextElement('p',
-        excludedUnknownTime+' ancienne(s) vidéo(s) écartée(s), car leur heure réelle est inconnue.','hours-note'));
+        excludedUnknownTime+
+        ' ancienne(s) vidéo(s) écartée(s), car leur heure réelle est inconnue.',
+        'hours-note'));
     }
 
     if(withoutStats>0){
       summary.appendChild(createTextElement('p',
-        withoutStats+' publication(s) publiée(s) sans statistiques enregistrées.','hours-note'));
+        withoutStats+
+        ' publication(s) publiée(s) sans statistiques enregistrées.',
+        'hours-note'));
     }
 
     personalHoursAnalysis.appendChild(summary);
 
-    if(analyzedCount<3){
+    if(analyzedCount<2){
       personalHoursAnalysis.appendChild(createTextElement('p',
-        'Tes données sont encore en apprentissage. Enregistre les statistiques d’au moins 3 publications avec leur date et leur heure réelles pour commencer à observer des tendances.','hours-note'));
+        'Tes données sont encore insuffisantes. Enregistre les statistiques d’au moins deux publications avec leur date et leur heure réelles pour commencer à observer des tendances.',
+        'hours-note'));
       return;
     }
 
-    const repeatedGroups=Array.from(hourGroups.values())
+    // Calcul des moyennes pour chaque créneau.
+    const calculatedGroups=Array.from(hourGroups.values()).map(group=>({
+      ...group,
+      averageViews:group.views/group.count,
+      averageLikes:group.likes/group.count,
+      averageComments:group.comments/group.count,
+      averageShares:group.shares/group.count,
+      averageInteractions:
+        (group.likes+group.comments+group.shares)/group.count
+    }));
+
+    // Seuls les créneaux ayant au moins deux publications
+    // peuvent apparaître dans le classement.
+    const repeatedGroups=calculatedGroups
       .filter(group=>group.count>=2)
-      .map(group=>({
-        ...group,
-        averageViews:group.views/group.count,
-        averageLikes:group.likes/group.count,
-        averageInteractions:(group.likes+group.comments+group.shares)/group.count
-      }))
-      .sort((a,b)=>b.averageViews-a.averageViews||b.count-a.count);
+      .sort((a,b)=>
+        b.averageViews-a.averageViews||
+        b.averageInteractions-a.averageInteractions||
+        b.count-a.count
+      );
+
+    function formatTimeRange(startHour){
+      const endHour=startHour+1;
+      return formatHour(startHour)+' – '+formatHour(endHour);
+    }
 
     if(repeatedGroups.length===0){
       personalHoursAnalysis.appendChild(createTextElement('div',
-        'Tes publications sont encore réparties sur des créneaux différents. Aucun créneau ne possède au moins deux publications : ViralTime préfère ne pas désigner artificiellement un meilleur horaire. Continue à enregistrer tes résultats.','hours-result'));
+        'Tes publications sont encore réparties sur des créneaux différents. Aucun créneau de deux heures ne possède au moins deux publications. ViralTime préfère ne pas désigner artificiellement un meilleur horaire.',
+        'hours-result'));
 
-      const exploratory=Array.from(hourGroups.values())
-        .sort((a,b)=>b.views-a.views).slice(0,3);
+      const exploratory=calculatedGroups
+        .sort((a,b)=>
+          b.averageViews-a.averageViews||
+          b.averageInteractions-a.averageInteractions
+        )
+        .slice(0,3);
 
       if(exploratory.length){
-        personalHoursAnalysis.appendChild(createTextElement('h3','🔎 Créneaux à tester'));
+        personalHoursAnalysis.appendChild(createTextElement('h3',
+          '🔎 Créneaux à tester'));
 
         exploratory.forEach(group=>{
           const card=document.createElement('div');
@@ -1273,22 +1344,36 @@ async function loadPersonalHoursAnalysis(){
 
           card.appendChild(createTextElement('strong',
             dayNames[group.day].charAt(0).toUpperCase()+
-            dayNames[group.day].slice(1)+' à '+formatHour(group.hour)));
+            dayNames[group.day].slice(1)+' · '+formatTimeRange(group.startHour)));
 
           card.appendChild(createTextElement('p',
-            Math.round(group.views/group.count).toLocaleString('fr-FR')+
-            ' vues en moyenne, sur une seule publication.','hours-note'));
+            Math.round(group.averageViews).toLocaleString('fr-FR')+
+            ' vues en moyenne par publication.'));
 
           card.appendChild(createTextElement('p',
-            'Piste exploratoire uniquement — pas un meilleur horaire confirmé.','hours-note'));
+            Math.round(group.averageInteractions).toLocaleString('fr-FR')+
+            ' interactions moyennes (likes, commentaires et partages).',
+            'hours-note'));
+
+          card.appendChild(createTextElement('p',
+            'Basé sur '+group.count+' publication(s).',
+            'hours-note'));
+
+          card.appendChild(createTextElement('p',
+            group.count===1
+              ?'Piste exploratoire : ajoute d’autres publications pour confirmer cette tendance.'
+              :'Début de tendance : davantage de publications permettront de la confirmer.',
+            'hours-note'));
 
           personalHoursAnalysis.appendChild(card);
         });
       }
+
       return;
     }
 
-    personalHoursAnalysis.appendChild(createTextElement('h3','🏆 Créneaux les plus performants'));
+    personalHoursAnalysis.appendChild(createTextElement('h3',
+      '🏆 Créneaux les plus performants'));
 
     repeatedGroups.slice(0,3).forEach((group,index)=>{
       const card=document.createElement('div');
@@ -1297,42 +1382,104 @@ async function loadPersonalHoursAnalysis(){
       const day=dayNames[group.day];
 
       card.appendChild(createTextElement('h3',
-        (index+1)+'. '+day.charAt(0).toUpperCase()+day.slice(1)+' à '+formatHour(group.hour)));
+        (index+1)+'. '+
+        day.charAt(0).toUpperCase()+day.slice(1)+
+        ' · '+formatTimeRange(group.startHour)
+      ));
 
       card.appendChild(createTextElement('p',
-        'Moyenne : '+Math.round(group.averageViews).toLocaleString('fr-FR')+' vues par publication'));
+        '👁️ Vues moyennes : '+
+        Math.round(group.averageViews).toLocaleString('fr-FR')+
+        ' par publication'
+      ));
 
       card.appendChild(createTextElement('p',
-        'Likes moyens : '+Math.round(group.averageLikes).toLocaleString('fr-FR')+
-        ' · Interactions moyennes : '+Math.round(group.averageInteractions).toLocaleString('fr-FR'),
-        'hours-note'));
+        '❤️ Likes moyens : '+
+        Math.round(group.averageLikes).toLocaleString('fr-FR'),
+        'hours-note'
+      ));
 
       card.appendChild(createTextElement('p',
-        'Basé sur '+group.count+' publication(s) · Heure de Côte d’Ivoire (UTC+0)',
-        'hours-note'));
+        '💬 Commentaires moyens : '+
+        Math.round(group.averageComments).toLocaleString('fr-FR'),
+        'hours-note'
+      ));
 
       card.appendChild(createTextElement('p',
-        group.count>=3?'Tendance observée sur plusieurs publications.':
-        'Début de tendance : ajoute d’autres publications pour la confirmer.',
-        'hours-note'));
+        '🔄 Partages moyens : '+
+        Math.round(group.averageShares).toLocaleString('fr-FR'),
+        'hours-note'
+      ));
+
+      card.appendChild(createTextElement('p',
+        'Interactions moyennes : '+
+        Math.round(group.averageInteractions).toLocaleString('fr-FR'),
+        'hours-note'
+      ));
+
+      card.appendChild(createTextElement('p',
+        'Basé sur '+group.count+
+        ' publications · Heure de Côte d’Ivoire (UTC+0)',
+        'hours-note'
+      ));
+
+      card.appendChild(createTextElement('p',
+        group.count>=5
+          ?'Tendance observée sur plusieurs publications. Continue à suivre ce créneau pour vérifier sa stabilité.'
+          :'Début de tendance : ajoute d’autres publications pour confirmer ce résultat.',
+        'hours-note'
+      ));
 
       personalHoursAnalysis.appendChild(card);
     });
 
     personalHoursAnalysis.appendChild(createTextElement('p',
-      'Le classement utilise la moyenne des vues et le nombre de publications. Il décrit les résultats de ton compte, ne prouve pas qu’un horaire provoque davantage de vues et ne garantit pas la visibilité future.','hours-note'));
+      'Le classement compare d’abord les vues moyennes par publication, puis les interactions moyennes pour départager les créneaux. Les résultats décrivent les performances observées de ton compte : ils ne prouvent pas qu’un horaire provoque davantage de vues et ne garantissent pas la visibilité future.',
+      'hours-note'
+    ));
 
-    const exploratory=Array.from(hourGroups.values()).filter(g=>g.count===1);
+    const exploratory=calculatedGroups.filter(group=>group.count===1);
 
     if(exploratory.length){
-      personalHoursAnalysis.appendChild(createTextElement('p',
-        exploratory.length+' autre(s) créneau(x) avec une seule publication ne sont pas classés parmi les meilleurs horaires.','hours-note'));
+      personalHoursAnalysis.appendChild(createTextElement('h3',
+        '🔎 Autres créneaux à tester'));
+
+      exploratory
+        .sort((a,b)=>
+          b.averageViews-a.averageViews||
+          b.averageInteractions-a.averageInteractions
+        )
+        .slice(0,3)
+        .forEach(group=>{
+          const card=document.createElement('div');
+          card.className='hours-card';
+
+          card.appendChild(createTextElement('strong',
+            dayNames[group.day].charAt(0).toUpperCase()+
+            dayNames[group.day].slice(1)+' · '+formatTimeRange(group.startHour)
+          ));
+
+          card.appendChild(createTextElement('p',
+            Math.round(group.averageViews).toLocaleString('fr-FR')+
+            ' vues sur une publication.',
+            'hours-note'
+          ));
+
+          card.appendChild(createTextElement('p',
+            'Créneau à tester : une seule publication ne suffit pas pour confirmer une tendance.',
+            'hours-note'
+          ));
+
+          personalHoursAnalysis.appendChild(card);
+        });
     }
+
   }catch(error){
     console.error('Erreur analyse des horaires :',error);
     personalHoursAnalysis.replaceChildren();
     personalHoursAnalysis.appendChild(createTextElement('div',
-      'Impossible de réaliser ton analyse : '+error.message,'message'));
+      'Impossible de réaliser ton analyse : '+error.message,
+      'message'));
   }finally{
     refreshHoursBtn.disabled=false;
     refreshHoursBtn.textContent='Actualiser mon analyse';
@@ -1633,7 +1780,6 @@ tiktokProfileForm.addEventListener('submit',async event=>{
 
     showDashboardMessage('Ton profil TikTok a été enregistré avec succès !');
 
-    // Retour automatique à l'accueil après confirmation
     setTimeout(()=>{
       tiktokMessage.classList.add('hidden');
       showPage(homePage);
