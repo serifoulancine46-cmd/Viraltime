@@ -10,44 +10,12 @@
 *{box-sizing:border-box}
 body{margin:0;background:#100e1b;color:white;font-family:Arial,sans-serif}
 main{max-width:520px;margin:auto;padding:22px 16px}
-
-header{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  margin-bottom:28px;
-  padding:12px;
-  background:linear-gradient(135deg,#211b3a,#17132c);
-  border:1px solid #40345f;
-  border-radius:18px;
-}
-.brand-avatar{
-  flex-shrink:0;
-  width:58px;
-  height:58px;
-  margin:0;
-  padding:0;
-  border-radius:50%;
-  border:2px solid #9b83ff;
-  background:#332a50;
-  color:#c4a7ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  font-size:27px;
-  cursor:pointer;
-}
-.brand-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:50%;
-}
+header{display:flex;align-items:center;gap:13px;margin-bottom:28px;padding:12px;background:linear-gradient(135deg,#211b3a,#17132c);border:1px solid #40345f;border-radius:18px}
+.brand-avatar{flex-shrink:0;width:58px;height:58px;margin:0;padding:0;border-radius:50%;border:2px solid #9b83ff;background:#332a50;color:#c4a7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:27px;cursor:pointer}
+.brand-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .brand-info{min-width:0}
 .brand-info strong{font-size:21px;color:white}
 .brand-info small{display:inline-block;margin-top:5px;font-size:12px}
-
 h1{font-size:25px}
 p{color:#b9b1d2;line-height:1.6}
 .card{background:#1b1730;padding:20px;border-radius:18px;margin:15px 0}
@@ -86,69 +54,21 @@ small{color:#b9b1d2}
 .setting-row input[type=checkbox]{width:22px;height:22px;accent-color:#9b83ff}
 .setting-row select{max-width:160px;margin:0}
 .account-email{overflow-wrap:anywhere;color:#c4a7ff}
-
-/* PAGE MON PROFIL VIRALTIME */
 .profile-overview{text-align:center;padding-top:25px}
-.profile-photo-button{
-  width:150px;
-  height:150px;
-  margin:10px auto 15px;
-  padding:0;
-  border-radius:50%;
-  border:3px solid #9b83ff;
-  background:#332a50;
-  color:#c4a7ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  font-size:55px;
-  cursor:pointer;
-}
-.profile-photo-button img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:50%;
-}
-.profile-photo-hint{
-  font-size:13px;
-  color:#b9b1d2;
-  margin:0 0 25px;
-}
-.profile-detail{
-  text-align:left;
-  background:#282143;
-  padding:15px;
-  border-radius:12px;
-  margin:12px 0;
-  overflow-wrap:anywhere;
-}
-.profile-detail span{
-  display:block;
-  color:#b9b1d2;
-  font-size:13px;
-  margin-bottom:7px;
-}
-.profile-detail strong{
-  color:#fff;
-  font-size:15px;
-  overflow-wrap:anywhere;
-}
-.profile-name{
-  color:#c4a7ff;
-  margin:10px 0 5px;
-  font-size:21px;
-}
+.profile-photo-button{width:150px;height:150px;margin:10px auto 15px;padding:0;border-radius:50%;border:3px solid #9b83ff;background:#332a50;color:#c4a7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:55px;cursor:pointer}
+.profile-photo-button img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-photo-hint{font-size:13px;color:#b9b1d2;margin:0 0 25px}
+.profile-detail{text-align:left;background:#282143;padding:15px;border-radius:12px;margin:12px 0;overflow-wrap:anywhere}
+.profile-detail span{display:block;color:#b9b1d2;font-size:13px;margin-bottom:7px}
+.profile-detail strong{color:#fff;font-size:15px;overflow-wrap:anywhere}
+.profile-name{color:#c4a7ff;margin:10px 0 5px;font-size:21px}
 </style>
 </head>
 <body>
 <main>
 
 <header>
-  <button id="avatarButton" class="brand-avatar" type="button"
-    aria-label="Voir mon profil"
-    title="Voir mon profil">
+  <button id="avatarButton" class="brand-avatar" type="button" aria-label="Voir mon profil" title="Voir mon profil">
     <span id="avatarFallback">◷</span>
     <img id="avatarImage" class="hidden" alt="Ma photo de profil">
   </button>
@@ -177,7 +97,6 @@ small{color:#b9b1d2}
 </section>
 
 <section id="dashboard" class="hidden">
-
   <div class="top-actions" style="justify-content:flex-end;margin-bottom:18px">
     <button id="openAccountBtn" class="icon-button" type="button" aria-label="Mon compte" title="Mon compte">👤</button>
     <button id="openSettingsBtn" class="icon-button" type="button" aria-label="Paramètres" title="Paramètres">⚙️</button>
@@ -198,80 +117,44 @@ small{color:#b9b1d2}
     <div class="card"><h2>🎵 Profil TikTok</h2><p>Personnalise les informations de ton compte TikTok.</p><button id="openProfileBtn" type="button" class="secondary">Ajouter mon profil</button></div>
   </div>
 
-  <!-- PAGE MON PROFIL VIRALTIME -->
   <div id="profileOverviewPage" class="hidden">
     <div class="card profile-overview">
       <h1>👤 Mon profil</h1>
       <p>Voici les informations de ton compte ViralTime.</p>
-
-      <button id="profileAvatarButton" class="profile-photo-button" type="button"
-        aria-label="Modifier ma photo de profil"
-        title="Appuie pour changer ta photo">
+      <button id="profileAvatarButton" class="profile-photo-button" type="button" aria-label="Modifier ma photo de profil" title="Appuie pour changer ta photo">
         <span id="profileAvatarFallback">◷</span>
         <img id="profileAvatarImage" class="hidden" alt="Ma photo de profil">
       </button>
-
       <p class="profile-photo-hint">Appuie sur ta photo pour la modifier.</p>
-
       <h2 id="profileDisplayName" class="profile-name">Mon profil</h2>
-
-      <div class="profile-detail">
-        <span>Prénom</span>
-        <strong id="profileFirstName">Chargement...</strong>
-      </div>
-
-      <div class="profile-detail">
-        <span>Nom</span>
-        <strong id="profileLastName">Chargement...</strong>
-      </div>
-
-      <div class="profile-detail">
-        <span>Adresse e-mail</span>
-        <strong id="profileEmail">Chargement...</strong>
-      </div>
-
-      <div class="profile-detail">
-        <span>Date d'inscription</span>
-        <strong id="profileCreatedAt">Chargement...</strong>
-      </div>
-
+      <div class="profile-detail"><span>Prénom</span><strong id="profileFirstName">Chargement...</strong></div>
+      <div class="profile-detail"><span>Nom</span><strong id="profileLastName">Chargement...</strong></div>
+      <div class="profile-detail"><span>Adresse e-mail</span><strong id="profileEmail">Chargement...</strong></div>
+      <div class="profile-detail"><span>Date d'inscription</span><strong id="profileCreatedAt">Chargement...</strong></div>
       <button id="editMyProfileBtn" type="button">Modifier mon profil</button>
       <button id="backProfileOverviewBtn" class="secondary" type="button">Retour à l'accueil</button>
       <div id="profileOverviewMessage" class="message hidden" role="status"></div>
     </div>
   </div>
 
-  <!-- MON COMPTE -->
   <div id="accountPage" class="hidden">
     <div class="card">
-      <div class="page-heading">
-        <h1>👤 Mon compte</h1>
-      </div>
+      <div class="page-heading"><h1>👤 Mon compte</h1></div>
       <p>Gère tes informations personnelles et les accès à ton compte ViralTime.</p>
-
-      <div class="hours-card">
-        <p>Adresse e-mail actuelle</p>
-        <strong id="currentAccountEmail" class="account-email"></strong>
-      </div>
-
+      <div class="hours-card"><p>Adresse e-mail actuelle</p><strong id="currentAccountEmail" class="account-email"></strong></div>
       <h3>Modifier mes informations</h3>
       <form id="accountForm">
         <label class="performance-label" for="accountFirstName">Prénom</label>
         <input id="accountFirstName" type="text" placeholder="Ton prénom" autocomplete="given-name" required>
-
         <label class="performance-label" for="accountLastName">Nom</label>
         <input id="accountLastName" type="text" placeholder="Ton nom" autocomplete="family-name" required>
-
         <label class="performance-label" for="accountEmail">Adresse e-mail</label>
         <input id="accountEmail" type="email" placeholder="Nouvelle adresse e-mail" autocomplete="email" required>
-
         <p class="hours-note">Si tu modifies ton adresse e-mail, Supabase peut demander une confirmation sur la nouvelle adresse avant d'appliquer le changement.</p>
         <button id="saveAccountBtn" type="submit">Enregistrer mes informations</button>
       </form>
       <div id="accountMessage" class="message hidden" role="status"></div>
-
       <div class="divider" style="height:1px;background:#40345f;margin:25px 0"></div>
-
       <h3>Modifier mon mot de passe</h3>
       <p>Choisis un nouveau mot de passe d'au moins 6 caractères.</p>
       <form id="passwordForm">
@@ -280,74 +163,42 @@ small{color:#b9b1d2}
         <button id="savePasswordBtn" type="submit">Modifier mon mot de passe</button>
       </form>
       <div id="passwordMessage" class="message hidden" role="status"></div>
-
       <div class="divider" style="height:1px;background:#40345f;margin:25px 0"></div>
-
       <h3>Session</h3>
       <p>Tu es actuellement connecté à ViralTime.</p>
       <button id="logoutBtn" class="secondary" type="button">Se déconnecter</button>
       <div id="dashboardMessage" class="message hidden"></div>
-
       <button id="backAccountBtn" class="secondary" type="button">Retour au tableau de bord</button>
     </div>
   </div>
 
-  <!-- PARAMÈTRES -->
   <div id="settingsPage" class="hidden">
     <div class="card">
       <h1>⚙️ Paramètres</h1>
       <p>Personnalise les préférences de ton application ViralTime.</p>
-
       <h3>Préférences générales</h3>
       <div class="setting-row">
-        <div>
-          <strong>Langue</strong>
-          <p>Langue actuelle de l'application.</p>
-        </div>
-        <select id="languageSetting" aria-label="Langue">
-          <option value="fr">Français</option>
-        </select>
+        <div><strong>Langue</strong><p>Langue actuelle de l'application.</p></div>
+        <select id="languageSetting" aria-label="Langue"><option value="fr">Français</option></select>
       </div>
-
       <div class="setting-row">
-        <div>
-          <strong>Fuseau horaire</strong>
-          <p>Les dates et heures du calendrier sont affichées en heure de Côte d'Ivoire.</p>
-        </div>
-        <select id="timezoneSetting" aria-label="Fuseau horaire">
-          <option value="Africa/Abidjan">Côte d'Ivoire</option>
-        </select>
+        <div><strong>Fuseau horaire</strong><p>Les dates et heures du calendrier sont affichées en heure de Côte d'Ivoire.</p></div>
+        <select id="timezoneSetting" aria-label="Fuseau horaire"><option value="Africa/Abidjan">Côte d'Ivoire</option></select>
       </div>
-
       <h3 style="margin-top:25px">Notifications</h3>
       <div class="setting-row">
-        <div>
-          <strong>Rappels de publication</strong>
-          <p>Autoriser ViralTime à te proposer des rappels de publication.</p>
-        </div>
+        <div><strong>Rappels de publication</strong><p>Autoriser ViralTime à te proposer des rappels de publication.</p></div>
         <input id="reminderSetting" type="checkbox" checked aria-label="Activer les rappels">
       </div>
-
       <div class="setting-row">
-        <div>
-          <strong>Notifications du navigateur</strong>
-          <p>État de l'autorisation de notification sur ton appareil.</p>
-        </div>
+        <div><strong>Notifications du navigateur</strong><p>État de l'autorisation de notification sur ton appareil.</p></div>
         <span id="notificationPermissionStatus" class="hours-note">Non vérifié</span>
       </div>
-
       <button id="saveSettingsBtn" type="button">Enregistrer mes paramètres</button>
       <div id="settingsMessage" class="message hidden" role="status"></div>
-
       <div style="height:1px;background:#40345f;margin:25px 0"></div>
-
       <h3>À propos de ViralTime</h3>
-      <div class="hours-card">
-        <strong>ViralTime</strong>
-        <p>Publie au bon moment.</p>
-        <p class="hours-note">Version de développement</p>
-      </div>
-
+      <div class="hours-card"><strong>ViralTime</strong><p>Publie au bon moment.</p><p class="hours-note">Version de développement</p></div>
       <button id="backSettingsBtn" class="secondary" type="button">Retour au tableau de bord</button>
     </div>
   </div>
@@ -360,9 +211,7 @@ small{color:#b9b1d2}
       <form id="publicationForm">
         <input id="publicationTitle" type="text" placeholder="Titre de ta publication" required>
         <input id="publicationDescription" type="text" placeholder="Description de la publication">
-        <select id="publicationType" required>
-          <option value="Vidéo">Vidéo</option><option value="Photo">Photo</option><option value="Texte">Texte</option><option value="Live">Live</option>
-        </select>
+        <select id="publicationType" required><option value="Vidéo">Vidéo</option><option value="Photo">Photo</option><option value="Texte">Texte</option><option value="Live">Live</option></select>
         <input id="publicationDate" type="date" required>
         <input id="publicationTime" type="time" required>
         <button id="publicationSubmitBtn" type="submit">Programmer</button>
@@ -405,7 +254,7 @@ small{color:#b9b1d2}
         <div id="audienceHoursAnalysis"><p class="hours-note">Chargement du pays d'audience...</p></div>
       </div>
       <h3>🎯 Analyse de tes performances</h3>
-      <p>ViralTime étudie les publications dont tu as enregistré les statistiques. Les créneaux sont regroupés par plages de deux heures afin de mieux repérer les tendances.</p>
+      <p>Les recommandations générales sont toujours disponibles. Si tu confirmes des publications, ViralTime peut analyser tes habitudes. Les statistiques permettent ensuite d'affiner les comparaisons de performances.</p>
       <div id="personalHoursAnalysis"><div class="message">Chargement de ton analyse personnalisée...</div></div>
       <button id="refreshHoursBtn" type="button">Actualiser mon analyse</button>
       <button id="backHoursBtn" class="secondary" type="button">Retour à l'accueil</button>
@@ -465,7 +314,6 @@ small{color:#b9b1d2}
     </div>
   </div>
 
-  <!-- PROFIL TIKTOK -->
   <div id="profilePage" class="hidden">
     <div class="card">
       <h2 id="profilePageTitle">🎵 Ajouter mon profil TikTok</h2>
@@ -482,7 +330,6 @@ small{color:#b9b1d2}
       <button id="backHomeBtn" class="secondary" type="button">Retour à l'accueil</button>
     </div>
   </div>
-
 </section>
 
 <p style="text-align:center;font-size:12px">ViralTime · Version de développement</p>
@@ -521,14 +368,11 @@ const firstNameInput=$('firstName'),lastNameInput=$('lastName');
 const welcomeTitle=$('welcomeTitle');
 let isLogin=false;
 
-// ======================================
 // PHOTO DE PROFIL VIRALTIME
-// ======================================
 const avatarButton=$('avatarButton');
 const avatarFile=$('avatarFile');
 const avatarImage=$('avatarImage');
 const avatarFallback=$('avatarFallback');
-
 const profileAvatarButton=$('profileAvatarButton');
 const profileAvatarImage=$('profileAvatarImage');
 const profileAvatarFallback=$('profileAvatarFallback');
@@ -538,16 +382,13 @@ function displayAvatar(url){
     avatarImage.src=url;
     avatarImage.classList.remove('hidden');
     avatarFallback.classList.add('hidden');
-
     profileAvatarImage.src=url;
     profileAvatarImage.classList.remove('hidden');
     profileAvatarFallback.classList.add('hidden');
-
   }else{
     avatarImage.removeAttribute('src');
     avatarImage.classList.add('hidden');
     avatarFallback.classList.remove('hidden');
-
     profileAvatarImage.removeAttribute('src');
     profileAvatarImage.classList.add('hidden');
     profileAvatarFallback.classList.remove('hidden');
@@ -557,153 +398,77 @@ function displayAvatar(url){
 async function loadAvatar(user){
   try{
     const path=user.user_metadata?.avatar_path;
-
-    if(!path){
-      displayAvatar(null);
-      return;
-    }
-
+    if(!path){displayAvatar(null);return;}
     const {data}=supabase.storage.from('Avatars').getPublicUrl(path);
     displayAvatar(data.publicUrl+'?t='+Date.now());
-
   }catch(error){
     console.error('Erreur de chargement de la photo :',error);
     displayAvatar(null);
   }
 }
 
-// Ouvrir la page Mon profil depuis la photo de l'en-tête
 avatarButton.addEventListener('click',async()=>{
   try{
     const {data:{user},error}=await supabase.auth.getUser();
-
     if(error)throw error;
-
-    if(!user){
-      alert('Connecte-toi pour consulter ton profil.');
-      return;
-    }
-
+    if(!user){alert('Connecte-toi pour consulter ton profil.');return;}
     showPage(profileOverviewPage);
-
-  }catch(error){
-    alert('Impossible de vérifier ton compte : '+error.message);
-  }
+  }catch(error){alert('Impossible de vérifier ton compte : '+error.message);}
 });
 
-// Ouvrir la galerie depuis la photo de la page Mon profil
 profileAvatarButton.addEventListener('click',async()=>{
   try{
     const {data:{user},error}=await supabase.auth.getUser();
-
     if(error)throw error;
-
-    if(!user){
-      alert('Connecte-toi pour modifier ta photo de profil.');
-      return;
-    }
-
+    if(!user){alert('Connecte-toi pour modifier ta photo de profil.');return;}
     avatarFile.click();
-
-  }catch(error){
-    alert('Impossible de vérifier ton compte : '+error.message);
-  }
+  }catch(error){alert('Impossible de vérifier ton compte : '+error.message);}
 });
 
-// Sélectionner et enregistrer la photo
 avatarFile.addEventListener('change',async()=>{
   const file=avatarFile.files?.[0];
-
   if(!file)return;
-
   let uploadedPath=null;
-
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
-
     const allowedTypes=['image/jpeg','image/png','image/webp'];
-
-    if(!allowedTypes.includes(file.type)){
-      throw new Error('Choisis une image JPG, PNG ou WEBP.');
-    }
-
-    if(file.size>5*1024*1024){
-      throw new Error('Ta photo ne doit pas dépasser 5 Mo.');
-    }
-
+    if(!allowedTypes.includes(file.type))throw new Error('Choisis une image JPG, PNG ou WEBP.');
+    if(file.size>5*1024*1024)throw new Error('Ta photo ne doit pas dépasser 5 Mo.');
     avatarButton.disabled=true;
     profileAvatarButton.disabled=true;
     avatarFallback.textContent='…';
     profileAvatarFallback.textContent='…';
-
-    const extension={
-      'image/jpeg':'jpg',
-      'image/png':'png',
-      'image/webp':'webp'
-    }[file.type];
-
+    const extension={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type];
     const oldPath=user.user_metadata?.avatar_path;
     const newPath=user.id+'/'+Date.now()+'.'+extension;
-
-    const {error:uploadError}=await supabase.storage
-      .from('Avatars')
-      .upload(newPath,file,{
-        contentType:file.type,
-        cacheControl:'3600',
-        upsert:false
-      });
-
-    if(uploadError)throw uploadError;
-
-    uploadedPath=newPath;
-
-    const {data,error:updateError}=await supabase.auth.updateUser({
-      data:{
-        ...user.user_metadata,
-        avatar_path:newPath
-      }
+    const {error:uploadError}=await supabase.storage.from('Avatars').upload(newPath,file,{
+      contentType:file.type,cacheControl:'3600',upsert:false
     });
-
+    if(uploadError)throw uploadError;
+    uploadedPath=newPath;
+    const {data,error:updateError}=await supabase.auth.updateUser({
+      data:{...user.user_metadata,avatar_path:newPath}
+    });
     if(updateError)throw updateError;
-
     await loadAvatar(data.user);
-
     if(oldPath){
-      const {error:deleteError}=await supabase.storage
-        .from('Avatars')
-        .remove([oldPath]);
-
-      if(deleteError){
-        console.warn('Ancienne photo non supprimée :',deleteError);
-      }
+      const {error:deleteError}=await supabase.storage.from('Avatars').remove([oldPath]);
+      if(deleteError)console.warn('Ancienne photo non supprimée :',deleteError);
     }
-
     alert('Ta photo de profil a été enregistrée avec succès !');
-
   }catch(error){
     console.error('Erreur photo de profil :',error);
-
     if(uploadedPath){
       const {data:{user}}=await supabase.auth.getUser();
-
       if(user?.user_metadata?.avatar_path!==uploadedPath){
         await supabase.storage.from('Avatars').remove([uploadedPath]);
       }
     }
-
     const {data:{user}}=await supabase.auth.getUser();
-
-    if(user){
-      await loadAvatar(user);
-    }else{
-      displayAvatar(null);
-    }
-
+    if(user)await loadAvatar(user);else displayAvatar(null);
     alert('Impossible d’enregistrer la photo : '+error.message);
-
   }finally{
     avatarButton.disabled=false;
     profileAvatarButton.disabled=false;
@@ -711,46 +476,30 @@ avatarFile.addEventListener('change',async()=>{
   }
 });
 
-// Charger les informations de la page Mon profil
 async function loadProfileOverview(){
   const profileOverviewMessage=$('profileOverviewMessage');
-
   profileOverviewMessage.classList.add('hidden');
-
   try{
     const {data:{user},error}=await supabase.auth.getUser();
-
     if(error)throw error;
     if(!user)throw new Error('Aucun utilisateur connecté.');
-
     const metadata=user.user_metadata||{};
-
     const firstName=metadata.first_name||'Non renseigné';
     const lastName=metadata.last_name||'Non renseigné';
     const fullName=[metadata.first_name,metadata.last_name].filter(Boolean).join(' ');
-
     $('profileFirstName').textContent=firstName;
     $('profileLastName').textContent=lastName;
     $('profileEmail').textContent=user.email||'Adresse e-mail non disponible';
     $('profileDisplayName').textContent=fullName||'Mon profil';
-
     if(user.created_at){
       const createdDate=new Date(user.created_at);
-
       $('profileCreatedAt').textContent=createdDate.toLocaleDateString('fr-FR',{
-        day:'2-digit',
-        month:'long',
-        year:'numeric'
+        day:'2-digit',month:'long',year:'numeric'
       });
-    }else{
-      $('profileCreatedAt').textContent='Non disponible';
-    }
-
+    }else{$('profileCreatedAt').textContent='Non disponible';}
     await loadAvatar(user);
-
   }catch(error){
     console.error('Erreur de chargement du profil :',error);
-
     profileOverviewMessage.textContent='Impossible de charger les informations du profil : '+error.message;
     profileOverviewMessage.classList.remove('hidden');
   }
@@ -761,7 +510,6 @@ const publicationMessage=$('publicationMessage');
 const publicationsList=$('publicationsList');
 const publicationSubmitBtn=$('publicationSubmitBtn');
 const publicationDateInput=$('publicationDate');
-
 const performanceForm=$('performanceForm');
 const performancePublication=$('performancePublication');
 const performanceViews=$('performanceViews');
@@ -773,21 +521,17 @@ const performanceMessage=$('performanceMessage');
 const performanceList=$('performanceList');
 const totalViews=$('totalViews'),totalLikes=$('totalLikes');
 const totalComments=$('totalComments'),totalShares=$('totalShares');
-
 const publishedForm=$('publishedForm');
 const publishedPublication=$('publishedPublication');
 const publishedDate=$('publishedDate'),publishedTime=$('publishedTime');
 const confirmPublishedBtn=$('confirmPublishedBtn');
 const publishedMessage=$('publishedMessage');
-
 const oldVideoForm=$('oldVideoForm'),oldVideoDate=$('oldVideoDate');
 const oldVideoViews=$('oldVideoViews'),saveOldVideoBtn=$('saveOldVideoBtn');
 const oldVideoMessage=$('oldVideoMessage');
-
 const personalHoursAnalysis=$('personalHoursAnalysis');
 const audienceHoursAnalysis=$('audienceHoursAnalysis');
 const refreshHoursBtn=$('refreshHoursBtn');
-
 const accountForm=$('accountForm');
 const accountMessage=$('accountMessage');
 const passwordForm=$('passwordForm');
@@ -809,27 +553,12 @@ function showPublicationMessage(text){publicationMessage.textContent=text;public
 function showPerformanceMessage(text){performanceMessage.textContent=text;performanceMessage.classList.remove('hidden');}
 
 function showPage(page){
-  [
-    homePage,
-    profilePage,
-    profileOverviewPage,
-    hoursPage,
-    calendarPage,
-    performancePage,
-    accountPage,
-    settingsPage
-  ].forEach(p=>p.classList.add('hidden'));
-
+  [homePage,profilePage,profileOverviewPage,hoursPage,calendarPage,performancePage,accountPage,settingsPage]
+    .forEach(p=>p.classList.add('hidden'));
   page.classList.remove('hidden');
-
   if(page===calendarPage)loadPublications();
   if(page===performancePage)loadPerformanceData();
-
-  if(page===hoursPage){
-    loadAudienceHours();
-    loadPersonalHoursAnalysis();
-  }
-
+  if(page===hoursPage){loadAudienceHours();loadPersonalHoursAnalysis();}
   if(page===accountPage)loadAccountInformation();
   if(page===settingsPage)loadSettings();
   if(page===profileOverviewPage)loadProfileOverview();
@@ -839,13 +568,9 @@ function showDashboard(user){
   authSection.classList.add('hidden');
   dashboard.classList.remove('hidden');
   showPage(homePage);
-
-  // Charger la photo de profil du compte connecté
   loadAvatar(user);
-
   const firstName=user.user_metadata?.first_name||'';
   welcomeTitle.textContent=firstName?'Bienvenue, '+firstName+' 👋':'Bienvenue, Créateur 👋';
-
   loadTikTokProfile();
   loadPublications();
 }
@@ -868,637 +593,385 @@ switchBtn.addEventListener('click',()=>{
 
 authForm.addEventListener('submit',async event=>{
   event.preventDefault();
-
   const email=$('email').value.trim(),password=$('password').value;
   const firstName=firstNameInput.value.trim(),lastName=lastNameInput.value.trim();
-
-  submitBtn.disabled=true;
-  switchBtn.disabled=true;
-  submitBtn.textContent='Patiente...';
+  submitBtn.disabled=true;switchBtn.disabled=true;submitBtn.textContent='Patiente...';
   message.classList.add('hidden');
-
   try{
     if(isLogin){
       const {data,error}=await supabase.auth.signInWithPassword({email,password});
-
       if(error)throw error;
-
       showDashboard(data.user);
-
     }else{
       if(!firstName||!lastName)throw new Error('Entre ton prénom et ton nom.');
-
       const fullName=firstName+' '+lastName;
-
       const {data,error}=await supabase.auth.signUp({
         email,password,
-        options:{
-          emailRedirectTo:window.location.href,
-          data:{first_name:firstName,last_name:lastName,name:fullName,display_name:fullName}
-        }
+        options:{emailRedirectTo:window.location.href,
+          data:{first_name:firstName,last_name:lastName,name:fullName,display_name:fullName}}
       });
-
       if(error)throw error;
-
       if(data.session)showDashboard(data.user);
       else showMessage("Inscription enregistrée ! Consulte ta boîte e-mail pour confirmer ton adresse avant de te connecter.");
     }
-
-  }catch(error){
-    showMessage('Erreur : '+error.message);
-
-  }finally{
-    submitBtn.disabled=false;
-    switchBtn.disabled=false;
+  }catch(error){showMessage('Erreur : '+error.message);}
+  finally{
+    submitBtn.disabled=false;switchBtn.disabled=false;
     submitBtn.textContent=isLogin?'Me connecter':'Créer mon compte';
   }
 });
 
-// MON COMPTE : charger les informations du compte
+// MON COMPTE
 async function loadAccountInformation(){
-  accountMessage.classList.add('hidden');
-  passwordMessage.classList.add('hidden');
-
+  accountMessage.classList.add('hidden');passwordMessage.classList.add('hidden');
   try{
     const {data:{user},error}=await supabase.auth.getUser();
-
     if(error)throw error;
     if(!user)throw new Error('Aucun utilisateur connecté.');
-
     const metadata=user.user_metadata||{};
-
     $('currentAccountEmail').textContent=user.email||'Adresse e-mail non disponible';
     $('accountEmail').value=user.email||'';
     $('accountFirstName').value=metadata.first_name||'';
     $('accountLastName').value=metadata.last_name||'';
-
   }catch(error){
     accountMessage.textContent='Impossible de charger ton compte : '+error.message;
     accountMessage.classList.remove('hidden');
   }
 }
 
-// MON COMPTE : modifier prénom, nom et e-mail
 accountForm.addEventListener('submit',async event=>{
   event.preventDefault();
-
   const firstName=$('accountFirstName').value.trim();
   const lastName=$('accountLastName').value.trim();
   const newEmail=$('accountEmail').value.trim();
-
   const saveButton=$('saveAccountBtn');
-
-  saveButton.disabled=true;
-  saveButton.textContent='Enregistrement...';
+  saveButton.disabled=true;saveButton.textContent='Enregistrement...';
   accountMessage.classList.add('hidden');
-
   try{
-    if(!firstName||!lastName||!newEmail)
-      throw new Error('Remplis ton prénom, ton nom et ton adresse e-mail.');
-
+    if(!firstName||!lastName||!newEmail)throw new Error('Remplis ton prénom, ton nom et ton adresse e-mail.');
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
-
     const fullName=firstName+' '+lastName;
     const emailChanged=newEmail.toLowerCase()!==String(user.email||'').toLowerCase();
-
-    const updateData={
-      data:{
-        ...user.user_metadata,
-        first_name:firstName,
-        last_name:lastName,
-        name:fullName,
-        display_name:fullName
-      }
-    };
-
+    const updateData={data:{...user.user_metadata,first_name:firstName,last_name:lastName,name:fullName,display_name:fullName}};
     if(emailChanged)updateData.email=newEmail;
-
     const {data,error}=await supabase.auth.updateUser(updateData);
-
     if(error)throw error;
-
     welcomeTitle.textContent='Bienvenue, '+firstName+' 👋';
-
-    if(emailChanged){
-      accountMessage.textContent='Tes informations personnelles ont été mises à jour. Une confirmation a été envoyée à ta nouvelle adresse e-mail si la confirmation d’adresse est activée.';
-    }else{
-      accountMessage.textContent='Tes informations personnelles ont été mises à jour avec succès !';
-    }
-
+    accountMessage.textContent=emailChanged
+      ?'Tes informations personnelles ont été mises à jour. Une confirmation a été envoyée à ta nouvelle adresse e-mail si la confirmation d’adresse est activée.'
+      :'Tes informations personnelles ont été mises à jour avec succès !';
     $('currentAccountEmail').textContent=data.user?.email||user.email;
     accountMessage.classList.remove('hidden');
-
-    // Actualiser aussi les informations de la page Mon profil
     await loadProfileOverview();
-
   }catch(error){
     accountMessage.textContent='Erreur : '+error.message;
     accountMessage.classList.remove('hidden');
-
   }finally{
-    saveButton.disabled=false;
-    saveButton.textContent='Enregistrer mes informations';
+    saveButton.disabled=false;saveButton.textContent='Enregistrer mes informations';
   }
 });
 
-// MON COMPTE : modifier le mot de passe
 passwordForm.addEventListener('submit',async event=>{
   event.preventDefault();
-
   const newPassword=$('newPassword').value;
   const confirmPassword=$('confirmNewPassword').value;
   const saveButton=$('savePasswordBtn');
-
   passwordMessage.classList.add('hidden');
-
   if(newPassword.length<6){
     passwordMessage.textContent='Le mot de passe doit contenir au moins 6 caractères.';
-    passwordMessage.classList.remove('hidden');
-    return;
+    passwordMessage.classList.remove('hidden');return;
   }
-
   if(newPassword!==confirmPassword){
     passwordMessage.textContent='Les deux mots de passe ne correspondent pas.';
-    passwordMessage.classList.remove('hidden');
-    return;
+    passwordMessage.classList.remove('hidden');return;
   }
-
-  saveButton.disabled=true;
-  saveButton.textContent='Modification...';
-
+  saveButton.disabled=true;saveButton.textContent='Modification...';
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
-
     const {error}=await supabase.auth.updateUser({password:newPassword});
-
     if(error)throw error;
-
     passwordForm.reset();
     passwordMessage.textContent='Ton mot de passe a été modifié avec succès !';
     passwordMessage.classList.remove('hidden');
-
   }catch(error){
     passwordMessage.textContent='Erreur : '+error.message;
     passwordMessage.classList.remove('hidden');
-
   }finally{
-    saveButton.disabled=false;
-    saveButton.textContent='Modifier mon mot de passe';
+    saveButton.disabled=false;saveButton.textContent='Modifier mon mot de passe';
   }
 });
 
-// PARAMÈTRES : sauvegarde locale des préférences
+// PARAMÈTRES
 function loadSettings(){
   const reminderEnabled=localStorage.getItem('viraltime_reminders');
-
   $('reminderSetting').checked=reminderEnabled!=='false';
   $('timezoneSetting').value='Africa/Abidjan';
   $('languageSetting').value='fr';
-
-  if(!('Notification'in window)){
-    $('notificationPermissionStatus').textContent='Non disponible';
-  }else{
+  if(!('Notification'in window))$('notificationPermissionStatus').textContent='Non disponible';
+  else{
     const permission=Notification.permission;
-
     $('notificationPermissionStatus').textContent=
-      permission==='granted'?'Autorisées':
-      permission==='denied'?'Refusées':'Non autorisées';
+      permission==='granted'?'Autorisées':permission==='denied'?'Refusées':'Non autorisées';
   }
 }
 
 $('saveSettingsBtn').addEventListener('click',()=>{
   try{
-    localStorage.setItem(
-      'viraltime_reminders',
-      $('reminderSetting').checked?'true':'false'
-    );
-
+    localStorage.setItem('viraltime_reminders',$('reminderSetting').checked?'true':'false');
     settingsMessage.textContent='Tes paramètres ont été enregistrés sur cet appareil.';
     settingsMessage.classList.remove('hidden');
-
   }catch(error){
     settingsMessage.textContent='Impossible d’enregistrer les paramètres : '+error.message;
     settingsMessage.classList.remove('hidden');
   }
 });
 
-// Notifications
+// NOTIFICATIONS — CONSERVÉES SANS MODIFICATION DE LEUR FONCTIONNEMENT
 const enableNotificationsBtn=$('enableNotificationsBtn');
 const notificationMessage=$('notificationMessage');
-
 enableNotificationsBtn.addEventListener('click',async()=>{
   if(localStorage.getItem('viraltime_reminders')==='false'){
     notificationMessage.textContent='Les rappels sont désactivés dans les paramètres de ViralTime. Tu peux les réactiver depuis cette page.';
-    notificationMessage.classList.remove('hidden');
-    return;
+    notificationMessage.classList.remove('hidden');return;
   }
-
   if(!('Notification'in window)){
     notificationMessage.textContent='Ton navigateur ne prend pas en charge les notifications.';
-    notificationMessage.classList.remove('hidden');
-    return;
+    notificationMessage.classList.remove('hidden');return;
   }
-
   if(!('serviceWorker'in navigator)){
     notificationMessage.textContent='Les notifications ne sont pas prises en charge.';
-    notificationMessage.classList.remove('hidden');
-    return;
+    notificationMessage.classList.remove('hidden');return;
   }
-
   try{
-    enableNotificationsBtn.disabled=true;
-    enableNotificationsBtn.textContent='Activation...';
-
+    enableNotificationsBtn.disabled=true;enableNotificationsBtn.textContent='Activation...';
     const permission=await Notification.requestPermission();
-
     if(permission==='granted'){
       const registration=await navigator.serviceWorker.ready;
-
       await registration.showNotification('ViralTime 🔔',{
         body:'Les notifications sont autorisées ! Prépare tes prochaines publications 🚀'
       });
-
       notificationMessage.textContent='Notifications autorisées avec succès !';
-
     }else if(permission==='denied'){
       notificationMessage.textContent='Autorisation refusée. Tu peux la modifier dans les paramètres de ton navigateur.';
-
-    }else{
-      notificationMessage.textContent='Tu n’as pas encore autorisé les notifications.';
-    }
-
+    }else{notificationMessage.textContent='Tu n’as pas encore autorisé les notifications.';}
     notificationMessage.classList.remove('hidden');
-
   }catch(error){
     notificationMessage.textContent='Erreur : '+error.message;
     notificationMessage.classList.remove('hidden');
-
   }finally{
-    enableNotificationsBtn.disabled=false;
-    enableNotificationsBtn.textContent='Activer les notifications';
+    enableNotificationsBtn.disabled=false;enableNotificationsBtn.textContent='Activer les notifications';
   }
 });
 
-// Navigation
+// NAVIGATION
 $('openHoursBtn').addEventListener('click',()=>showPage(hoursPage));
 $('backHoursBtn').addEventListener('click',()=>showPage(homePage));
 refreshHoursBtn.addEventListener('click',loadPersonalHoursAnalysis);
-
 $('openCalendarBtn').addEventListener('click',()=>showPage(calendarPage));
 $('backCalendarBtn').addEventListener('click',()=>showPage(homePage));
-
 $('openPerformanceBtn').addEventListener('click',()=>showPage(performancePage));
 $('backPerformanceBtn').addEventListener('click',()=>showPage(homePage));
-
 $('backHomeBtn').addEventListener('click',()=>showPage(homePage));
-
 $('openAccountBtn').addEventListener('click',()=>showPage(accountPage));
 $('backAccountBtn').addEventListener('click',()=>showPage(homePage));
-
 $('openSettingsBtn').addEventListener('click',()=>showPage(settingsPage));
 $('backSettingsBtn').addEventListener('click',()=>showPage(homePage));
-
-// Navigation de la page Mon profil
 $('editMyProfileBtn').addEventListener('click',()=>showPage(accountPage));
 $('backProfileOverviewBtn').addEventListener('click',()=>showPage(homePage));
 
-// Programmer une publication
+// CALENDRIER : PROGRAMMER UNE PUBLICATION
 publicationForm.addEventListener('submit',async event=>{
-  event.preventDefault();
-  publicationMessage.classList.add('hidden');
-
+  event.preventDefault();publicationMessage.classList.add('hidden');
   const title=$('publicationTitle').value.trim();
   const description=$('publicationDescription').value.trim();
   const contentType=$('publicationType').value;
   const date=publicationDateInput.value,time=$('publicationTime').value;
-
-  publicationSubmitBtn.disabled=true;
-  publicationSubmitBtn.textContent='Enregistrement...';
-
+  publicationSubmitBtn.disabled=true;publicationSubmitBtn.textContent='Enregistrement...';
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour programmer une publication.');
     if(!title)throw new Error('Entre un titre pour ta publication.');
     if(!date||!time)throw new Error('Choisis une date et une heure.');
-
     const scheduledDate=getAbidjanDateTime(date,time);
-
     if(Number.isNaN(scheduledDate.getTime()))throw new Error('La date ou l’heure choisie est invalide.');
     if(scheduledDate.getTime()<=Date.now())throw new Error('Choisis une date et une heure dans le futur.');
-
     const {error}=await supabase.from('publications').insert({
       user_id:user.id,title,description,content_type:contentType,
       scheduled_at:scheduledDate.toISOString(),status:'programmée'
     });
-
     if(error)throw error;
-
     showPublicationMessage('Publication programmée avec succès !');
-
-    publicationForm.reset();
-    publicationDateInput.min=getLocalDateString();
-
+    publicationForm.reset();publicationDateInput.min=getLocalDateString();
     await loadPublications();
-
   }catch(error){
     console.error('Erreur de programmation :',error);
     showPublicationMessage('Erreur : '+error.message);
-
   }finally{
-    publicationSubmitBtn.disabled=false;
-    publicationSubmitBtn.textContent='Programmer';
+    publicationSubmitBtn.disabled=false;publicationSubmitBtn.textContent='Programmer';
   }
 });
 
-// Supprimer une publication programmée
 async function deleteScheduledPublication(publicationId,deleteButton){
   const confirmed=window.confirm('Veux-tu vraiment supprimer cette publication programmée ? Cette action est définitive.');
-
   if(!confirmed)return;
-
-  deleteButton.disabled=true;
-  deleteButton.textContent='Suppression...';
-
+  deleteButton.disabled=true;deleteButton.textContent='Suppression...';
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour supprimer une publication.');
-
     const {data,error}=await supabase.from('publications').delete()
       .eq('id',publicationId).eq('user_id',user.id).eq('status','programmée')
       .select('id').maybeSingle();
-
     if(error)throw error;
     if(!data)throw new Error('La publication est introuvable, n’est plus programmée ou ne peut pas être supprimée.');
-
     showPublicationMessage('Publication programmée supprimée avec succès !');
-
     await loadPublications();
-
   }catch(error){
     console.error('Erreur de suppression :',error);
-
     showPublicationMessage('Impossible de supprimer cette publication : '+error.message);
-
-    deleteButton.disabled=false;
-    deleteButton.textContent='🗑️ Supprimer';
+    deleteButton.disabled=false;deleteButton.textContent='🗑️ Supprimer';
   }
 }
 
-// Charger les publications
 async function loadPublications(){
   publicationsList.textContent='Chargement des publications...';
-
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
-
-    if(!user){
-      publicationsList.textContent='Connecte-toi pour voir tes publications.';
-      return;
-    }
-
+    if(!user){publicationsList.textContent='Connecte-toi pour voir tes publications.';return;}
     const {data,error}=await supabase.from('publications').select('*')
       .eq('user_id',user.id).order('scheduled_at',{ascending:true});
-
     if(error)throw error;
-
     publicationsList.replaceChildren();
-
     if(!data||data.length===0){
-      const empty=document.createElement('p');
-      empty.textContent='Aucune publication programmée pour le moment.';
-      publicationsList.appendChild(empty);
-      return;
+      const empty=document.createElement('p');empty.textContent='Aucune publication programmée pour le moment.';
+      publicationsList.appendChild(empty);return;
     }
-
     data.forEach(publication=>{
-      const item=document.createElement('div');
-      item.className='publication-item';
-
-      const title=document.createElement('h4');
-      title.textContent=publication.title||'Sans titre';
-
-      const description=document.createElement('p');
-      description.textContent=publication.description||'Aucune description';
-
-      const type=document.createElement('p');
-      type.textContent='Type : '+(publication.content_type||'Non précisé');
-
+      const item=document.createElement('div');item.className='publication-item';
+      const title=document.createElement('h4');title.textContent=publication.title||'Sans titre';
+      const description=document.createElement('p');description.textContent=publication.description||'Aucune description';
+      const type=document.createElement('p');type.textContent='Type : '+(publication.content_type||'Non précisé');
       const date=document.createElement('p');
-
       if(publication.status==='publiée'&&publication.published_at){
         date.textContent='Date réelle de publication : '+new Date(publication.published_at).toLocaleDateString('fr-FR',{
           timeZone:'Africa/Abidjan',dateStyle:'long'
         });
-
       }else{
         const scheduledDate=new Date(publication.scheduled_at);
-
         date.textContent=!Number.isNaN(scheduledDate.getTime())
           ?'Date programmée : '+scheduledDate.toLocaleString('fr-FR',{
             timeZone:'Africa/Abidjan',dateStyle:'long',timeStyle:'short'
           })
           :'Date non disponible';
       }
-
-      const status=document.createElement('p');
-      status.textContent='Statut : '+(publication.status||'Non précisé');
-
+      const status=document.createElement('p');status.textContent='Statut : '+(publication.status||'Non précisé');
       item.append(title,description,type,date,status);
-
       if(publication.status==='programmée'){
         const deleteButton=document.createElement('button');
-
-        deleteButton.type='button';
-        deleteButton.className='delete-btn';
-        deleteButton.textContent='🗑️ Supprimer';
-
+        deleteButton.type='button';deleteButton.className='delete-btn';deleteButton.textContent='🗑️ Supprimer';
         deleteButton.addEventListener('click',()=>deleteScheduledPublication(publication.id,deleteButton));
-
         item.appendChild(deleteButton);
       }
-
       publicationsList.appendChild(item);
     });
-
   }catch(error){
     console.error('Erreur de chargement des publications :',error);
     publicationsList.textContent='Impossible de charger les publications : '+error.message;
   }
 }
 
-// Performances
+// PERFORMANCES
 async function loadPerformanceData(){
   performanceMessage.classList.add('hidden');
   performancePublication.innerHTML='<option value="">Chargement des publications...</option>';
   publishedPublication.innerHTML='<option value="">Chargement des publications...</option>';
   performanceList.textContent='Chargement des statistiques...';
-
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour consulter tes performances.');
-
     const {data:publications,error:publicationsError}=await supabase.from('publications')
       .select('id,title,scheduled_at,status,published_at')
       .eq('user_id',user.id).order('scheduled_at',{ascending:false});
-
     if(publicationsError)throw publicationsError;
-
     publishedPublication.innerHTML='';
-
     const publishedOption=document.createElement('option');
-    publishedOption.value='';
-    publishedOption.textContent='Choisir une publication';
-
+    publishedOption.value='';publishedOption.textContent='Choisir une publication';
     publishedPublication.appendChild(publishedOption);
-
     (publications||[]).forEach(publication=>{
       const option=document.createElement('option');
-
       option.value=publication.id;
-      option.textContent=(publication.title||'Publication sans titre')+
-        (publication.status==='publiée'?' — Déjà publiée':'');
-
+      option.textContent=(publication.title||'Publication sans titre')+(publication.status==='publiée'?' — Déjà publiée':'');
       publishedPublication.appendChild(option);
     });
-
     performancePublication.innerHTML='';
-
     if(!publications||publications.length===0){
-      const option=document.createElement('option');
-
-      option.value='';
-      option.textContent='Aucune publication disponible';
-
+      const option=document.createElement('option');option.value='';option.textContent='Aucune publication disponible';
       performancePublication.appendChild(option);
-
       performanceList.textContent='Ajoute une ancienne vidéo ou programme une publication dans ton calendrier.';
-
-      totalViews.textContent='0';
-      totalLikes.textContent='0';
-      totalComments.textContent='0';
-      totalShares.textContent='0';
-
+      totalViews.textContent='0';totalLikes.textContent='0';totalComments.textContent='0';totalShares.textContent='0';
       return;
     }
-
     publications.forEach(publication=>{
       const option=document.createElement('option');
-
-      option.value=publication.id;
-      option.textContent=publication.title||'Publication sans titre';
-
+      option.value=publication.id;option.textContent=publication.title||'Publication sans titre';
       performancePublication.appendChild(option);
     });
-
     const {data:performances,error:performanceError}=await supabase.from('publication_performance')
       .select('*').eq('user_id',user.id);
-
     if(performanceError)throw performanceError;
-
     const safePerformances=performances||[];
-
     const totals=safePerformances.reduce((result,item)=>{
-      result.views+=Number(item.views||0);
-      result.likes+=Number(item.likes||0);
-      result.comments+=Number(item.comments||0);
-      result.shares+=Number(item.shares||0);
-
+      result.views+=Number(item.views||0);result.likes+=Number(item.likes||0);
+      result.comments+=Number(item.comments||0);result.shares+=Number(item.shares||0);
       return result;
     },{views:0,likes:0,comments:0,shares:0});
-
     totalViews.textContent=totals.views.toLocaleString('fr-FR');
     totalLikes.textContent=totals.likes.toLocaleString('fr-FR');
     totalComments.textContent=totals.comments.toLocaleString('fr-FR');
     totalShares.textContent=totals.shares.toLocaleString('fr-FR');
-
     performanceList.replaceChildren();
-
     const performanceMap=new Map(safePerformances.map(item=>[item.publication_id,item]));
     let numberOfTracked=0;
-
     publications.forEach(publication=>{
       const performance=performanceMap.get(publication.id);
-
       if(!performance)return;
-
       numberOfTracked++;
-
-      const item=document.createElement('div');
-      item.className='performance-publication';
-
-      const title=document.createElement('h4');
-      title.textContent=publication.title||'Sans titre';
-
-      const views=document.createElement('p');
-      views.textContent='👁️ Vues : '+Number(performance.views).toLocaleString('fr-FR');
-
-      const likes=document.createElement('p');
-      likes.textContent='❤️ Likes : '+Number(performance.likes).toLocaleString('fr-FR');
-
-      const comments=document.createElement('p');
-      comments.textContent='💬 Commentaires : '+Number(performance.comments).toLocaleString('fr-FR');
-
-      const shares=document.createElement('p');
-      shares.textContent='🔄 Partages : '+Number(performance.shares).toLocaleString('fr-FR');
-
+      const item=document.createElement('div');item.className='performance-publication';
+      const title=document.createElement('h4');title.textContent=publication.title||'Sans titre';
+      const views=document.createElement('p');views.textContent='👁️ Vues : '+Number(performance.views).toLocaleString('fr-FR');
+      const likes=document.createElement('p');likes.textContent='❤️ Likes : '+Number(performance.likes).toLocaleString('fr-FR');
+      const comments=document.createElement('p');comments.textContent='💬 Commentaires : '+Number(performance.comments).toLocaleString('fr-FR');
+      const shares=document.createElement('p');shares.textContent='🔄 Partages : '+Number(performance.shares).toLocaleString('fr-FR');
       const editButton=document.createElement('button');
-
-      editButton.type='button';
-      editButton.className='secondary';
-      editButton.textContent='Modifier les statistiques';
-
+      editButton.type='button';editButton.className='secondary';editButton.textContent='Modifier les statistiques';
       editButton.addEventListener('click',()=>{
         performancePublication.value=publication.id;
-        performanceViews.value=performance.views;
-        performanceLikes.value=performance.likes;
-        performanceComments.value=performance.comments;
-        performanceShares.value=performance.shares;
-
+        performanceViews.value=performance.views;performanceLikes.value=performance.likes;
+        performanceComments.value=performance.comments;performanceShares.value=performance.shares;
         performanceForm.scrollIntoView({behavior:'smooth',block:'start'});
       });
-
-      item.append(title,views,likes,comments,shares,editButton);
-
-      performanceList.appendChild(item);
+      item.append(title,views,likes,comments,shares,editButton);performanceList.appendChild(item);
     });
-
-    if(numberOfTracked===0){
-      performanceList.textContent='Aucune statistique enregistrée pour le moment.';
-    }
-
+    if(numberOfTracked===0)performanceList.textContent='Aucune statistique enregistrée pour le moment.';
     await loadSelectedPerformance();
-
   }catch(error){
     console.error('Erreur de chargement des performances :',error);
-
     performanceList.textContent='Impossible de charger les performances : '+error.message;
-
     showPerformanceMessage('Erreur : '+error.message);
   }
 }
 
-// Pays et fuseaux horaires
+// PAYS ET FUSEAUX HORAIRES
 function normalizeCountry(value){
-  return String(value || '')
-    .trim()
-    .toLocaleLowerCase('fr-FR')
-    .replace(/[’‘`´]/g, "'")
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  return String(value||'').trim().toLocaleLowerCase('fr-FR')
+    .replace(/[’‘`´]/g,"'").normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 }
 
 const countryTimeZones={
@@ -1527,12 +1000,8 @@ const countryTimeZones={
 
 function getCountryTimeZone(country){
   const normalized=normalizeCountry(country);
-
   if(!normalized)return null;
-
-  if(['canada','etats-unis','united states','usa','australie','australia'].includes(normalized))
-    return 'ambiguous';
-
+  if(['canada','etats-unis','united states','usa','australie','australia'].includes(normalized))return 'ambiguous';
   return countryTimeZones[normalized]||null;
 }
 
@@ -1540,7 +1009,6 @@ function getZonedParts(date,timeZone){
   const parts=new Intl.DateTimeFormat('en-GB',{
     timeZone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'
   }).formatToParts(date);
-
   return {
     hour:Number(parts.find(p=>p.type==='hour').value),
     minute:Number(parts.find(p=>p.type==='minute').value)
@@ -1549,697 +1017,439 @@ function getZonedParts(date,timeZone){
 
 function convertAudienceTimeToAbidjan(hour,timeZone){
   const now=new Date();
-
   let candidate=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),hour,0));
-
   for(let i=0;i<4;i++){
     const parts=getZonedParts(candidate,timeZone);
-
     let difference=(hour-parts.hour)*60-parts.minute;
-
     if(difference>720)difference-=1440;
     if(difference< -720)difference+=1440;
-
     candidate=new Date(candidate.getTime()+difference*60000);
-
     if(difference===0)break;
   }
-
   return getZonedParts(candidate,'Africa/Abidjan');
 }
 
-function formatHour(hour){
-  return String(hour).padStart(2,'0')+'h00';
-}
-
+function formatHour(hour){return String(hour).padStart(2,'0')+'h00';}
 function createTextElement(tag,text,className){
   const element=document.createElement(tag);
-
   element.textContent=text;
-
   if(className)element.className=className;
-
   return element;
 }
 
 async function loadAudienceHours(){
   audienceHoursAnalysis.replaceChildren();
-
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour consulter ton profil.');
-
     const {data,error}=await supabase.from('tiktok_profiles')
       .select('audience_country').eq('user_id',user.id).maybeSingle();
-
     if(error)throw error;
-
     const country=data?.audience_country?.trim();
-
     if(!country){
       audienceHoursAnalysis.appendChild(createTextElement('p',
-        'Renseigne le pays de ton audience dans Mon profil TikTok pour afficher des horaires adaptés.','hours-note'));
-
+        'Renseigne le pays de ton audience dans Mon profil TikTok pour afficher des horaires adaptés. Les recommandations générales restent disponibles.','hours-note'));
       return;
     }
-
-    audienceHoursAnalysis.appendChild(createTextElement('p',
-      'Pays d’audience renseigné : '+country,'hours-note'));
-
+    audienceHoursAnalysis.appendChild(createTextElement('p','Pays d’audience renseigné : '+country,'hours-note'));
     const zone=getCountryTimeZone(country);
-
     if(zone==='ambiguous'){
       audienceHoursAnalysis.appendChild(createTextElement('p',
         'Ce pays possède plusieurs fuseaux horaires. Le pays seul ne suffit pas pour calculer une heure locale précise. Il faudra choisir la région ou la ville de ton audience.','hours-note'));
-
       return;
     }
-
     if(!zone){
       audienceHoursAnalysis.appendChild(createTextElement('p',
         'Le fuseau horaire de ce pays n’est pas encore configuré dans ViralTime. Les repères internationaux restent disponibles.','hours-note'));
-
       return;
     }
-
     audienceHoursAnalysis.appendChild(createTextElement('p',
       'Fuseau utilisé : '+zone+'. Les heures ci-dessous sont des plages de test, pas des données officielles TikTok.','hours-note'));
-
     const ranges=[[12,14],[18,21]];
-
     ranges.forEach(([start,end])=>{
       const startCI=convertAudienceTimeToAbidjan(start,zone);
       const endCI=convertAudienceTimeToAbidjan(end,zone);
-
-      const card=document.createElement('div');
-      card.className='hours-result';
-
-      card.appendChild(createTextElement('strong',
-        formatHour(start)+' – '+formatHour(end)+' (heure locale de '+country+')'));
-
-      card.appendChild(createTextElement('p',
-        'Équivalent indicatif en Côte d’Ivoire : '+formatHour(startCI.hour)+
-        ' – '+formatHour(endCI.hour),'hours-note'));
-
+      const card=document.createElement('div');card.className='hours-result';
+      card.appendChild(createTextElement('strong',formatHour(start)+' – '+formatHour(end)+' (heure locale de '+country+')'));
+      card.appendChild(createTextElement('p','Équivalent indicatif en Côte d’Ivoire : '+formatHour(startCI.hour)+' – '+formatHour(endCI.hour),'hours-note'));
       audienceHoursAnalysis.appendChild(card);
     });
-
     audienceHoursAnalysis.appendChild(createTextElement('p',
       'Le calcul utilise le fuseau horaire du pays et tient compte de son décalage saisonnier lorsque celui-ci est applicable.','hours-note'));
-
   }catch(error){
     console.error('Erreur pays d’audience :',error);
-
     audienceHoursAnalysis.appendChild(createTextElement('p',
       'Impossible de charger les informations du pays : '+error.message,'hours-note'));
   }
 }
 
-// Analyse personnalisée des meilleurs horaires
+// ======================================
+// ANALYSE PERSONNALISÉE DES MEILLEURS HORAIRES
+// Les recommandations générales ne dépendent
+// jamais de cette analyse ni des statistiques.
+// ======================================
 async function loadPersonalHoursAnalysis(){
   personalHoursAnalysis.replaceChildren();
-
   personalHoursAnalysis.appendChild(createTextElement('div',
     'Analyse de tes publications en cours...','message'));
-
   refreshHoursBtn.disabled=true;
   refreshHoursBtn.textContent='Analyse en cours...';
 
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour consulter ton analyse personnalisée.');
 
+    // Toutes les publications confirmées sont récupérées,
+    // même si aucune statistique n'a été saisie.
     const {data:publications,error:publicationsError}=await supabase.from('publications')
-      .select('id,title,status,published_at')
+      .select('id,title,description,status,published_at')
       .eq('user_id',user.id)
       .eq('status','publiée')
       .not('published_at','is',null);
 
     if(publicationsError)throw publicationsError;
 
-    const {data:performances,error:performancesError}=await supabase.from('publication_performance')
+    // Les statistiques sont facultatives.
+    // Une erreur de lecture des statistiques ne bloque pas l'analyse des habitudes.
+    let performances=[];
+    let statsUnavailable=false;
+
+    const {data:performanceData,error:performanceError}=await supabase.from('publication_performance')
       .select('publication_id,views,likes,comments,shares')
       .eq('user_id',user.id);
 
-    if(performancesError)throw performancesError;
+    if(performanceError){
+      console.warn('Statistiques non disponibles :',performanceError);
+      statsUnavailable=true;
+    }else{
+      performances=performanceData||[];
+    }
 
     const performanceMap=new Map(
-      (performances||[]).map(item=>[item.publication_id,item])
+      performances.map(item=>[item.publication_id,item])
     );
 
-    const dayNames=[
-      'dimanche','lundi','mardi','mercredi',
-      'jeudi','vendredi','samedi'
-    ];
-
-    const hourGroups=new Map();
+    const dayNames=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+    const groups=new Map();
 
     let analyzedCount=0;
+    let statsCount=0;
     let excludedUnknownTime=0;
-    let withoutStats=0;
 
     (publications||[]).forEach(publication=>{
-      const stats=performanceMap.get(publication.id);
+      const date=new Date(publication.published_at);
+      if(Number.isNaN(date.getTime()))return;
 
-      if(!stats){
-        withoutStats++;
-        return;
-      }
+      // Les anciennes vidéos ajoutées par le formulaire dédié
+      // ont une date, mais pas d'heure réelle connue.
+      // Elles ne doivent donc pas être attribuées à minuit.
+      const isOldVideoWithoutTime=
+        publication.description==='Vidéo ajoutée directement dans Performances.';
 
-      const publishedAt=new Date(publication.published_at);
-
-      if(Number.isNaN(publishedAt.getTime()))return;
-
-      // Les anciennes vidéos enregistrées à minuit n'ont pas d'heure réelle connue.
-      if(
-        publishedAt.getUTCHours()===0&&
-        publishedAt.getUTCMinutes()===0&&
-        publishedAt.getUTCSeconds()===0
-      ){
+      if(isOldVideoWithoutTime){
         excludedUnknownTime++;
         return;
       }
 
-      const day=publishedAt.getUTCDay();
-      const hour=publishedAt.getUTCHours();
-
-      // Regroupement par tranches de deux heures :
-      // 00h-01h, 02h-03h, 04h-05h, etc.
+      const day=date.getUTCDay();
+      const hour=date.getUTCHours();
       const startHour=Math.floor(hour/2)*2;
       const key=day+'-'+startHour;
 
-      if(!hourGroups.has(key)){
-        hourGroups.set(key,{
-          day,
-          startHour,
-          count:0,
-          views:0,
-          likes:0,
-          comments:0,
-          shares:0
+      if(!groups.has(key)){
+        groups.set(key,{
+          day,startHour,count:0,statsCount:0,
+          views:0,likes:0,comments:0,shares:0
         });
       }
 
-      const group=hourGroups.get(key);
-
+      const group=groups.get(key);
       group.count++;
-      group.views+=Number(stats.views||0);
-      group.likes+=Number(stats.likes||0);
-      group.comments+=Number(stats.comments||0);
-      group.shares+=Number(stats.shares||0);
-
       analyzedCount++;
+
+      const stats=performanceMap.get(publication.id);
+      if(stats){
+        group.statsCount++;
+        statsCount++;
+        group.views+=Number(stats.views||0);
+        group.likes+=Number(stats.likes||0);
+        group.comments+=Number(stats.comments||0);
+        group.shares+=Number(stats.shares||0);
+      }
     });
 
     personalHoursAnalysis.replaceChildren();
 
     const summary=document.createElement('div');
     summary.className='hours-result';
-
     summary.appendChild(createTextElement('h3','📊 Résumé de ton analyse'));
-
-    summary.appendChild(createTextElement('p',
-      'Publications utilisables : '+analyzedCount+
-      ' · Heure de Côte d’Ivoire (UTC+0)'));
-
-    summary.appendChild(createTextElement('p',
-      'Les créneaux sont regroupés par tranches de deux heures. Un créneau doit avoir au moins deux publications pour être classé.',
-      'hours-note'));
+    summary.appendChild(createTextElement('p','Publications confirmées analysées : '+analyzedCount));
+    summary.appendChild(createTextElement('p','Publications avec statistiques : '+statsCount));
+    summary.appendChild(createTextElement('p','Heure de Côte d’Ivoire (UTC+0) · Créneaux de deux heures.','hours-note'));
 
     if(excludedUnknownTime>0){
       summary.appendChild(createTextElement('p',
-        excludedUnknownTime+
-        ' ancienne(s) vidéo(s) écartée(s), car leur heure réelle est inconnue.',
-        'hours-note'));
+        excludedUnknownTime+' ancienne(s) vidéo(s) non utilisée(s) pour l’analyse horaire, car leur heure réelle n’est pas connue.','hours-note'));
     }
 
-    if(withoutStats>0){
+    if(statsUnavailable){
       summary.appendChild(createTextElement('p',
-        withoutStats+
-        ' publication(s) publiée(s) sans statistiques enregistrées.',
-        'hours-note'));
+        'Les statistiques ne sont pas accessibles actuellement. L’analyse des horaires de publication reste disponible.','hours-note'));
     }
 
     personalHoursAnalysis.appendChild(summary);
 
-    if(analyzedCount<2){
+    if(analyzedCount===0){
       personalHoursAnalysis.appendChild(createTextElement('p',
-        'Tes données sont encore insuffisantes. Enregistre les statistiques d’au moins deux publications avec leur date et leur heure réelles pour commencer à observer des tendances.',
-        'hours-note'));
-
+        'Tu n’as pas encore confirmé de publication avec une heure réelle connue. Aucun enregistrement n’est obligatoire pour consulter les repères généraux ci-dessus. Lorsque tu confirmeras des publications, ViralTime pourra également analyser tes habitudes.','hours-note'));
       return;
     }
 
-    // Calcul des moyennes pour chaque créneau.
-    const calculatedGroups=Array.from(hourGroups.values()).map(group=>({
+    // Les habitudes sont calculées avec toutes les publications,
+    // y compris celles qui n'ont pas de statistiques.
+    const calculated=Array.from(groups.values()).map(group=>({
       ...group,
-      averageViews:group.views/group.count,
-      averageLikes:group.likes/group.count,
-      averageComments:group.comments/group.count,
-      averageShares:group.shares/group.count,
-      averageInteractions:
-        (group.likes+group.comments+group.shares)/group.count
+      averageViews:group.statsCount?group.views/group.statsCount:0,
+      averageLikes:group.statsCount?group.likes/group.statsCount:0,
+      averageComments:group.statsCount?group.comments/group.statsCount:0,
+      averageShares:group.statsCount?group.shares/group.statsCount:0,
+      averageInteractions:group.statsCount
+        ?(group.likes+group.comments+group.shares)/group.statsCount
+        :0
     }));
 
-    // Seuls les créneaux ayant au moins deux publications
-    // peuvent apparaître dans le classement.
-    const repeatedGroups=calculatedGroups
-      .filter(group=>group.count>=2)
-      .sort((a,b)=>
-        b.averageViews-a.averageViews||
-        b.averageInteractions-a.averageInteractions||
-        b.count-a.count
-      );
+    const habits=[...calculated].sort((a,b)=>b.count-a.count);
 
-    function formatTimeRange(startHour){
-      const endHour=startHour+1;
-      return formatHour(startHour)+' – '+formatHour(endHour);
-    }
+    personalHoursAnalysis.appendChild(createTextElement('h3','🕒 Tes créneaux habituels'));
 
-    if(repeatedGroups.length===0){
-      personalHoursAnalysis.appendChild(createTextElement('div',
-        'Tes publications sont encore réparties sur des créneaux différents. Aucun créneau de deux heures ne possède au moins deux publications. ViralTime préfère ne pas désigner artificiellement un meilleur horaire.',
-        'hours-result'));
+    habits.slice(0,3).forEach(group=>{
+      const card=document.createElement('div');
+      card.className='hours-card';
+      const day=dayNames[group.day];
+      card.appendChild(createTextElement('strong',
+        day.charAt(0).toUpperCase()+day.slice(1)+' · '+
+        formatHour(group.startHour)+' – '+formatHour(group.startHour+1)));
+      card.appendChild(createTextElement('p','Publications enregistrées : '+group.count));
+      card.appendChild(createTextElement('p','Publications avec statistiques : '+group.statsCount,'hours-note'));
+      card.appendChild(createTextElement('p',
+        'Ce créneau décrit ton habitude de publication, pas une garantie de performance.','hours-note'));
+      personalHoursAnalysis.appendChild(card);
+    });
 
-      const exploratory=calculatedGroups
-        .sort((a,b)=>
-          b.averageViews-a.averageViews||
-          b.averageInteractions-a.averageInteractions
-        )
-        .slice(0,3);
-
-      if(exploratory.length){
-        personalHoursAnalysis.appendChild(createTextElement('h3',
-          '🔎 Créneaux à tester'));
-
-        exploratory.forEach(group=>{
-          const card=document.createElement('div');
-          card.className='hours-card';
-
-          card.appendChild(createTextElement('strong',
-            dayNames[group.day].charAt(0).toUpperCase()+
-            dayNames[group.day].slice(1)+' · '+formatTimeRange(group.startHour)));
-
-          card.appendChild(createTextElement('p',
-            Math.round(group.averageViews).toLocaleString('fr-FR')+
-            ' vues en moyenne par publication.'));
-
-          card.appendChild(createTextElement('p',
-            Math.round(group.averageInteractions).toLocaleString('fr-FR')+
-            ' interactions moyennes (likes, commentaires et partages).',
-            'hours-note'));
-
-          card.appendChild(createTextElement('p',
-            'Basé sur '+group.count+' publication(s).',
-            'hours-note'));
-
-          card.appendChild(createTextElement('p',
-            group.count===1
-              ?'Piste exploratoire : ajoute d’autres publications pour confirmer cette tendance.'
-              :'Début de tendance : davantage de publications permettront de la confirmer.',
-            'hours-note'));
-
-          personalHoursAnalysis.appendChild(card);
-        });
-      }
-
+    if(analyzedCount<2){
+      personalHoursAnalysis.appendChild(createTextElement('p',
+        'Une seule publication ne suffit pas pour dégager une tendance fiable. Continue à publier et à confirmer tes publications. Les recommandations générales restent accessibles.','hours-note'));
       return;
     }
 
-    personalHoursAnalysis.appendChild(createTextElement('h3',
-      '🏆 Créneaux les plus performants'));
+    // Pour comparer les performances, seules les publications
+    // disposant de statistiques sont utilisées.
+    const performanceGroups=calculated
+      .filter(group=>group.statsCount>=2)
+      .sort((a,b)=>
+        b.averageViews-a.averageViews||
+        b.averageInteractions-a.averageInteractions
+      );
 
-    repeatedGroups.slice(0,3).forEach((group,index)=>{
+    if(performanceGroups.length===0){
+      personalHoursAnalysis.appendChild(createTextElement('p',
+        'Tes habitudes de publication sont visibles. Pour comparer les performances, il faudra disposer de statistiques sur au moins deux publications dans un même créneau. Ce n’est pas obligatoire pour consulter les recommandations générales.','hours-note'));
+      return;
+    }
+
+    personalHoursAnalysis.appendChild(createTextElement('h3','🏆 Créneaux avec résultats mesurés'));
+
+    performanceGroups.slice(0,3).forEach((group,index)=>{
       const card=document.createElement('div');
       card.className='hours-card';
-
       const day=dayNames[group.day];
 
       card.appendChild(createTextElement('h3',
-        (index+1)+'. '+
-        day.charAt(0).toUpperCase()+day.slice(1)+
-        ' · '+formatTimeRange(group.startHour)
-      ));
+        (index+1)+'. '+day.charAt(0).toUpperCase()+day.slice(1)+
+        ' · '+formatHour(group.startHour)+' – '+formatHour(group.startHour+1)));
 
       card.appendChild(createTextElement('p',
-        '👁️ Vues moyennes : '+
-        Math.round(group.averageViews).toLocaleString('fr-FR')+
-        ' par publication'
-      ));
-
+        '👁️ Vues moyennes : '+Math.round(group.averageViews).toLocaleString('fr-FR')));
       card.appendChild(createTextElement('p',
-        '❤️ Likes moyens : '+
-        Math.round(group.averageLikes).toLocaleString('fr-FR'),
-        'hours-note'
-      ));
-
+        '❤️ Likes moyens : '+Math.round(group.averageLikes).toLocaleString('fr-FR'),'hours-note'));
       card.appendChild(createTextElement('p',
-        '💬 Commentaires moyens : '+
-        Math.round(group.averageComments).toLocaleString('fr-FR'),
-        'hours-note'
-      ));
-
+        '💬 Commentaires moyens : '+Math.round(group.averageComments).toLocaleString('fr-FR'),'hours-note'));
       card.appendChild(createTextElement('p',
-        '🔄 Partages moyens : '+
-        Math.round(group.averageShares).toLocaleString('fr-FR'),
-        'hours-note'
-      ));
-
+        '🔄 Partages moyens : '+Math.round(group.averageShares).toLocaleString('fr-FR'),'hours-note'));
       card.appendChild(createTextElement('p',
-        'Interactions moyennes : '+
-        Math.round(group.averageInteractions).toLocaleString('fr-FR'),
-        'hours-note'
-      ));
-
-      card.appendChild(createTextElement('p',
-        'Basé sur '+group.count+
-        ' publications · Heure de Côte d’Ivoire (UTC+0)',
-        'hours-note'
-      ));
-
-      card.appendChild(createTextElement('p',
-        group.count>=5
-          ?'Tendance observée sur plusieurs publications. Continue à suivre ce créneau pour vérifier sa stabilité.'
-          :'Début de tendance : ajoute d’autres publications pour confirmer ce résultat.',
-        'hours-note'
-      ));
+        'Calculé sur '+group.statsCount+' publications avec statistiques.','hours-note'));
 
       personalHoursAnalysis.appendChild(card);
     });
 
     personalHoursAnalysis.appendChild(createTextElement('p',
-      'Le classement compare d’abord les vues moyennes par publication, puis les interactions moyennes pour départager les créneaux. Les résultats décrivent les performances observées de ton compte : ils ne prouvent pas qu’un horaire provoque davantage de vues et ne garantissent pas la visibilité future.',
-      'hours-note'
-    ));
-
-    const exploratory=calculatedGroups.filter(group=>group.count===1);
-
-    if(exploratory.length){
-      personalHoursAnalysis.appendChild(createTextElement('h3',
-        '🔎 Autres créneaux à tester'));
-
-      exploratory
-        .sort((a,b)=>
-          b.averageViews-a.averageViews||
-          b.averageInteractions-a.averageInteractions
-        )
-        .slice(0,3)
-        .forEach(group=>{
-          const card=document.createElement('div');
-          card.className='hours-card';
-
-          card.appendChild(createTextElement('strong',
-            dayNames[group.day].charAt(0).toUpperCase()+
-            dayNames[group.day].slice(1)+' · '+formatTimeRange(group.startHour)
-          ));
-
-          card.appendChild(createTextElement('p',
-            Math.round(group.averageViews).toLocaleString('fr-FR')+
-            ' vues sur une publication.',
-            'hours-note'
-          ));
-
-          card.appendChild(createTextElement('p',
-            'Créneau à tester : une seule publication ne suffit pas pour confirmer une tendance.',
-            'hours-note'
-          ));
-
-          personalHoursAnalysis.appendChild(card);
-        });
-    }
+      'Ces résultats décrivent les performances observées sur ton compte. Ils ne prouvent pas qu’un horaire provoque davantage de vues et ne garantissent pas la visibilité future.','hours-note'));
 
   }catch(error){
     console.error('Erreur analyse des horaires :',error);
-
     personalHoursAnalysis.replaceChildren();
-
     personalHoursAnalysis.appendChild(createTextElement('div',
-      'Impossible de réaliser ton analyse : '+error.message,
-      'message'));
-
+      'Impossible de réaliser ton analyse : '+error.message,'message'));
   }finally{
     refreshHoursBtn.disabled=false;
     refreshHoursBtn.textContent='Actualiser mon analyse';
   }
 }
 
-// Ancienne vidéo
+// ANCIENNE VIDÉO
 oldVideoForm.addEventListener('submit',async event=>{
-  event.preventDefault();
-  oldVideoMessage.classList.add('hidden');
-
+  event.preventDefault();oldVideoMessage.classList.add('hidden');
   const date=oldVideoDate.value,views=Number(oldVideoViews.value);
-
-  saveOldVideoBtn.disabled=true;
-  saveOldVideoBtn.textContent='Enregistrement...';
-
+  saveOldVideoBtn.disabled=true;saveOldVideoBtn.textContent='Enregistrement...';
   let createdPublicationId=null;
-
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
     if(!date)throw new Error('Choisis la date réelle de publication.');
     if(date>getLocalDateString())throw new Error('La date de publication ne peut pas être dans le futur.');
-
     const parsedDate=new Date(date+'T00:00:00+00:00');
-
     if(Number.isNaN(parsedDate.getTime())||parsedDate.toISOString().slice(0,10)!==date)
       throw new Error('La date choisie est invalide.');
-
-    if(!Number.isSafeInteger(views)||views<0)
-      throw new Error('Entre un nombre de vues valide.');
-
+    if(!Number.isSafeInteger(views)||views<0)throw new Error('Entre un nombre de vues valide.');
     const publicationDate=parsedDate.toISOString();
-
     const {data:publication,error:publicationError}=await supabase.from('publications').insert({
-      user_id:user.id,
-      title:'Ancienne vidéo TikTok',
+      user_id:user.id,title:'Ancienne vidéo TikTok',
       description:'Vidéo ajoutée directement dans Performances.',
-      content_type:'Vidéo',
-      scheduled_at:publicationDate,
-      published_at:publicationDate,
-      status:'publiée'
+      content_type:'Vidéo',scheduled_at:publicationDate,
+      published_at:publicationDate,status:'publiée'
     }).select('id').single();
-
     if(publicationError)throw publicationError;
     if(!publication?.id)throw new Error('La publication n’a pas pu être créée correctement.');
-
     createdPublicationId=publication.id;
-
     const {error:performanceError}=await supabase.from('publication_performance').insert({
-      publication_id:publication.id,
-      user_id:user.id,
-      views,
-      likes:0,
-      comments:0,
-      shares:0,
+      publication_id:publication.id,user_id:user.id,views,likes:0,comments:0,shares:0,
       updated_at:new Date().toISOString()
     });
-
     if(performanceError){
       const {data:deletedPublication,error:rollbackError}=await supabase.from('publications')
         .delete().eq('id',createdPublicationId).eq('user_id',user.id)
         .select('id').maybeSingle();
-
       if(rollbackError||!deletedPublication){
         throw new Error('Les vues n’ont pas été enregistrées et la suppression automatique de la publication n’a pas été confirmée. Vérifie dans Supabase avant de recommencer. Détail : '+performanceError.message+(rollbackError?' | Suppression : '+rollbackError.message:''));
       }
-
       createdPublicationId=null;
-
       throw new Error('L’enregistrement des vues a échoué. La publication incomplète a été supprimée. Détail : '+performanceError.message);
     }
-
-    oldVideoForm.reset();
-    oldVideoDate.max=getLocalDateString();
-
+    oldVideoForm.reset();oldVideoDate.max=getLocalDateString();
     oldVideoMessage.textContent='Ancienne vidéo et nombre de vues enregistrés avec succès !';
     oldVideoMessage.classList.remove('hidden');
-
-    await loadPerformanceData();
-    await loadPublications();
-
+    await loadPerformanceData();await loadPublications();
     if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
-
   }catch(error){
     console.error('Erreur ancienne vidéo :',error);
-
     oldVideoMessage.textContent='Erreur : '+error.message;
     oldVideoMessage.classList.remove('hidden');
-
   }finally{
-    saveOldVideoBtn.disabled=false;
-    saveOldVideoBtn.textContent='Enregistrer cette vidéo';
+    saveOldVideoBtn.disabled=false;saveOldVideoBtn.textContent='Enregistrer cette vidéo';
   }
 });
 
-// Confirmer une publication
+// CONFIRMER UNE PUBLICATION
 publishedForm.addEventListener('submit',async event=>{
-  event.preventDefault();
-  publishedMessage.classList.add('hidden');
-
+  event.preventDefault();publishedMessage.classList.add('hidden');
   const publicationId=publishedPublication.value;
   const date=publishedDate.value,time=publishedTime.value;
-
-  confirmPublishedBtn.disabled=true;
-  confirmPublishedBtn.textContent='Enregistrement...';
-
+  confirmPublishedBtn.disabled=true;confirmPublishedBtn.textContent='Enregistrement...';
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté.');
-
-    if(!publicationId||!date||!time)
-      throw new Error('Choisis une publication, une date et une heure.');
-
+    if(!publicationId||!date||!time)throw new Error('Choisis une publication, une date et une heure.');
     const publishedDateTime=getAbidjanDateTime(date,time);
-
-    if(Number.isNaN(publishedDateTime.getTime()))
-      throw new Error('La date ou l’heure est invalide.');
-
-    if(publishedDateTime.getTime()>Date.now())
-      throw new Error('La date et l’heure de publication ne peuvent pas être dans le futur.');
-
+    if(Number.isNaN(publishedDateTime.getTime()))throw new Error('La date ou l’heure est invalide.');
+    if(publishedDateTime.getTime()>Date.now())throw new Error('La date et l’heure de publication ne peuvent pas être dans le futur.');
     const {data,error}=await supabase.from('publications').update({
-      status:'publiée',
-      published_at:publishedDateTime.toISOString()
+      status:'publiée',published_at:publishedDateTime.toISOString()
     }).eq('id',publicationId).eq('user_id',user.id)
       .eq('status','programmée').select('id').maybeSingle();
-
     if(error)throw error;
     if(!data)throw new Error('Publication introuvable, déjà publiée ou modification non autorisée.');
-
-    await loadPerformanceData();
-    await loadPublications();
-
+    await loadPerformanceData();await loadPublications();
     publishedForm.reset();
-
     publishedMessage.textContent='Publication confirmée avec succès !';
     publishedMessage.classList.remove('hidden');
-
     if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
-
   }catch(error){
     console.error('Erreur de confirmation :',error);
-
     publishedMessage.textContent='Erreur : '+error.message;
     publishedMessage.classList.remove('hidden');
-
   }finally{
-    confirmPublishedBtn.disabled=false;
-    confirmPublishedBtn.textContent='Confirmer comme publiée';
+    confirmPublishedBtn.disabled=false;confirmPublishedBtn.textContent='Confirmer comme publiée';
   }
 });
 
-// Charger les statistiques sélectionnées
+// CHARGER LES STATISTIQUES SÉLECTIONNÉES
 async function loadSelectedPerformance(){
   const publicationId=performancePublication.value;
-
   if(!publicationId)return;
-
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)return;
-
     const {data,error}=await supabase.from('publication_performance').select('*')
       .eq('publication_id',publicationId).eq('user_id',user.id).maybeSingle();
-
     if(error)throw error;
-
     if(data){
-      performanceViews.value=data.views;
-      performanceLikes.value=data.likes;
-      performanceComments.value=data.comments;
-      performanceShares.value=data.shares;
-
+      performanceViews.value=data.views;performanceLikes.value=data.likes;
+      performanceComments.value=data.comments;performanceShares.value=data.shares;
     }else{
-      performanceViews.value=0;
-      performanceLikes.value=0;
-      performanceComments.value=0;
-      performanceShares.value=0;
+      performanceViews.value=0;performanceLikes.value=0;
+      performanceComments.value=0;performanceShares.value=0;
     }
-
     performanceMessage.classList.add('hidden');
-
   }catch(error){
     console.error('Erreur de lecture des statistiques :',error);
-
     showPerformanceMessage('Impossible de charger ces statistiques : '+error.message);
   }
 }
-
 performancePublication.addEventListener('change',loadSelectedPerformance);
 
-// Enregistrer les statistiques
+// ENREGISTRER LES STATISTIQUES
 performanceForm.addEventListener('submit',async event=>{
-  event.preventDefault();
-  performanceMessage.classList.add('hidden');
-
+  event.preventDefault();performanceMessage.classList.add('hidden');
   const publicationId=performancePublication.value;
-  const views=Number(performanceViews.value);
-  const likes=Number(performanceLikes.value);
-  const comments=Number(performanceComments.value);
-  const shares=Number(performanceShares.value);
-
-  savePerformanceBtn.disabled=true;
-  savePerformanceBtn.textContent='Enregistrement...';
-
+  const views=Number(performanceViews.value),likes=Number(performanceLikes.value);
+  const comments=Number(performanceComments.value),shares=Number(performanceShares.value);
+  savePerformanceBtn.disabled=true;savePerformanceBtn.textContent='Enregistrement...';
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour enregistrer les statistiques.');
     if(!publicationId)throw new Error('Choisis une publication.');
-
     const values=[views,likes,comments,shares];
-
     if(values.some(value=>!Number.isSafeInteger(value)||value<0))
       throw new Error('Entre des nombres entiers positifs ou égaux à zéro.');
-
     const performance={
-      publication_id:publicationId,
-      user_id:user.id,
-      views,likes,comments,shares,
+      publication_id:publicationId,user_id:user.id,views,likes,comments,shares,
       updated_at:new Date().toISOString()
     };
-
     const {error}=await supabase.from('publication_performance')
       .upsert(performance,{onConflict:'publication_id'});
-
     if(error)throw error;
-
     await loadPerformanceData();
-
     showPerformanceMessage('Statistiques enregistrées avec succès !');
-
     if(!hoursPage.classList.contains('hidden'))await loadPersonalHoursAnalysis();
-
   }catch(error){
     console.error('Erreur d’enregistrement des performances :',error);
-
     showPerformanceMessage('Erreur : '+error.message);
-
   }finally{
-    savePerformanceBtn.disabled=false;
-    savePerformanceBtn.textContent='Enregistrer les statistiques';
+    savePerformanceBtn.disabled=false;savePerformanceBtn.textContent='Enregistrer les statistiques';
   }
 });
 
-// PROFIL TIKTOK : ajout et modification
+// PROFIL TIKTOK
 const tiktokProfileForm=$('tiktokProfileForm');
 const openProfileBtn=$('openProfileBtn');
 const saveTikTokProfileBtn=$('saveTikTokProfileBtn');
 const tiktokMessage=$('tiktokMessage');
-
 let hasTikTokProfile=false;
 
 function updateTikTokProfileInterface(){
@@ -2247,7 +1457,6 @@ function updateTikTokProfileInterface(){
     openProfileBtn.textContent='Modifier mon profil';
     $('profilePageTitle').textContent='🎵 Modifier mon profil TikTok';
     saveTikTokProfileBtn.textContent='Enregistrer les modifications';
-
   }else{
     openProfileBtn.textContent='Ajouter mon profil';
     $('profilePageTitle').textContent='🎵 Ajouter mon profil TikTok';
@@ -2255,183 +1464,107 @@ function updateTikTokProfileInterface(){
   }
 }
 
-// Ouvrir la page du profil et charger les données existantes
 openProfileBtn.addEventListener('click',async()=>{
   tiktokMessage.classList.add('hidden');
-
   showPage(profilePage);
-
   await loadTikTokProfile();
 });
 
-// Enregistrer ou modifier le profil
 tiktokProfileForm.addEventListener('submit',async event=>{
   event.preventDefault();
-
-  saveTikTokProfileBtn.disabled=true;
-  saveTikTokProfileBtn.textContent='Enregistrement...';
-
+  saveTikTokProfileBtn.disabled=true;saveTikTokProfileBtn.textContent='Enregistrement...';
   tiktokMessage.classList.add('hidden');
-
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour enregistrer ton profil.');
-
     const username=$('tiktokUsername').value.trim();
     const followers=Number($('tiktokFollowers').value);
     const posts=Number($('tiktokPosts').value);
-
     if(!username)throw new Error('Entre ton nom d’utilisateur TikTok.');
-
-    if(!Number.isSafeInteger(followers)||followers<0)
-      throw new Error('Entre un nombre d’abonnés valide.');
-
-    if(!Number.isSafeInteger(posts)||posts<0)
-      throw new Error('Entre un nombre de publications valide.');
-
+    if(!Number.isSafeInteger(followers)||followers<0)throw new Error('Entre un nombre d’abonnés valide.');
+    if(!Number.isSafeInteger(posts)||posts<0)throw new Error('Entre un nombre de publications valide.');
     const profile={
-      user_id:user.id,
-      username,
-      follower_count:followers,
-      post_count:posts,
+      user_id:user.id,username,follower_count:followers,post_count:posts,
       niche:$('tiktokNiche').value.trim(),
       audience_country:$('tiktokCountry').value.trim(),
       updated_at:new Date().toISOString()
     };
-
-    const {error}=await supabase.from('tiktok_profiles')
-      .upsert(profile,{onConflict:'user_id'});
-
+    const {error}=await supabase.from('tiktok_profiles').upsert(profile,{onConflict:'user_id'});
     if(error)throw error;
-
-    hasTikTokProfile=true;
-
-    updateTikTokProfileInterface();
-
+    hasTikTokProfile=true;updateTikTokProfileInterface();
     tiktokMessage.textContent='Ton profil TikTok a été enregistré avec succès !';
     tiktokMessage.classList.remove('hidden');
-
     showDashboardMessage('Ton profil TikTok a été enregistré avec succès !');
-
     setTimeout(()=>{
       tiktokMessage.classList.add('hidden');
       showPage(homePage);
     },700);
-
   }catch(error){
     console.error('Erreur profil TikTok :',error);
-
     tiktokMessage.textContent='Erreur : '+error.message;
     tiktokMessage.classList.remove('hidden');
-
   }finally{
-    saveTikTokProfileBtn.disabled=false;
-    updateTikTokProfileInterface();
+    saveTikTokProfileBtn.disabled=false;updateTikTokProfileInterface();
   }
 });
 
-// Charger les informations du profil TikTok
 async function loadTikTokProfile(){
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
-
     if(userError)throw userError;
     if(!user)return;
-
-    const {data,error}=await supabase.from('tiktok_profiles')
-      .select('*')
-      .eq('user_id',user.id)
-      .maybeSingle();
-
+    const {data,error}=await supabase.from('tiktok_profiles').select('*')
+      .eq('user_id',user.id).maybeSingle();
     if(error)throw error;
-
     if(!data){
-      hasTikTokProfile=false;
-
-      tiktokProfileForm.reset();
-      updateTikTokProfileInterface();
-
-      return;
+      hasTikTokProfile=false;tiktokProfileForm.reset();updateTikTokProfileInterface();return;
     }
-
     hasTikTokProfile=true;
-
     $('tiktokUsername').value=data.username||'';
     $('tiktokFollowers').value=data.follower_count??0;
     $('tiktokPosts').value=data.post_count??0;
     $('tiktokNiche').value=data.niche||'';
     $('tiktokCountry').value=data.audience_country||'';
-
     updateTikTokProfileInterface();
-
   }catch(error){
     console.error('Erreur de chargement du profil TikTok :',error);
-
     tiktokMessage.textContent='Impossible de charger ton profil : '+error.message;
     tiktokMessage.classList.remove('hidden');
   }
 }
 
-// Déconnexion
+// DÉCONNEXION
 logoutBtn.addEventListener('click',async()=>{
-  logoutBtn.disabled=true;
-  logoutBtn.textContent='Déconnexion...';
-
+  logoutBtn.disabled=true;logoutBtn.textContent='Déconnexion...';
   try{
     const {error}=await supabase.auth.signOut();
-
     if(error)throw error;
-
-    authForm.reset();
-    isLogin=true;
-
+    authForm.reset();isLogin=true;
     registrationNameFields.classList.add('hidden');
-
-    firstNameInput.required=false;
-    lastNameInput.required=false;
-
+    firstNameInput.required=false;lastNameInput.required=false;
     formTitle.textContent='Se connecter';
     submitBtn.textContent='Me connecter';
     switchBtn.textContent='Créer un nouveau compte';
-
-    showAuth();
-
-    // Réinitialiser la photo à la déconnexion
-    displayAvatar(null);
-
-  }catch(error){
-    showDashboardMessage('Erreur : '+error.message);
-
-  }finally{
-    logoutBtn.disabled=false;
-    logoutBtn.textContent='Se déconnecter';
-  }
+    showAuth();displayAvatar(null);
+  }catch(error){showDashboardMessage('Erreur : '+error.message);}
+  finally{logoutBtn.disabled=false;logoutBtn.textContent='Se déconnecter';}
 });
 
-// Vérifier la session
+// VÉRIFIER LA SESSION
 async function checkSession(){
   const {data,error}=await supabase.auth.getSession();
-
-  if(error){
-    showAuth();
-    return;
-  }
-
+  if(error){showAuth();return;}
   if(data.session)showDashboard(data.session.user);
   else showAuth();
 }
-
 checkSession();
 
 supabase.auth.onAuthStateChange((event,session)=>{
   if(session){
     Promise.resolve().then(()=>showDashboard(session.user));
-
   }else if(event==='SIGNED_OUT'){
-    showAuth();
-    displayAvatar(null);
+    showAuth();displayAvatar(null);
   }
 });
 </script>
