@@ -62,6 +62,8 @@ small{color:#b9b1d2}
 .profile-detail span{display:block;color:#b9b1d2;font-size:13px;margin-bottom:7px}
 .profile-detail strong{color:#fff;font-size:15px;overflow-wrap:anywhere}
 .profile-name{color:#c4a7ff;margin:10px 0 5px;font-size:21px}
+.publication-video{display:block;width:100%;max-height:280px;margin-top:12px;border-radius:12px;background:#000}
+.video-file-name{font-size:13px;color:#c4a7ff;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
@@ -211,7 +213,18 @@ small{color:#b9b1d2}
       <form id="publicationForm">
         <input id="publicationTitle" type="text" placeholder="Titre de ta publication" required>
         <input id="publicationDescription" type="text" placeholder="Description de la publication">
-        <select id="publicationType" required><option value="Vidéo">Vidéo</option><option value="Photo">Photo</option><option value="Texte">Texte</option><option value="Live">Live</option></select>
+        <select id="publicationType" required>
+          <option value="Vidéo">Vidéo</option>
+          <option value="Photo">Photo</option>
+          <option value="Texte">Texte</option>
+          <option value="Live">Live</option>
+        </select>
+
+        <label class="performance-label" for="publicationVideo">🎬 Ajouter une vidéo (facultatif)</label>
+        <input id="publicationVideo" type="file" accept="video/mp4,video/webm,video/quicktime">
+        <p class="hours-note">Formats MP4, WEBM et MOV. Taille maximale : 100 Mo. Tu peux programmer sans ajouter de vidéo.</p>
+        <video id="publicationVideoPreview" class="hidden" controls playsinline style="width:100%;max-height:280px;border-radius:12px;margin-top:10px;background:#000"></video>
+
         <input id="publicationDate" type="date" required>
         <input id="publicationTime" type="time" required>
         <button id="publicationSubmitBtn" type="submit">Programmer</button>
@@ -510,6 +523,10 @@ const publicationMessage=$('publicationMessage');
 const publicationsList=$('publicationsList');
 const publicationSubmitBtn=$('publicationSubmitBtn');
 const publicationDateInput=$('publicationDate');
+const publicationVideoInput=$('publicationVideo');
+const publicationVideoPreview=$('publicationVideoPreview');
+let publicationVideoPreviewUrl=null;
+
 const performanceForm=$('performanceForm');
 const performancePublication=$('performancePublication');
 const performanceViews=$('performanceViews');
@@ -552,6 +569,56 @@ function showDashboardMessage(text){dashboardMessage.textContent=text;dashboardM
 function showPublicationMessage(text){publicationMessage.textContent=text;publicationMessage.classList.remove('hidden');}
 function showPerformanceMessage(text){performanceMessage.textContent=text;performanceMessage.classList.remove('hidden');}
 
+// APERÇU ET VALIDATION DE LA VIDÉO FACULTATIVE
+function clearPublicationVideoPreview(){
+  if(publicationVideoPreviewUrl){
+    URL.revokeObjectURL(publicationVideoPreviewUrl);
+    publicationVideoPreviewUrl=null;
+  }
+  publicationVideoPreview.pause();
+  publicationVideoPreview.removeAttribute('src');
+  publicationVideoPreview.load();
+  publicationVideoPreview.classList.add('hidden');
+}
+
+function getPublicationVideoType(file){
+  const extension=file.name.split('.').pop().toLowerCase();
+  const allowedTypes=['video/mp4','video/webm','video/quicktime'];
+
+  if(allowedTypes.includes(file.type))return file.type;
+  if(extension==='mp4')return 'video/mp4';
+  if(extension==='webm')return 'video/webm';
+  if(extension==='mov')return 'video/quicktime';
+  return null;
+}
+
+publicationVideoInput.addEventListener('change',()=>{
+  clearPublicationVideoPreview();
+
+  const file=publicationVideoInput.files?.[0];
+  if(!file)return;
+
+  const videoType=getPublicationVideoType(file);
+
+  if(!videoType){
+    publicationVideoInput.value='';
+    showPublicationMessage('Format non accepté. Choisis une vidéo MP4, WEBM ou MOV.');
+    return;
+  }
+
+  if(file.size>100*1024*1024){
+    publicationVideoInput.value='';
+    showPublicationMessage('La vidéo dépasse la taille maximale de 100 Mo.');
+    return;
+  }
+
+  publicationMessage.classList.add('hidden');
+  publicationVideoPreviewUrl=URL.createObjectURL(file);
+  publicationVideoPreview.src=publicationVideoPreviewUrl;
+  publicationVideoPreview.classList.remove('hidden');
+  publicationVideoPreview.load();
+});
+
 function showPage(page){
   [homePage,profilePage,profileOverviewPage,hoursPage,calendarPage,performancePage,accountPage,settingsPage]
     .forEach(p=>p.classList.add('hidden'));
@@ -561,7 +628,6 @@ function showPage(page){
   if(page===hoursPage){loadAudienceHours();loadPersonalHoursAnalysis();}
   if(page===accountPage)loadAccountInformation();
   if(page===settingsPage)loadSettings();
-  if(page===profileOverviewPage)loadProfileOverview();
 }
 
 function showDashboard(user){
@@ -783,81 +849,193 @@ $('backSettingsBtn').addEventListener('click',()=>showPage(homePage));
 $('editMyProfileBtn').addEventListener('click',()=>showPage(accountPage));
 $('backProfileOverviewBtn').addEventListener('click',()=>showPage(homePage));
 
-// CALENDRIER : PROGRAMMER UNE PUBLICATION
+// CALENDRIER : PROGRAMMER UNE PUBLICATION AVEC VIDÉO FACULTATIVE
 publicationForm.addEventListener('submit',async event=>{
-  event.preventDefault();publicationMessage.classList.add('hidden');
+  event.preventDefault();
+  publicationMessage.classList.add('hidden');
+
   const title=$('publicationTitle').value.trim();
   const description=$('publicationDescription').value.trim();
   const contentType=$('publicationType').value;
-  const date=publicationDateInput.value,time=$('publicationTime').value;
-  publicationSubmitBtn.disabled=true;publicationSubmitBtn.textContent='Enregistrement...';
+  const date=publicationDateInput.value;
+  const time=$('publicationTime').value;
+  const videoFile=publicationVideoInput.files?.[0]||null;
+
+  publicationSubmitBtn.disabled=true;
+  publicationSubmitBtn.textContent='Enregistrement...';
+
+  let uploadedVideoPath=null;
+
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour programmer une publication.');
     if(!title)throw new Error('Entre un titre pour ta publication.');
     if(!date||!time)throw new Error('Choisis une date et une heure.');
+
     const scheduledDate=getAbidjanDateTime(date,time);
     if(Number.isNaN(scheduledDate.getTime()))throw new Error('La date ou l’heure choisie est invalide.');
     if(scheduledDate.getTime()<=Date.now())throw new Error('Choisis une date et une heure dans le futur.');
+
+    let videoType=null;
+
+    if(videoFile){
+      videoType=getPublicationVideoType(videoFile);
+
+      if(!videoType)throw new Error('Format vidéo non accepté. Choisis MP4, WEBM ou MOV.');
+      if(videoFile.size>100*1024*1024)throw new Error('La vidéo ne doit pas dépasser 100 Mo.');
+
+      const safeName=videoFile.name
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^a-zA-Z0-9._-]/g,'_');
+
+      uploadedVideoPath=user.id+'/'+Date.now()+'-'+safeName;
+
+      const {error:uploadError}=await supabase.storage
+        .from('publication-videos')
+        .upload(uploadedVideoPath,videoFile,{
+          contentType:videoType,
+          cacheControl:'3600',
+          upsert:false
+        });
+
+      if(uploadError)throw uploadError;
+    }
+
     const {error}=await supabase.from('publications').insert({
-      user_id:user.id,title,description,content_type:contentType,
-      scheduled_at:scheduledDate.toISOString(),status:'programmée'
+      user_id:user.id,
+      title,
+      description,
+      content_type:contentType,
+      scheduled_at:scheduledDate.toISOString(),
+      status:'programmée',
+      video_path:uploadedVideoPath,
+      video_name:videoFile?videoFile.name:null,
+      video_type:videoType,
+      video_size:videoFile?videoFile.size:null
     });
+
     if(error)throw error;
-    showPublicationMessage('Publication programmée avec succès !');
-    publicationForm.reset();publicationDateInput.min=getLocalDateString();
+
+    showPublicationMessage(videoFile
+      ?'Publication programmée et vidéo enregistrée avec succès !'
+      :'Publication programmée avec succès !');
+
+    publicationForm.reset();
+    clearPublicationVideoPreview();
+    publicationDateInput.min=getLocalDateString();
+
     await loadPublications();
+
   }catch(error){
     console.error('Erreur de programmation :',error);
+
+    if(uploadedVideoPath){
+      const {error:cleanupError}=await supabase.storage
+        .from('publication-videos')
+        .remove([uploadedVideoPath]);
+
+      if(cleanupError){
+        console.error('Erreur de nettoyage de la vidéo :',cleanupError);
+      }
+    }
+
     showPublicationMessage('Erreur : '+error.message);
   }finally{
-    publicationSubmitBtn.disabled=false;publicationSubmitBtn.textContent='Programmer';
+    publicationSubmitBtn.disabled=false;
+    publicationSubmitBtn.textContent='Programmer';
   }
 });
 
 async function deleteScheduledPublication(publicationId,deleteButton){
-  const confirmed=window.confirm('Veux-tu vraiment supprimer cette publication programmée ? Cette action est définitive.');
+  const confirmed=window.confirm(
+    'Veux-tu vraiment supprimer cette publication programmée ? Si elle contient une vidéo, celle-ci sera également supprimée. Cette action est définitive.'
+  );
   if(!confirmed)return;
-  deleteButton.disabled=true;deleteButton.textContent='Suppression...';
+
+  deleteButton.disabled=true;
+  deleteButton.textContent='Suppression...';
+
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
     if(userError)throw userError;
     if(!user)throw new Error('Tu dois être connecté pour supprimer une publication.');
+
     const {data,error}=await supabase.from('publications').delete()
-      .eq('id',publicationId).eq('user_id',user.id).eq('status','programmée')
-      .select('id').maybeSingle();
+      .eq('id',publicationId)
+      .eq('user_id',user.id)
+      .eq('status','programmée')
+      .select('id,video_path')
+      .maybeSingle();
+
     if(error)throw error;
     if(!data)throw new Error('La publication est introuvable, n’est plus programmée ou ne peut pas être supprimée.');
+
+    if(data.video_path){
+      const {error:storageError}=await supabase.storage
+        .from('publication-videos')
+        .remove([data.video_path]);
+
+      if(storageError){
+        console.error('La publication est supprimée mais le fichier vidéo reste dans le stockage :',storageError);
+        showPublicationMessage('La publication a été supprimée, mais la vidéo n’a pas pu être supprimée du stockage. Détail : '+storageError.message);
+        await loadPublications();
+        return;
+      }
+    }
+
     showPublicationMessage('Publication programmée supprimée avec succès !');
     await loadPublications();
+
   }catch(error){
     console.error('Erreur de suppression :',error);
     showPublicationMessage('Impossible de supprimer cette publication : '+error.message);
-    deleteButton.disabled=false;deleteButton.textContent='🗑️ Supprimer';
+    deleteButton.disabled=false;
+    deleteButton.textContent='🗑️ Supprimer';
   }
 }
 
 async function loadPublications(){
   publicationsList.textContent='Chargement des publications...';
+
   try{
     const {data:{user},error:userError}=await supabase.auth.getUser();
     if(userError)throw userError;
-    if(!user){publicationsList.textContent='Connecte-toi pour voir tes publications.';return;}
+    if(!user){
+      publicationsList.textContent='Connecte-toi pour voir tes publications.';
+      return;
+    }
+
     const {data,error}=await supabase.from('publications').select('*')
       .eq('user_id',user.id).order('scheduled_at',{ascending:true});
+
     if(error)throw error;
+
     publicationsList.replaceChildren();
+
     if(!data||data.length===0){
-      const empty=document.createElement('p');empty.textContent='Aucune publication programmée pour le moment.';
-      publicationsList.appendChild(empty);return;
+      const empty=document.createElement('p');
+      empty.textContent='Aucune publication programmée pour le moment.';
+      publicationsList.appendChild(empty);
+      return;
     }
-    data.forEach(publication=>{
-      const item=document.createElement('div');item.className='publication-item';
-      const title=document.createElement('h4');title.textContent=publication.title||'Sans titre';
-      const description=document.createElement('p');description.textContent=publication.description||'Aucune description';
-      const type=document.createElement('p');type.textContent='Type : '+(publication.content_type||'Non précisé');
+
+    for(const publication of data){
+      const item=document.createElement('div');
+      item.className='publication-item';
+
+      const title=document.createElement('h4');
+      title.textContent=publication.title||'Sans titre';
+
+      const description=document.createElement('p');
+      description.textContent=publication.description||'Aucune description';
+
+      const type=document.createElement('p');
+      type.textContent='Type : '+(publication.content_type||'Non précisé');
+
       const date=document.createElement('p');
+
       if(publication.status==='publiée'&&publication.published_at){
         date.textContent='Date réelle de publication : '+new Date(publication.published_at).toLocaleDateString('fr-FR',{
           timeZone:'Africa/Abidjan',dateStyle:'long'
@@ -870,16 +1048,51 @@ async function loadPublications(){
           })
           :'Date non disponible';
       }
-      const status=document.createElement('p');status.textContent='Statut : '+(publication.status||'Non précisé');
+
+      const status=document.createElement('p');
+      status.textContent='Statut : '+(publication.status||'Non précisé');
+
       item.append(title,description,type,date,status);
+
+      if(publication.video_path){
+        const videoLabel=document.createElement('p');
+        videoLabel.className='video-file-name';
+        videoLabel.textContent='🎬 Vidéo jointe : '+(publication.video_name||'Vidéo enregistrée');
+        item.appendChild(videoLabel);
+
+        const {data:signedData,error:signedError}=await supabase.storage
+          .from('publication-videos')
+          .createSignedUrl(publication.video_path,300);
+
+        if(!signedError&&signedData?.signedUrl){
+          const video=document.createElement('video');
+          video.className='publication-video';
+          video.controls=true;
+          video.playsInline=true;
+          video.preload='metadata';
+          video.src=signedData.signedUrl;
+          item.appendChild(video);
+        }else{
+          const videoError=document.createElement('p');
+          videoError.className='hours-note';
+          videoError.textContent='L’aperçu de cette vidéo est momentanément indisponible. Actualise le calendrier pour réessayer.';
+          item.appendChild(videoError);
+          console.error('Erreur de lecture de la vidéo :',signedError);
+        }
+      }
+
       if(publication.status==='programmée'){
         const deleteButton=document.createElement('button');
-        deleteButton.type='button';deleteButton.className='delete-btn';deleteButton.textContent='🗑️ Supprimer';
+        deleteButton.type='button';
+        deleteButton.className='delete-btn';
+        deleteButton.textContent='🗑️ Supprimer';
         deleteButton.addEventListener('click',()=>deleteScheduledPublication(publication.id,deleteButton));
         item.appendChild(deleteButton);
       }
+
       publicationsList.appendChild(item);
-    });
+    }
+
   }catch(error){
     console.error('Erreur de chargement des publications :',error);
     publicationsList.textContent='Impossible de charger les publications : '+error.message;
@@ -1101,8 +1314,6 @@ async function loadPersonalHoursAnalysis(){
     if(userError)throw userError;
     if(!user)throw new Error('Connecte-toi pour consulter ton analyse personnalisée.');
 
-    // Toutes les publications confirmées sont récupérées,
-    // même si aucune statistique n'a été saisie.
     const {data:publications,error:publicationsError}=await supabase.from('publications')
       .select('id,title,description,status,published_at')
       .eq('user_id',user.id)
@@ -1111,8 +1322,6 @@ async function loadPersonalHoursAnalysis(){
 
     if(publicationsError)throw publicationsError;
 
-    // Les statistiques sont facultatives.
-    // Une erreur de lecture des statistiques ne bloque pas l'analyse des habitudes.
     let performances=[];
     let statsUnavailable=false;
 
@@ -1142,9 +1351,6 @@ async function loadPersonalHoursAnalysis(){
       const date=new Date(publication.published_at);
       if(Number.isNaN(date.getTime()))return;
 
-      // Les anciennes vidéos ajoutées par le formulaire dédié
-      // ont une date, mais pas d'heure réelle connue.
-      // Elles ne doivent donc pas être attribuées à minuit.
       const isOldVideoWithoutTime=
         publication.description==='Vidéo ajoutée directement dans Performances.';
 
@@ -1207,8 +1413,6 @@ async function loadPersonalHoursAnalysis(){
       return;
     }
 
-    // Les habitudes sont calculées avec toutes les publications,
-    // y compris celles qui n'ont pas de statistiques.
     const calculated=Array.from(groups.values()).map(group=>({
       ...group,
       averageViews:group.statsCount?group.views/group.statsCount:0,
@@ -1244,8 +1448,6 @@ async function loadPersonalHoursAnalysis(){
       return;
     }
 
-    // Pour comparer les performances, seules les publications
-    // disposant de statistiques sont utilisées.
     const performanceGroups=calculated
       .filter(group=>group.statsCount>=2)
       .sort((a,b)=>
