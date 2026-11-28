@@ -218,12 +218,10 @@ small{color:#b9b1d2}
           <option value="Texte">Texte</option>
           <option value="Live">Live</option>
         </select>
-
         <label class="performance-label" for="publicationVideo">🎬 Ajouter une vidéo (facultatif)</label>
         <input id="publicationVideo" type="file" accept="video/mp4,video/webm,video/quicktime">
         <p class="hours-note">Formats MP4, WEBM et MOV. Taille maximale : 100 Mo. Tu peux programmer sans ajouter de vidéo.</p>
         <video id="publicationVideoPreview" class="hidden" controls playsinline style="width:100%;max-height:280px;border-radius:12px;margin-top:10px;background:#000"></video>
-
         <input id="publicationDate" type="date" required>
         <input id="publicationTime" type="time" required>
         <button id="publicationSubmitBtn" type="submit">Programmer</button>
@@ -836,7 +834,7 @@ enableNotificationsBtn.addEventListener('click',async()=>{
 $('openHoursBtn').addEventListener('click',()=>showPage(hoursPage));
 $('backHoursBtn').addEventListener('click',()=>showPage(homePage));
 
-// CORRECTION : ACTUALISER LES DEUX ANALYSES
+// ACTUALISER LES DEUX ANALYSES
 refreshHoursBtn.addEventListener('click',async()=>{
   await loadAudienceHours();
   await loadPersonalHoursAnalysis();
@@ -1247,12 +1245,12 @@ function convertAudienceTimeToAbidjan(hour,timeZone){
   return getZonedParts(candidate,'Africa/Abidjan');
 }
 
-// CORRECTION : GÉRER AUSSI LE PASSAGE DE MINUIT
+// GÉRER AUSSI LE PASSAGE DE MINUIT
 function formatHour(hour){
   return String(((hour%24)+24)%24).padStart(2,'0')+'h00';
 }
 
-// CORRECTION : AFFICHER UN CRÉNEAU COMPLET DE DEUX HEURES
+// AFFICHER UN CRÉNEAU COMPLET DE DEUX HEURES
 function formatTwoHourRange(startHour){
   return formatHour(startHour)+' – '+formatHour(startHour+2);
 }
@@ -1313,8 +1311,9 @@ async function loadAudienceHours(){
 
 // ======================================
 // ANALYSE PERSONNALISÉE DES MEILLEURS HORAIRES
-// Les recommandations générales ne dépendent
-// jamais de cette analyse ni des statistiques.
+// Le créneau de référence 06h00–08h00
+// reste affiché chaque jour, même sans données.
+// Chaque jour est analysé séparément.
 // ======================================
 async function loadPersonalHoursAnalysis(){
   personalHoursAnalysis.replaceChildren();
@@ -1355,7 +1354,14 @@ async function loadPersonalHoursAnalysis(){
     );
 
     const dayNames=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
-    const groups=new Map();
+    const dailyGroups=new Map();
+
+    for(let day=0;day<7;day++){
+      dailyGroups.set(day,{
+        day,
+        slots:new Map()
+      });
+    }
 
     let analyzedCount=0;
     let statsCount=0;
@@ -1373,41 +1379,54 @@ async function loadPersonalHoursAnalysis(){
         return;
       }
 
+      // La Côte d'Ivoire est en UTC+0 :
+      // les heures UTC correspondent donc à l'heure locale.
       const day=date.getUTCDay();
       const hour=date.getUTCHours();
       const startHour=Math.floor(hour/2)*2;
-      const key=day+'-'+startHour;
 
-      if(!groups.has(key)){
-        groups.set(key,{
-          day,startHour,count:0,statsCount:0,
-          views:0,likes:0,comments:0,shares:0
+      const dayGroup=dailyGroups.get(day);
+      if(!dayGroup)return;
+
+      if(!dayGroup.slots.has(startHour)){
+        dayGroup.slots.set(startHour,{
+          day,
+          startHour,
+          count:0,
+          statsCount:0,
+          views:0,
+          likes:0,
+          comments:0,
+          shares:0
         });
       }
 
-      const group=groups.get(key);
-      group.count++;
+      const slot=dayGroup.slots.get(startHour);
+      slot.count++;
       analyzedCount++;
 
       const stats=performanceMap.get(publication.id);
+
       if(stats){
-        group.statsCount++;
+        slot.statsCount++;
         statsCount++;
-        group.views+=Number(stats.views||0);
-        group.likes+=Number(stats.likes||0);
-        group.comments+=Number(stats.comments||0);
-        group.shares+=Number(stats.shares||0);
+        slot.views+=Number(stats.views||0);
+        slot.likes+=Number(stats.likes||0);
+        slot.comments+=Number(stats.comments||0);
+        slot.shares+=Number(stats.shares||0);
       }
     });
 
     personalHoursAnalysis.replaceChildren();
 
+    // RÉSUMÉ GÉNÉRAL
     const summary=document.createElement('div');
     summary.className='hours-result';
     summary.appendChild(createTextElement('h3','📊 Résumé de ton analyse'));
     summary.appendChild(createTextElement('p','Publications confirmées analysées : '+analyzedCount));
     summary.appendChild(createTextElement('p','Publications avec statistiques : '+statsCount));
-    summary.appendChild(createTextElement('p','Heure de Côte d’Ivoire (UTC+0) · Créneaux de deux heures.','hours-note'));
+    summary.appendChild(createTextElement('p','Créneau de référence quotidien : 06h00 – 08h00','hours-note'));
+    summary.appendChild(createTextElement('p','Heure de Côte d’Ivoire (UTC+0) · Analyse séparée pour chaque jour.','hours-note'));
 
     if(excludedUnknownTime>0){
       summary.appendChild(createTextElement('p',
@@ -1416,92 +1435,155 @@ async function loadPersonalHoursAnalysis(){
 
     if(statsUnavailable){
       summary.appendChild(createTextElement('p',
-        'Les statistiques ne sont pas accessibles actuellement. L’analyse des horaires de publication reste disponible.','hours-note'));
+        'Les statistiques ne sont pas accessibles actuellement. L’analyse des habitudes horaires reste disponible.','hours-note'));
     }
 
     personalHoursAnalysis.appendChild(summary);
 
-    if(analyzedCount===0){
-      personalHoursAnalysis.appendChild(createTextElement('p',
-        'Tu n’as pas encore confirmé de publication avec une heure réelle connue. Aucun enregistrement n’est obligatoire pour consulter les repères généraux ci-dessus. Lorsque tu confirmeras des publications, ViralTime pourra également analyser tes habitudes.','hours-note'));
-      return;
-    }
+    // AFFICHER LES SEPT JOURS, MÊME SANS PUBLICATION
+    personalHoursAnalysis.appendChild(createTextElement('h3','🕒 Analyse quotidienne des créneaux'));
 
-    const calculated=Array.from(groups.values()).map(group=>({
-      ...group,
-      averageViews:group.statsCount?group.views/group.statsCount:0,
-      averageLikes:group.statsCount?group.likes/group.statsCount:0,
-      averageComments:group.statsCount?group.comments/group.statsCount:0,
-      averageShares:group.statsCount?group.shares/group.statsCount:0,
-      averageInteractions:group.statsCount
-        ?(group.likes+group.comments+group.shares)/group.statsCount
-        :0
-    }));
+    // Présentation dans l'ordre lundi → dimanche.
+    const orderedDays=[1,2,3,4,5,6,0];
 
-    const habits=[...calculated].sort((a,b)=>b.count-a.count);
+    orderedDays.forEach(day=>{
+      const dayData=dailyGroups.get(day);
+      const slots=Array.from(dayData.slots.values())
+        .sort((a,b)=>a.startHour-b.startHour);
 
-    personalHoursAnalysis.appendChild(createTextElement('h3','🕒 Tes créneaux habituels'));
+      const referenceSlot=dayData.slots.get(6);
+      const dayName=dayNames[day];
+      const formattedDay=dayName.charAt(0).toUpperCase()+dayName.slice(1);
 
-    habits.slice(0,3).forEach(group=>{
-      const card=document.createElement('div');
-      card.className='hours-card';
-      const day=dayNames[group.day];
-      card.appendChild(createTextElement('strong',
-        day.charAt(0).toUpperCase()+day.slice(1)+' · '+
-        formatTwoHourRange(group.startHour)));
-      card.appendChild(createTextElement('p','Publications enregistrées : '+group.count));
-      card.appendChild(createTextElement('p','Publications avec statistiques : '+group.statsCount,'hours-note'));
-      card.appendChild(createTextElement('p',
-        'Ce créneau décrit ton habitude de publication, pas une garantie de performance.','hours-note'));
-      personalHoursAnalysis.appendChild(card);
+      const dayCard=document.createElement('div');
+      dayCard.className='hours-card';
+
+      dayCard.appendChild(createTextElement('h3','📅 '+formattedDay));
+
+      // Créneau de référence présent tous les jours.
+      const reference=document.createElement('div');
+      reference.className='hours-result';
+
+      reference.appendChild(createTextElement('strong','⭐ Créneau de référence : 06h00 – 08h00'));
+
+      if(referenceSlot){
+        reference.appendChild(createTextElement('p',
+          'Publications enregistrées dans ce créneau : '+referenceSlot.count));
+
+        reference.appendChild(createTextElement('p',
+          'Publications avec statistiques : '+referenceSlot.statsCount,'hours-note'));
+      }else{
+        reference.appendChild(createTextElement('p',
+          'Aucune publication enregistrée dans ce créneau pour le moment.','hours-note'));
+        reference.appendChild(createTextElement('p',
+          'Ce créneau reste proposé comme horaire de référence à tester.','hours-note'));
+      }
+
+      dayCard.appendChild(reference);
+
+      // Autres créneaux observés uniquement pour ce jour.
+      const otherSlots=slots.filter(slot=>slot.startHour!==6);
+
+      dayCard.appendChild(createTextElement('strong','Autres créneaux observés'));
+
+      if(otherSlots.length===0){
+        dayCard.appendChild(createTextElement('p',
+          'Aucun autre créneau observé pour ce jour. Les prochaines publications permettront d’enrichir cette analyse.','hours-note'));
+      }else{
+        otherSlots.forEach(slot=>{
+          const slotCard=document.createElement('div');
+          slotCard.className='hours-result';
+
+          slotCard.appendChild(createTextElement('strong',
+            formatTwoHourRange(slot.startHour)));
+
+          slotCard.appendChild(createTextElement('p',
+            'Publications enregistrées : '+slot.count));
+
+          slotCard.appendChild(createTextElement('p',
+            'Publications avec statistiques : '+slot.statsCount,'hours-note'));
+
+          dayCard.appendChild(slotCard);
+        });
+      }
+
+      dayCard.appendChild(createTextElement('p',
+        'Les données de ce jour ne sont pas mélangées avec celles des autres jours.','hours-note'));
+
+      personalHoursAnalysis.appendChild(dayCard);
     });
 
-    if(analyzedCount<2){
+    if(analyzedCount===0){
       personalHoursAnalysis.appendChild(createTextElement('p',
-        'Une seule publication ne suffit pas pour dégager une tendance fiable. Continue à publier et à confirmer tes publications. Les recommandations générales restent accessibles.','hours-note'));
-      return;
+        'Aucune publication confirmée avec une heure réelle connue pour le moment. Ce n’est pas un problème : les sept créneaux de référence 06h00–08h00 restent affichés. Tu peux commencer à les tester sans enregistrer de vidéo ni de statistique dans ViralTime.','hours-note'));
+    }else{
+      personalHoursAnalysis.appendChild(createTextElement('p',
+        'Les créneaux observés décrivent tes habitudes réelles de publication. Le créneau 06h00–08h00 reste une référence indépendante, même si tu n’as encore rien publié à cette heure.','hours-note'));
     }
 
-    const performanceGroups=calculated
-      .filter(group=>group.statsCount>=2)
-      .sort((a,b)=>
-        b.averageViews-a.averageViews||
-        b.averageInteractions-a.averageInteractions
-      );
+    // COMPARAISON DES PERFORMANCES :
+    // au moins deux publications avec statistiques
+    // dans le même jour ET le même créneau.
+    const performanceGroups=[];
 
-    if(performanceGroups.length===0){
-      personalHoursAnalysis.appendChild(createTextElement('p',
-        'Tes habitudes de publication sont visibles. Pour comparer les performances, il faudra disposer de statistiques sur au moins deux publications dans un même créneau. Ce n’est pas obligatoire pour consulter les recommandations générales.','hours-note'));
-      return;
-    }
+    dailyGroups.forEach(dayData=>{
+      dayData.slots.forEach(slot=>{
+        if(slot.statsCount>=2){
+          performanceGroups.push({
+            ...slot,
+            averageViews:slot.views/slot.statsCount,
+            averageLikes:slot.likes/slot.statsCount,
+            averageComments:slot.comments/slot.statsCount,
+            averageShares:slot.shares/slot.statsCount,
+            averageInteractions:
+              (slot.likes+slot.comments+slot.shares)/slot.statsCount
+          });
+        }
+      });
+    });
+
+    performanceGroups.sort((a,b)=>
+      b.averageViews-a.averageViews||
+      b.averageInteractions-a.averageInteractions
+    );
 
     personalHoursAnalysis.appendChild(createTextElement('h3','🏆 Créneaux avec résultats mesurés'));
 
-    performanceGroups.slice(0,3).forEach((group,index)=>{
-      const card=document.createElement('div');
-      card.className='hours-card';
-      const day=dayNames[group.day];
+    if(performanceGroups.length===0){
+      personalHoursAnalysis.appendChild(createTextElement('p',
+        'Il n’y a pas encore assez de statistiques pour comparer les performances d’un même jour et d’un même créneau. Il faudra au moins deux publications avec statistiques dans ce créneau. Cela ne bloque pas les recommandations ni l’affichage des horaires de référence.','hours-note'));
+    }else{
+      performanceGroups.slice(0,5).forEach((group,index)=>{
+        const card=document.createElement('div');
+        card.className='hours-card';
 
-      card.appendChild(createTextElement('h3',
-        (index+1)+'. '+day.charAt(0).toUpperCase()+day.slice(1)+
-        ' · '+formatTwoHourRange(group.startHour)));
+        const day=dayNames[group.day];
+        const formattedDay=day.charAt(0).toUpperCase()+day.slice(1);
 
-      card.appendChild(createTextElement('p',
-        '👁️ Vues moyennes : '+Math.round(group.averageViews).toLocaleString('fr-FR')));
-      card.appendChild(createTextElement('p',
-        '❤️ Likes moyens : '+Math.round(group.averageLikes).toLocaleString('fr-FR'),'hours-note'));
-      card.appendChild(createTextElement('p',
-        '💬 Commentaires moyens : '+Math.round(group.averageComments).toLocaleString('fr-FR'),'hours-note'));
-      card.appendChild(createTextElement('p',
-        '🔄 Partages moyens : '+Math.round(group.averageShares).toLocaleString('fr-FR'),'hours-note'));
-      card.appendChild(createTextElement('p',
-        'Calculé sur '+group.statsCount+' publications avec statistiques.','hours-note'));
+        card.appendChild(createTextElement('h3',
+          (index+1)+'. '+formattedDay+' · '+formatTwoHourRange(group.startHour)));
 
-      personalHoursAnalysis.appendChild(card);
-    });
+        card.appendChild(createTextElement('p',
+          '👁️ Vues moyennes : '+Math.round(group.averageViews).toLocaleString('fr-FR')));
 
-    personalHoursAnalysis.appendChild(createTextElement('p',
-      'Ces résultats décrivent les performances observées sur ton compte. Ils ne prouvent pas qu’un horaire provoque davantage de vues et ne garantissent pas la visibilité future.','hours-note'));
+        card.appendChild(createTextElement('p',
+          '❤️ Likes moyens : '+Math.round(group.averageLikes).toLocaleString('fr-FR'),'hours-note'));
+
+        card.appendChild(createTextElement('p',
+          '💬 Commentaires moyens : '+Math.round(group.averageComments).toLocaleString('fr-FR'),'hours-note'));
+
+        card.appendChild(createTextElement('p',
+          '🔄 Partages moyens : '+Math.round(group.averageShares).toLocaleString('fr-FR'),'hours-note'));
+
+        card.appendChild(createTextElement('p',
+          'Calculé sur '+group.statsCount+' publications de ce jour et de ce créneau.','hours-note'));
+
+        personalHoursAnalysis.appendChild(card);
+      });
+
+      personalHoursAnalysis.appendChild(createTextElement('p',
+        'Ces résultats décrivent les performances observées sur ton compte. Ils ne prouvent pas qu’un horaire provoque davantage de vues et ne garantissent pas la visibilité future.','hours-note'));
+    }
 
   }catch(error){
     console.error('Erreur analyse des horaires :',error);
